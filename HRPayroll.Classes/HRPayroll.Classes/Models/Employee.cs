@@ -5,7 +5,7 @@ namespace HRPayroll.Classes.Models
 {
     #region Enums
     public enum PayFrequency { Weekly = 1, Monthly }
-    public enum EmployeeStatus { Ghost = 1, Duplicate, Fired }
+    public enum EmployeeStatus { Employed = 1, Ghost, Duplicate, Fired }
     #endregion
 
     public class Employee : CRUDAble{
@@ -35,7 +35,7 @@ namespace HRPayroll.Classes.Models
         public string Position { get; set; }
 
         [BsonElement("Salary")]
-        public decimal PropertyName { get; set; }
+        public decimal Salary { get; set; }
 
         [BsonElement("PayFrequency")]
         public PayFrequency PayFrequency { get; set; }
