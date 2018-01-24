@@ -1,52 +1,21 @@
-# Prerequisites
-*.d
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+HRPayroll.Classes/.vs/*
+HRPayroll.Classes/HRPayroll.Archive/bin/*
+HRPayroll.Classes/HRPayroll.Archive/obj/*
+HRPayroll.Classes/HRPayroll.Audit/obj/*
+HRPayroll.Classes/HRPayroll.Audit/bin/*
+HRPayroll.Classes/HRPayroll.Classes/bin/*
+HRPayroll.Classes/HRPayroll.Classes/obj/*
+ClientAPIController/.vs/*
+FluentScheduler_Test/.vs/*
+FluentScheduler_Test/FluentScheduler_Test/obj/*
+FluentScheduler_Test/FluentScheduler_Test/bin/*
+FlourishAPI2/.vs/*
+FlourishAPI2/FlourishAPI2/obj/*
+FlourishAPI/.vs/*
+FlourishAPI/FlourishAPI/obj/*
+FlourishAPI/FlourishAPI/bin/*
+FlorishTestEnviroment/.vs/*
+FlorishTestEnviroment/FlorishTestEnviroment/bin/*
+FlorishTestEnviroment/FlorishTestEnviroment/obj/*
+ClientAPIController/ClientAPIController/bin/*
+ClientAPIController/ClientAPIController/obj/*

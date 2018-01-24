@@ -1,0 +1,70 @@
+How to make a WEB API in VS2017:
+
+Steps 1:
+ File --> New --> Project --> Web --> ASP.NET Core Web Application
+
+Steps 2:
+
+When the White Window Pops up , select "WEB API"
+
+Step 3:
+Go to controllers. You will find a controller already there ('ValuesController').
+	- To add another controller , simply add the a new item, and Select "Web Api Controller" , give it a name.
+	NB: Controllers hold the methods that get called. 
+
+P.S. Look at the methods that are there already to get an idea of how to create and use the API Controller Methods.
+
+--- Publish WEB SITE-----
+
+1. Right Click the WebAplcation Icon (the one below the Solution Icon) in the Solution Explorer and Select 'Publish'.
+
+2. Select Publish to Folder and Click Next Until Successfully Published to the 'PublishOutput' Folder.
+
+
+-----------------------IIS----------------------
+
+1: Clean and Rebuild the Web API Solution.
+
+
+
+3. Open IIS 
+	- Go to Application Pools and Click 'Add Application Pool' on the Right- Hand side.
+	- Give it whatever name you want e.g. "AspNetCorePool", an from the '.Net CLR Version' dropdown, Select 'No Managed Code'.
+
+	- Go to Sites, Right Click and Select, 'Add Website'.
+	- Give the Site a name and Hostname (to make life easier, use the same name for everything Sitename and Host name)
+	- Click the 'Select...' button to Select an Application Pool, and choose the Application Pool You previously Created e.g. "AspNetCorePool".
+	- For test purposes , IP address is Localhost i.e. 127.0.0.1
+	- You can set a port, but Port 80 should be fine.
+
+4. Select Physical Path
+	- Select the "PublishOutput" Folder for your project found at the following Directory:
+		--> \<Solution name>\<Project name>\bin\Release\PublishOutput
+
+5. Click Okay.
+
+6. Go to physical location of the Solution Folder for the Web API project you created and selected in Step 3, right click --. Properties.
+	- Go to the Sharing tab, Click "Share".
+	- Add "Everyone" as a person that the Folder will be Shared with.
+	- Click Apply/Okay. 
+
+7. Go to your Host file and link the hostname  you specified for your site to your IP Address i.e. 127.0.0.1.
+
+7. Open up CMD as Admin. Type 'iisreset' and click ENTER. 
+
+8. Go to your web browser, and type in the URL section: <hostname>/api/<ControllerName> e.g. flourishAPI/api/Values
+	- This should return the values from the 'Get' method from your the Values Controller. 
+
+
+P.S. You can use POSTMAN to test request to the API e.g. POST and GET
+
+NB: EVREYTIME YOU ADD NEW CODE TO THE WEP API solution/project, you need to PUBLISH THE WEB API/Site AGAIN
+	- Do  this by first stopping the Website in IIS.
+	- Then Go to the Project Icon in your Soltion Explorer in VS, Right Click on it click Publish, and Click Publish Again.
+		- If an error is thrown after the first time you click publish, Just Publish it again, it happens sometimes.
+	- Then Go back to IIS, Start the Site again, Refresh the Server. And everything should be working fine again, with your changes 
+	included, e.g. your add controller.
+
+
+
+

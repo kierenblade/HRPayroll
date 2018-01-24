@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlorishTestEnviroment", "FlorishTestEnviroment\FlorishTestEnviroment.csproj", "{EBF8D6B7-9981-445B-8E9C-5434F266CAC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBF8D6B7-9981-445B-8E9C-5434F266CAC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF8D6B7-9981-445B-8E9C-5434F266CAC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF8D6B7-9981-445B-8E9C-5434F266CAC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF8D6B7-9981-445B-8E9C-5434F266CAC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {55B57BB3-4200-48E2-8CA7-D5C18F1A8AFB}
+	EndGlobalSection
+EndGlobal
