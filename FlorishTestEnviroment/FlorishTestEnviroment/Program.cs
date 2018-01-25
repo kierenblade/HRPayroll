@@ -11,18 +11,26 @@ namespace FlorishTestEnviroment
     {
         static void Main(string[] args)
         {
-            Employee e = new Employee() { FirstName = "Jaon", LastName = "VH", AccountNumber = "10101012", Bank = new Bank() { Name = "Absa" } };
-            bool outcome = e.InsertDocument();
-            
+            //Employee e = new Employee() { FirstName = "Wade", LastName = "Martin", AccountNumber = "10101012", Bank = new Bank() { Name = "Absa" } };
+            //e.InsertDocument();
+            Company c = new Company() { CompanyId = 1, Name = "Sybrin", AccountNumber = "1010101010101001", Bank = new Bank() { Name = "Absa" } };
+            bool outcome = c.InsertDocument();
+            c.Name = "Florish";
+            c.Bank.Name = "FNB";
             //e.LastName = "VH2";
             //e.Bank.Name = "FNB";
             //e.AccountNumber = "10101013";
-            //List<CRUDAble> updateList = new List<CRUDAble>();
-            //updateList.Add(e);
-            //updateList.UpdateManyDocument();
-            //Dictionary<string, string> searchFieldsAndCols = new Dictionary<string, string>();
-            //searchFieldsAndCols.Add("FirstName", "Jason");
-            //new Employee() { }.SearchDocument(searchFieldsAndCols);
+            List<CRUDAble> updateList = new List<CRUDAble>();
+            updateList.Add(c);
+            updateList.UpdateManyDocument();
+            //Dictionary<string, object> searchFieldsAndCols = new Dictionary<string, object>();
+            ////searchFieldsAndCols.Add("FirstName", "Jason");
+            ////searchFieldsAndCols.Add("Bank.BankName", "Absa");
+            //List<CRUDAble> eList = c.SearchDocument(searchFieldsAndCols);
+            //foreach (Employee item in eList)
+            //{
+            //    Console.WriteLine(item.Id);
+            //}
             if (outcome)
             {
                 Console.WriteLine("Completed succesfully");
