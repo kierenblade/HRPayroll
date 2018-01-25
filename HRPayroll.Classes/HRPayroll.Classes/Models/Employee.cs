@@ -51,6 +51,16 @@ namespace HRPayroll.Classes.Models
 
         [BsonElement("SyncDate")]
         public DateTime SyncDate { get; set; }
+
+        
+        #endregion
+
+        #region Methods
+
+        public override string createHash()
+        {
+            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}", IdNumber, FirstName, LastName, AccountNumber, BusinessUnitName, Salary, Position, EmployeeStatus);
+        }
         #endregion
     }
 }

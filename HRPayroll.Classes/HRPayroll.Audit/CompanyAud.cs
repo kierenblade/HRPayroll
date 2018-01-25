@@ -26,5 +26,12 @@ namespace HRPayroll.Audit
         [BsonElement("ChangeLog")]
         public List<ChangeLog> ChangeLog { get; set; }
         #endregion
+
+        #region Methods
+        public override string createHash()
+        {
+            return string.Format("{0}-{1}-{2}-{3}-{4}", Name,AccountNumber,ChangeBy,ChangeTime,ChangeLog);
+        }
+        #endregion
     }
 }

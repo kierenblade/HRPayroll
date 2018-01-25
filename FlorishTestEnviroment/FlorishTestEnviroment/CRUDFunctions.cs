@@ -30,7 +30,7 @@ namespace FlorishTestEnviroment
                 // ~ if the object already exists in the document then it will return false to the system that called the method.
 
                 IMongoCollection<CRUDAble> collection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<CRUDAble>(obj.GetType().Name); //  ~ Consists of Point 1
-                if(collection.AsQueryable().Where(p=> p.Id == obj.Id).ToList().Count > 0) //  used to check if the current object already exists
+                if(collection.AsQueryable().Where(p=> p.HashCode == obj.HashCode).LongCount() > 0) //  used to check if the current object already exists
                 {
                     return false; //  returns a false statement if it does
                 }
@@ -99,10 +99,10 @@ namespace FlorishTestEnviroment
                     switch (audIdentifier) // this will create a audit document within the relevant collection based on the document type
                     {
                         case "Employee":
-                            new EmployeeAud() { EmployeeId = 1, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                           // new EmployeeAud() { EmployeeId = 1, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
                             break;
                         case "LoginDetails":
-                            new LoginDetailsAud() { Username = "change later", Hash = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            //new LoginDetailsAud() { Username = "change later", Hash = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
                             break;
                             //case "ContactDetails":
                             //    new ContactDetailsAud() { EmployeeId = 1, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
