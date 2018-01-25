@@ -4,4 +4,14 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="HRPayroll.Classes">
+      <HintPath>..\..\HRPayroll.Classes\HRPayroll.Classes\bin\Debug\netcoreapp2.0\HRPayroll.Classes.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
