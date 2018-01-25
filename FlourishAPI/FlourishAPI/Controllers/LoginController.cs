@@ -41,7 +41,7 @@ namespace FlourishAPI.Controllers
 
             success = signIn.ValidateUserDetails();
 
-            return true;
+            return success;
         }
 
         
