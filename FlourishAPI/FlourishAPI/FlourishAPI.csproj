@@ -11,11 +11,27 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FlorishTestEnviroment">
+      <HintPath>..\..\FlorishTestEnviroment\FlorishTestEnviroment\bin\Debug\netcoreapp2.0\FlorishTestEnviroment.dll</HintPath>
+    </Reference>
+    <Reference Include="HRPayroll.Archive">
+      <HintPath>..\..\FlorishTestEnviroment\FlorishTestEnviroment\bin\Debug\netcoreapp2.0\HRPayroll.Archive.dll</HintPath>
+    </Reference>
+    <Reference Include="HRPayroll.Audit">
+      <HintPath>..\..\FlorishTestEnviroment\FlorishTestEnviroment\bin\Debug\netcoreapp2.0\HRPayroll.Audit.dll</HintPath>
+    </Reference>
+    <Reference Include="HRPayroll.Classes">
+      <HintPath>..\..\FlorishTestEnviroment\FlorishTestEnviroment\bin\Debug\netcoreapp2.0\HRPayroll.Classes.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
