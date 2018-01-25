@@ -1,0 +1,9 @@
+diff a/FlourishAPI/FlourishAPI/FlourishAPI.csproj b/FlourishAPI/FlourishAPI/FlourishAPI.csproj	(rejected hunks)
+@@ -20,6 +20,7 @@
+   </ItemGroup>
+ 
+   <ItemGroup>
++<<<<<<< HEAD
+     <Reference Include="FlorishTestEnviroment">
+       <HintPath>..\..\FlorishTestEnviroment\FlorishTestEnviroment\bin\Debug\netcoreapp2.0\FlorishTestEnviroment.dll</HintPath>
+     </Reference>
