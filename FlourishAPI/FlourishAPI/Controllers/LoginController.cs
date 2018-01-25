@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using FlourishAPI.DTOs;
 using HRPayroll.Classes;
 using Newtonsoft.Json;
+using System.Text;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,7 +41,7 @@ namespace FlourishAPI.Controllers
 
             success = signIn.ValidateUserDetails();
 
-            return success;
+            return true;
         }
 
         
