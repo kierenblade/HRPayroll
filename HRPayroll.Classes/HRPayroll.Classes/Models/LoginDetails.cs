@@ -4,11 +4,10 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace HRPayroll.Classes.Models
 {
-    public class LoginDetails
+    public class LoginDetails : CRUDAble
     {
         #region Fields
-        [BsonId]
-        public ObjectId Id { get; set; }
+
 
         [BsonElement("Username")]
         public string Username { get; set; }
@@ -24,6 +23,14 @@ namespace HRPayroll.Classes.Models
 
         [BsonElement("LastLogin")]
         public DateTime LastLogin { get; set; }
+        #endregion
+
+        #region Methods
+
+        public override string createHash()
+        {
+            return string.Format("{0}-{1}-{2}-{3}", Username,Hash,Role.Name,Company.Name);
+        }
         #endregion
     }
 }

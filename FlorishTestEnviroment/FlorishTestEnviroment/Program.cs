@@ -3,6 +3,7 @@ using HRPayroll.Audit;
 using System;
 using MongoDB.Bson.Serialization.IdGenerators;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace FlorishTestEnviroment
 {

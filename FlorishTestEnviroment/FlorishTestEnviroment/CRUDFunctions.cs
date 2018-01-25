@@ -99,10 +99,12 @@ namespace FlorishTestEnviroment
                     switch (audIdentifier) // this will create a audit document within the relevant collection based on the document type
                     {
                         case "Employee":
-                           // new EmployeeAud() { EmployeeId = 1, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            Employee e = (Employee)item;
+                            new EmployeeAud() { EmployeeId = 1, FirstName = e.FirstName, LastName = e.LastName, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
                             break;
                         case "LoginDetails":
-                            //new LoginDetailsAud() { Username = "change later", Hash = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            LoginDetails l = (LoginDetails)item;
+                            new LoginDetailsAud() { Username = l.Username, Hash = l.Hash, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
                             break;
                             //case "ContactDetails":
                             //    new ContactDetailsAud() { EmployeeId = 1, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
