@@ -4,11 +4,9 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace HRPayroll.Classes.Models
 {
-    public class EmailNotification
+    public class EmailNotification : CRUDAble
     {
         #region Fields
-        [BsonId]
-        public ObjectId Id { get; set; }
 
         [BsonElement("ContactDetails")]
         public ContactDetails ContactDetails { get; set; }
@@ -20,6 +18,13 @@ namespace HRPayroll.Classes.Models
         public string Message { get; set; }
 
         [BsonElement("Logs")] public string Logs { get; set; }
+        #endregion
+
+        #region Methods
+        public override string createHash()
+        {
+            return string.Format("{0}-{1}-{2}-{3}", ContactDetails,TimeStamp,Message,Logs);
+        }
         #endregion
     }
 }

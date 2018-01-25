@@ -6,10 +6,8 @@ namespace HRPayroll.Classes.Models
     #region Enum
     public enum Status { Success = 1, Fail }
     #endregion
-    public class Transaction{
+    public class Transaction : CRUDAble{
         #region Fields
-        [BsonId]
-        public ObjectId Id { get; set; }
 
         [BsonElement("TransactionId")]
         public int TransactionId { get; set; }
@@ -31,6 +29,13 @@ namespace HRPayroll.Classes.Models
 
         [BsonElement("Status")]
         public Status Status { get; set; }
+        #endregion
+
+        #region Methods
+        public override string createHash()
+        {
+            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}", TransactionId,Employee,EmployeeReference,Company,CompanyReference,Amount);
+        }
         #endregion
     }
 }

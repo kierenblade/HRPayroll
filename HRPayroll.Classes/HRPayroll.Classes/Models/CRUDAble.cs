@@ -7,5 +7,13 @@ namespace HRPayroll.Classes.Models
     {
         [BsonId]
         public ObjectId Id { get; set; }
+        [BsonElement]
+        public string HashCode
+        {
+            get { return createHash(); }
+        }
+
+        public abstract string createHash();
+
     }
 }

@@ -8,10 +8,8 @@ namespace HRPayroll.Classes.Models
     public enum Area { ClientApi = 1, Reporting, Transaction, ThirdParty }
     public enum AreaStatus { Success = 1, Fail }
     #endregion
-    public class DesktopNotification{
+    public class DesktopNotification : CRUDAble{
         #region Fields
-        [BsonId]
-        public ObjectId Id { get; set; }
 
         [BsonElement("NotificationId")]
         public int NotificationId { get; set; }
@@ -33,6 +31,13 @@ namespace HRPayroll.Classes.Models
 
         [BsonElement("AreaStatus")]
         public AreaStatus AreaStatus { get; set; }
+        #endregion
+
+        #region Methods
+        public override string createHash()
+        {
+            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}", NotificationId,CreationDate,Company,Message,LoginDetails,Area,AreaStatus);
+        }
         #endregion
     }
 }

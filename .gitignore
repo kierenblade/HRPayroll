@@ -19,3 +19,4 @@ FlorishTestEnviroment/FlorishTestEnviroment/bin/*
 FlorishTestEnviroment/FlorishTestEnviroment/obj/*
 ClientAPIController/ClientAPIController/bin/*
 ClientAPIController/ClientAPIController/obj/*
+.vs/*

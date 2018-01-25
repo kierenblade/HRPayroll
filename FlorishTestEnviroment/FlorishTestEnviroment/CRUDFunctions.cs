@@ -30,7 +30,7 @@ namespace FlorishTestEnviroment
                 // ~ if the object already exists in the document then it will return false to the system that called the method.
 
                 IMongoCollection<CRUDAble> collection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<CRUDAble>(obj.GetType().Name); //  ~ Consists of Point 1
-                if(collection.AsQueryable().Where(p=> p.Id == obj.Id).ToList().Count > 0) //  used to check if the current object already exists
+                if(collection.AsQueryable().Where(p=> p.HashCode == obj.HashCode).LongCount() > 0) //  used to check if the current object already exists
                 {
                     return false; //  returns a false statement if it does
                 }
@@ -99,17 +99,21 @@ namespace FlorishTestEnviroment
                     switch (audIdentifier) // this will create a audit document within the relevant collection based on the document type
                     {
                         case "Employee":
-                            new EmployeeAud() { EmployeeId = 1, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            Employee e = (Employee)item;
+                            new EmployeeAud() { EmployeeId = 1, FirstName = e.FirstName, LastName = e.LastName, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
                             break;
                         case "LoginDetails":
-                            new LoginDetailsAud() { Username = "change later", Hash = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            LoginDetails l = (LoginDetails)item;
+                            new LoginDetailsAud() { Username = l.Username, Hash = l.Hash, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
                             break;
-                            //case "ContactDetails":
-                            //    new ContactDetailsAud() { EmployeeId = 1, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
-                            //    break;
-                            //case "Company":
-                            //    new CompanyAud() { EmployeeId = 1, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
-                            //    break;
+                        case "ContactDetails":
+                         //   ContactDetails c = (ContactDetails)item;
+                           // new ContactDetailsAud() { Company = c, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            break;
+                        case "Company":
+                            Company o = (Company)item;
+                            new CompanyAud() { Name = o.Name, AccountNumber = o.AccountNumber, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            break;
 
 
                     }
@@ -130,32 +134,25 @@ namespace FlorishTestEnviroment
         }
 
         /// <summary>
-        /// This will search for a collection of objects based on a user specified list of criteria (In- Progress)
+        /// This will search for a collection of objects based on a user specified list of criteria, it then returns a of List<CRUDAble> objects which the user can then manipulate
         /// </summary>
 
-        public static void SearchDocument(this CRUDAble searchObject, Dictionary<string,string> queryDictionary, string databaseName = "FlourishDB")
+        public static List<CRUDAble> SearchDocument(this CRUDAble searchObject, Dictionary<string, object> queryDictionary, string databaseName = "FlourishDB")
         {
+            // the below statement just obtains the relevent document collection associated with the search
             var selectedCollection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<CRUDAble>(searchObject.GetType().Name);
-            StringBuilder queryBuilder = new StringBuilder();
-            var query = selectedCollection.AsQueryable();
-            //Non-meta properties
-            // query = query.Where(a => a.SomeNonMetaProperty == "Something");
-            //And now meta properties
-            var q = (from key in queryDictionary.Keys
-                     from value in queryDictionary.Values
-                     select selectedCollection).ToList();
+            BsonDocument filter = new BsonDocument(); // we create a blank filter
+            foreach (string item in queryDictionary.Keys) // we now iterate through our dictionary looking for all key and value types
+            {
 
-            List<CRUDAble> quewry = selectedCollection.AsQueryable().ToList();
+                if (queryDictionary[item] != null) //  if the value type is not null for a key, then we add it to our filter list
+                {
+                    filter.Add(item, queryDictionary[item].ToString());
+                }
 
+            }
 
-            //foreach (var keyAndValue in queryDictionary)
-            //{
-            //    query = query.Where(m =>
-            //      m.Name == keyAndValue.Key
-            //      && m.Value == keyAndValue.Value);
-            //}
-            
-            //List<CRUDAble> query = selectedCollection.AsQueryable().Where(sb => sb.Id == searchObject.Id).Where(sb => queryBuilder) .ToList();
+            return selectedCollection.Find(filter).ToList(); // this will use the filter to return a list of only documents that fit that specific filter
         }
     }
 }
