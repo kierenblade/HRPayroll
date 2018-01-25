@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
     <Reference Include="FlorishTestEnviroment">
       <HintPath>..\..\FlorishTestEnviroment\FlorishTestEnviroment\bin\Debug\netcoreapp2.0\FlorishTestEnviroment.dll</HintPath>
     </Reference>
