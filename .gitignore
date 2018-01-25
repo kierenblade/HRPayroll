@@ -20,3 +20,5 @@ FlorishTestEnviroment/FlorishTestEnviroment/obj/*
 ClientAPIController/ClientAPIController/bin/*
 ClientAPIController/ClientAPIController/obj/*
 .vs/*
+PaymentSwitchHandler/.vs/*
+PaymentSwitchHandler/PaymentSwitchHandler/obj/*
