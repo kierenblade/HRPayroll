@@ -32,12 +32,15 @@ namespace FlourishAPI.Controllers
         [HttpPost]
         public Boolean Post([FromBody]string userDetails)
         {
+            bool success = false;
+
             LoginDetails details =  JsonConvert.DeserializeObject<LoginDetails>(userDetails);
 
             SignInManager signIn = new SignInManager(details.Username, details.Password);
 
+            success = signIn.ValidateUserDetails();
 
-            return signIn.ValidateUserDetails();
+            return success;
         }
 
         
