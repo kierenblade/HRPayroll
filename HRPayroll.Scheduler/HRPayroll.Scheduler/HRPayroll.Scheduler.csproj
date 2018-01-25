@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentScheduler" Version="5.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="HRPayroll.Classes">
+      <HintPath>..\..\HRPayroll.Classes\HRPayroll.Classes\bin\Debug\netcoreapp2.0\HRPayroll.Classes.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

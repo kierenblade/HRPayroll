@@ -22,3 +22,6 @@ ClientAPIController/ClientAPIController/obj/*
 .vs/*
 PaymentSwitchHandler/.vs/*
 PaymentSwitchHandler/PaymentSwitchHandler/obj/*
+HRPayroll.Scheduler/.vs/*
+HRPayroll.Scheduler/HRPayroll.Scheduler/obj/*
+HRPayroll.Scheduler/HRPayroll.Scheduler/bin/*
