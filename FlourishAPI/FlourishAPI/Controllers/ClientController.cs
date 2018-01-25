@@ -11,14 +11,41 @@ using FlorishTestEnviroment;
 
 namespace FlourishAPI.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/Client")]
+    [Route("api/[controller]/[action]")]
     public class ClientController : Controller
     {
         [HttpGet]
-        public static async void SyncAllEmployees()
+        public void Get()
         {
-            string url = "";
+            SyncAllEmployees();
+        }
+
+        [HttpPost]
+        public async void Post()
+        {
+            Console.WriteLine("POST");
+        }
+
+        [HttpPost("{query}")]
+        public async void Post(string query)
+        {
+            switch (query)
+            {
+                case "SyncEmp":
+
+                    break;
+            }
+        }
+
+        [HttpPost]
+        public async void SyncEmp()
+        {
+            
+        }
+
+        public async void SyncAllEmployees()
+        {
+            string url = "http://localhost:54497/api/values";
             using (var client = new HttpClient())
             {
                 HttpResponseMessage response = await client.GetAsync(url);
@@ -26,7 +53,7 @@ namespace FlourishAPI.Controllers
                 {
                     string result = await response.Content.ReadAsStringAsync();
                     var employeeResult = JsonConvert.DeserializeObject<List<Employee>>(result);
-                    
+
                     List<CRUDAble> crud = new List<CRUDAble>();
                     foreach (Employee employee in employeeResult)
                     {
@@ -36,12 +63,6 @@ namespace FlourishAPI.Controllers
                     crud.UpdateManyDocument();
                 }
             }
-        }
-
-        [HttpPost]
-        public async void Post()
-        {
-            Console.WriteLine("POST");
         }
     }
 }

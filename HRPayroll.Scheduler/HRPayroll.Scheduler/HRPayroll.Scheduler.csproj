@@ -6,11 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="FluentScheduler" Version="5.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="HRPayroll.Classes">
-      <HintPath>..\..\HRPayroll.Classes\HRPayroll.Classes\bin\Debug\netcoreapp2.0\HRPayroll.Classes.dll</HintPath>
+      <HintPath>..\..\Libs\HRPayroll.Classes.dll</HintPath>
     </Reference>
   </ItemGroup>
 
