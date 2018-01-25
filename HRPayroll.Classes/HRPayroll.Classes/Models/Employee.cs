@@ -41,7 +41,7 @@ namespace HRPayroll.Classes.Models
         public PayFrequency PayFrequency { get; set; }
 
         [BsonElement("PayDate")]
-        public DateTime PayDate { get; set; }
+        public int PayDate { get; set; }
 
         [BsonElement("PaymentType")]
         public PaymentType PaymentType { get; set; }
