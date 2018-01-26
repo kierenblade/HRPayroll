@@ -56,6 +56,7 @@ namespace FlourishAPI.Controllers
 
                     Employee defaultEmployee = (Employee)employeeResult[0];
                     List<CRUDAble> existingEmployees = defaultEmployee.SearchDocument(new Dictionary<string, object>());
+
                     List<CRUDAble> crud = new List<CRUDAble>();
                     foreach (Employee employee in employeeResult)
                     {
