@@ -6,6 +6,8 @@ namespace HRPayroll.Classes.Models
     #region Enums
     public enum PayFrequency { Weekly = 1, Monthly }
     public enum EmployeeStatus { Employed = 1, Ghost, Duplicate, Fired }
+
+    public enum PaymentType { ABSA = 1, VISA }
     #endregion
 
     public class Employee : CRUDAble{
@@ -45,7 +47,7 @@ namespace HRPayroll.Classes.Models
         public PayFrequency PayFrequency { get; set; }
 
         [BsonElement("PayDate")]
-        public DateTime PayDate { get; set; }
+        public int PayDate { get; set; }
 
         [BsonElement("PaymentType")]
         public PaymentType PaymentType { get; set; }
