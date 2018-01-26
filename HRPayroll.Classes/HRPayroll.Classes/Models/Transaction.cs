@@ -1,5 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace HRPayroll.Classes.Models
 {
@@ -29,6 +30,9 @@ namespace HRPayroll.Classes.Models
 
         [BsonElement("Status")]
         public Status Status { get; set; }
+
+        [BsonElement("DateCreated")]
+        public DateTime DateCreated { get; set; }
         #endregion
 
         #region Methods

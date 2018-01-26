@@ -151,9 +151,6 @@ namespace FlorishTestEnviroment
                 }
 
             }
-
-            n
-
             return selectedCollection.Find(filter).ToList(); // this will use the filter to return a list of only documents that fit that specific filter
         }
 
@@ -183,6 +180,13 @@ namespace FlorishTestEnviroment
             {
                 return null;
             }
+        }
+
+        public static void Delete(this CRUDAble obj, string databaseName = "FlourishDB")
+        {
+            var selectedCollection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<CRUDAble>(obj.GetType().Name);
+            BsonDocument filter = new BsonDocument().Add("_id",obj.Id);
+            selectedCollection.DeleteOne(filter);
         }
 
 

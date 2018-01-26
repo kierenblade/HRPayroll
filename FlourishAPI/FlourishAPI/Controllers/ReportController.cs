@@ -47,14 +47,21 @@ namespace FlourishAPI.Controllers
         [HttpPost("GenReportRequest")]
         public IEnumerable<Transaction> GeneralReportRequest([FromBody] GeneralReportRequestDTO reportRequestDetails)
         {
+            Transaction t = new Transaction();
+            List<Transaction> outgoingTransactions = new List<Transaction>();
+            t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", reportRequestDetails.Company);
-            var w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
 
-            List<Transaction> transactionsResults = new List<Transaction>();
-            transactionsResults.Add(new Transaction() { Company = new Company() { Name = "Sybrin" }, Amount = 12000 });
+            foreach (Transaction item in w)
+            {
+                if (item.DateCreated >= reportRequestDetails.StartDate && item.DateCreated <= reportRequestDetails.EndDate) {
+                    outgoingTransactions.Add(item);
+                }
+            }
 
-            return transactionsResults;
+            return outgoingTransactions;
         }
 
 
