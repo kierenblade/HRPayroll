@@ -31,20 +31,21 @@ namespace FlourishAPI.Controllers
 
         // POST api/login
         [HttpPost]
-        public Boolean Post([FromBody]string userDetails)
+      
+        public Boolean Post([FromBody]LoginDetailsDTO userDetails)
         {
             bool success = false;
 
-            LoginDetails details =  JsonConvert.DeserializeObject<LoginDetails>(userDetails);
+            //LoginDetailsDTO details = JsonConvert.DeserializeObject<LoginDetailsDTO>(userDetails);
 
-            SignInManager signIn = new SignInManager(details.Username, details.Password);
+            SignInManager signIn = new SignInManager(userDetails.Username, userDetails.Password);
 
             success = signIn.ValidateUserDetails();
 
             return success;
         }
 
-        
+
 
         // GET api/login/AlternativeGet
         //[HttpGet("AlternativeGet")] // <-- Specify your own Method name
