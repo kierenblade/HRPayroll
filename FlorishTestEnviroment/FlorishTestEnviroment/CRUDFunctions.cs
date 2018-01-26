@@ -169,6 +169,20 @@ namespace FlorishTestEnviroment
             }
         }
 
+        public static List<Employee> GetAllEmployees(this Employee def)
+        {
+            List<Employee> lookUpCollection = new DatabaseConnection().DatabaseConnect().GetCollection<Employee>("Employee").AsQueryable().ToList();
+
+            if (lookUpCollection.Count > 0)
+            {
+                return lookUpCollection;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
 
     }
 }
