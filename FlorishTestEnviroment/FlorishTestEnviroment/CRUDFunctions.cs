@@ -154,5 +154,35 @@ namespace FlorishTestEnviroment
 
             return selectedCollection.Find(filter).ToList(); // this will use the filter to return a list of only documents that fit that specific filter
         }
+
+        public static LoginDetails verifyLoginDetails(this LoginDetails details)
+        {
+           List<LoginDetails> lookUpCollection = new DatabaseConnection().DatabaseConnect().GetCollection<LoginDetails>("LoginDetails").AsQueryable().Where(p=> p.Username == details.Username && p.Hash == details.Hash).ToList();
+
+            if(lookUpCollection.Count > 0)
+            {
+                return lookUpCollection[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static List<Employee> GetAllEmployees(this Employee def)
+        {
+            List<Employee> lookUpCollection = new DatabaseConnection().DatabaseConnect().GetCollection<Employee>("Employee").AsQueryable().ToList();
+
+            if (lookUpCollection.Count > 0)
+            {
+                return lookUpCollection;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
     }
 }

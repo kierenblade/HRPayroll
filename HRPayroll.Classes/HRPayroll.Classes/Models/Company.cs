@@ -16,6 +16,12 @@ namespace HRPayroll.Classes.Models
         [BsonElement("Bank")]
         public Bank Bank { get; set; }
 
+        [BsonElement("CardNumber")]
+        public string CardNumber { get; set; }
+
+        [BsonElement("CardCVV")]
+        public string CardCVV { get; set; }
+
         #region Methods
         public override string createHash()
         {
