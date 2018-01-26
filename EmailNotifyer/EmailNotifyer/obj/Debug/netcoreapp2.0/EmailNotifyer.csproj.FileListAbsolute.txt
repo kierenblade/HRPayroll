@@ -1,0 +1,10 @@
+C:\Users\jvanheerden\Source\Repos\HRPayroll\EmailNotifyer\EmailNotifyer\bin\Debug\netcoreapp2.0\EmailNotifyer.deps.json
+C:\Users\jvanheerden\Source\Repos\HRPayroll\EmailNotifyer\EmailNotifyer\bin\Debug\netcoreapp2.0\EmailNotifyer.dll
+C:\Users\jvanheerden\Source\Repos\HRPayroll\EmailNotifyer\EmailNotifyer\bin\Debug\netcoreapp2.0\EmailNotifyer.pdb
+C:\Users\jvanheerden\Source\Repos\HRPayroll\EmailNotifyer\EmailNotifyer\bin\Debug\netcoreapp2.0\HRPayroll.Classes.dll
+C:\Users\jvanheerden\Source\Repos\HRPayroll\EmailNotifyer\EmailNotifyer\bin\Debug\netcoreapp2.0\HRPayroll.Classes.pdb
+C:\Users\jvanheerden\Source\Repos\HRPayroll\EmailNotifyer\EmailNotifyer\obj\Debug\netcoreapp2.0\EmailNotifyer.csproj.CoreCompileInputs.cache
+C:\Users\jvanheerden\Source\Repos\HRPayroll\EmailNotifyer\EmailNotifyer\obj\Debug\netcoreapp2.0\EmailNotifyer.AssemblyInfoInputs.cache
+C:\Users\jvanheerden\Source\Repos\HRPayroll\EmailNotifyer\EmailNotifyer\obj\Debug\netcoreapp2.0\EmailNotifyer.AssemblyInfo.cs
+C:\Users\jvanheerden\Source\Repos\HRPayroll\EmailNotifyer\EmailNotifyer\obj\Debug\netcoreapp2.0\EmailNotifyer.dll
+C:\Users\jvanheerden\Source\Repos\HRPayroll\EmailNotifyer\EmailNotifyer\obj\Debug\netcoreapp2.0\EmailNotifyer.pdb
