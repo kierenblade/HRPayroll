@@ -37,17 +37,18 @@ namespace FlourishAPI.Controllers
         public Boolean Post([FromBody]LoginDetailsDTO userDetails)
         {
 
-//<<<<<<< HEAD
+
            
-            SignInManager signIn = new SignInManager(userDetails.Username, userDetails.Password);
-//=======
+            //SignInManager signIn = new SignInManager(userDetails.Username, userDetails.Password);
+
           
             LoginDetails verifyingAccount = new LoginDetails() { Username = userDetails.Username, Hash = userDetails.Password };
-//>>>>>>> 859ead71d0c9dbe349a27818ca8fc2cbfde807e5
 
+            verifyingAccount = verifyingAccount.verifyLoginDetails();
 
-            if (verifyingAccount.verifyLoginDetails() != null)
+            if (verifyingAccount != null)
             {
+
                 return true;
             }
             else
@@ -63,33 +64,6 @@ namespace FlourishAPI.Controllers
         }
 
 
-//<<<<<<< HEAD
-//=======
 
-
-
-        
-//>>>>>>> 859ead71d0c9dbe349a27818ca8fc2cbfde807e5
-
-        // GET api/login/AlternativeGet
-        //[HttpGet("AlternativeGet")] // <-- Specify your own Method name
-        //public string AltGet(int id)
-        //{
-        //    return "Alternate Get";
-        //}
-
-
-
-
-
-
-
-
-
-        //// DELETE api/login/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

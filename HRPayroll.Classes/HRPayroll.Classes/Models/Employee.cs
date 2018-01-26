@@ -61,10 +61,6 @@ namespace HRPayroll.Classes.Models
 
         #region Methods
 
-        public Employee():base()
-        {
-            base._t = "Employee";
-        }
 
         public override string createHash()
         {

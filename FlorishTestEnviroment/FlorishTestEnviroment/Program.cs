@@ -11,7 +11,7 @@ namespace FlorishTestEnviroment
     {
         static void Main(string[] args)
         {
-            Employee e = new Employee() { FirstName = "Wde", LastName = "Martin", AccountNumber = "10101012", Bank = new Bank() { Name = "Absa" } };
+            //Employee e = new Employee() { FirstName = "Wde", LastName = "Martin", AccountNumber = "10101012", Bank = new Bank() { Name = "Absa" } };
             //e.InsertDocument();
             //Company c = new Company() { CompanyId = 1, Name = "Sybrin", AccountNumber = "1010101010101001", Bank = new Bank() { Name = "Absa" } };
             //bool outcome = c.InsertDocument();
@@ -21,6 +21,8 @@ namespace FlorishTestEnviroment
             //e.Bank.Name = "FNB";
             //e.AccountNumber = "10101013";
             List<Employee> updateList = new Employee().GetAllEmployees();
+            new LoginDetails() { Username = "admin", Hash = "admin" , Role = new Role() { Name = "administrator" } , Company = new Company() {Name = "Sybrin" } }.InsertDocument();
+            new LoginDetails() { Username = "Tshief", Hash = "Poi" , Role = new Role() { Name="administrator"} , Company = new Company() { Name = "Sybrin" } }.InsertDocument();
             //updateList.UpdateManyDocument();
             //Dictionary<string, object> searchFieldsAndCols = new Dictionary<string, object>();
             ////searchFieldsAndCols.Add("FirstName", "Jason");
