@@ -4,9 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FlourishAPI.DTOs;
-using HRPayroll.Classes;
+using HRPayroll.Classes.Models;
 using Newtonsoft.Json;
 using System.Text;
+using FlorishTestEnviroment;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,16 +34,33 @@ namespace FlourishAPI.Controllers
         [HttpPost]
         public Boolean Post([FromBody]string userDetails)
         {
-            bool success = false;
 
-            LoginDetails details =  JsonConvert.DeserializeObject<LoginDetails>(userDetails);
+           
+            //bool success = false;
 
-            SignInManager signIn = new SignInManager(details.Username, details.Password);
+            LoginDetailsDTO userDetail =  JsonConvert.DeserializeObject<LoginDetailsDTO>(userDetails);
+            LoginDetails verifyingAccount = new LoginDetails() { Username = userDetail.Username, Hash = userDetail.Password };
 
-            success = signIn.ValidateUserDetails();
 
-            return success;
+            if (verifyingAccount.verifyLoginDetails() != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+            //SignInManager signIn = new SignInManager(details.Username, details.Password);
+
+            //success = signIn.ValidateUserDetails();
+
+            //return success;
         }
+
+
+
+
 
         
 

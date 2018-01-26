@@ -54,12 +54,28 @@ namespace FlourishAPI.Controllers
                     string result = await response.Content.ReadAsStringAsync();
                     var employeeResult = JsonConvert.DeserializeObject<List<Employee>>(result);
 
+                    Employee defaultEmployee = (Employee)employeeResult[0];
+                    List<CRUDAble> existingEmployees = defaultEmployee.SearchDocument(new Dictionary<string, object>());
                     List<CRUDAble> crud = new List<CRUDAble>();
                     foreach (Employee employee in employeeResult)
                     {
-                        crud.Add(employee);
+                        Dictionary<string, object> filterList = new Dictionary<string, object>();
+                        filterList.Add("IdNumber", employee.IdNumber);
+                        if (defaultEmployee.SearchDocument(filterList).LongCount() > 0)
+                        {
+                            filterList.Clear();
+                            filterList.Add("HashCode", employee.HashCode);
+                            List<CRUDAble> preFilter = defaultEmployee.SearchDocument(filterList).ToList();
+                            if (preFilter.Count < 1)
+                            {
+                                crud.Add(employee);
+                            }
+                        }
+                        else
+                        {
+                            employee.InsertDocument();
+                        }
                     }
-
                     crud.UpdateManyDocument();
                 }
             }

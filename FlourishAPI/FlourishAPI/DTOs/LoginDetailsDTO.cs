@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FlourishAPI.DTOs
 {
-    public class LoginDetails
+    public class LoginDetailsDTO
     {
         public string Username { get; set; }
 
