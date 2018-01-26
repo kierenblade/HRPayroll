@@ -27,7 +27,7 @@ namespace HRPayroll.Scheduler
             List<string> employeeIdList = new List<string>();
 
             //Send employee Id list to client to check for any changes
-            string url = "http://localhost:54497/api/values";
+            string url = "http://localhost:51422/api/employee";
             using (var client = new HttpClient())
             {
                 var mycontent = JsonConvert.SerializeObject(employeeIdList);
@@ -38,8 +38,11 @@ namespace HRPayroll.Scheduler
                 HttpResponseMessage response = await client.PostAsync(url, bytecontent);
                 if (response.IsSuccessStatusCode)
                 {
+                    //Get the list of employee details from Client API
                     string result = await response.Content.ReadAsStringAsync();
-                    var rootresult = JsonConvert.DeserializeObject<List<Employee>>(result);
+                    List<Employee> rootresult = JsonConvert.DeserializeObject<List<Employee>>(result);
+
+                    //Wade's code here
                 }
             }
         }

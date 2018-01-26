@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <Reference Include="HRPayroll.Classes">
-      <HintPath>..\..\Libs\HRPayroll.Classes.dll</HintPath>
+      <HintPath>..\..\HRPayroll.Classes\HRPayroll.Classes\bin\Debug\netcoreapp2.0\HRPayroll.Classes.dll</HintPath>
     </Reference>
   </ItemGroup>
 
