@@ -43,6 +43,9 @@ namespace HRPayroll.Classes.Models
         [BsonElement]
         public string CardNumber { get; set; }
 
+        [BsonElement("CompanyId")]
+        public int CompanyId { get; set; }
+
         [BsonElement("PayFrequency")]
         public PayFrequency PayFrequency { get; set; }
 
