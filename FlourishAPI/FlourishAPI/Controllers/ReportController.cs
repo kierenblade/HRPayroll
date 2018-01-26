@@ -47,7 +47,7 @@ namespace FlourishAPI.Controllers
         [HttpPost("GenReportRequest")]
         public IEnumerable<Transaction> GeneralReportRequest([FromBody] GeneralReportRequestDTO reportRequestDetails)
         {
-            Transaction t = new Transaction();
+            Transaction t = new Transaction() { Employee = new Employee(),Company = new Company()};
             List<Transaction> outgoingTransactions = new List<Transaction>();
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
@@ -60,7 +60,7 @@ namespace FlourishAPI.Controllers
                     outgoingTransactions.Add(item);
                 }
             }
-
+            t.Delete();
             return outgoingTransactions;
         }
 
