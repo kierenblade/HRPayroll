@@ -37,6 +37,9 @@ namespace HRPayroll.Classes.Models
         [BsonElement("Salary")]
         public decimal Salary { get; set; }
 
+        [BsonElement]
+        public string CardNumber { get; set; }
+
         [BsonElement("PayFrequency")]
         public PayFrequency PayFrequency { get; set; }
 
