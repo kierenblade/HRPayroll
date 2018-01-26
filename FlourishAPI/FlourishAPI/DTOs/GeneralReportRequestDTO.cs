@@ -7,22 +7,18 @@ namespace FlourishAPI.DTOs
 {
     public class GeneralReportRequestDTO
     {
- 
-        public DateTime StartDate
-        {
-            get { return StartDate; }
-            set { StartDate = value; }
-        }
+        public string Company { get; set; }
+        public string EmployeeID { get; set; }
+        public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
 
-        public string EmployeeID { get; set; }
+        public decimal StartAmount { get; set; }
 
-        public decimal MinSalary { get; set; }
+        public decimal EndAmount { get; set; }
 
-        public decimal MaxSalary { get; set; }
+        public string[] BU { get; set; }
 
-        public string JobTitle { get; set; }
-
+        
     }
 }

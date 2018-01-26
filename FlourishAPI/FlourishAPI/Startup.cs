@@ -23,7 +23,8 @@ namespace FlourishAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication();
+            services.AddCors();
+            //services.AddAuthentication();
             services.AddMvc();
         }
 
@@ -34,6 +35,10 @@ namespace FlourishAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Shows UseCors with CorsPolicyBuilder.
+            app.UseCors(builder =>
+               builder.AllowAnyOrigin());
 
             app.UseMvc();
         }

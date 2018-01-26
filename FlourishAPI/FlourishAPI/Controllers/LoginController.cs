@@ -8,6 +8,7 @@ using HRPayroll.Classes.Models;
 using Newtonsoft.Json;
 using System.Text;
 using FlorishTestEnviroment;
+using HRPayroll.Classes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,18 +33,22 @@ namespace FlourishAPI.Controllers
 
         // POST api/login
         [HttpPost]
-        public Boolean Post([FromBody]string userDetails)
+      
+        public Boolean Post([FromBody]LoginDetailsDTO userDetails)
         {
 
+
            
-            //bool success = false;
+            //SignInManager signIn = new SignInManager(userDetails.Username, userDetails.Password);
 
-            LoginDetailsDTO userDetail =  JsonConvert.DeserializeObject<LoginDetailsDTO>(userDetails);
-            LoginDetails verifyingAccount = new LoginDetails() { Username = userDetail.Username, Hash = userDetail.Password };
+          
+            LoginDetails verifyingAccount = new LoginDetails() { Username = userDetails.Username, Hash = userDetails.Password };
 
+            verifyingAccount = verifyingAccount.verifyLoginDetails();
 
-            if (verifyingAccount.verifyLoginDetails() != null)
+            if (verifyingAccount != null)
             {
+
                 return true;
             }
             else
@@ -60,29 +65,5 @@ namespace FlourishAPI.Controllers
 
 
 
-
-
-        
-
-        // GET api/login/AlternativeGet
-        //[HttpGet("AlternativeGet")] // <-- Specify your own Method name
-        //public string AltGet(int id)
-        //{
-        //    return "Alternate Get";
-        //}
-
-
-
-
-
-
-
-
-
-        //// DELETE api/login/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }
