@@ -8,6 +8,7 @@ using HRPayroll.Classes.Models;
 using Newtonsoft.Json;
 using System.Text;
 using FlorishTestEnviroment;
+using HRPayroll.Classes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,17 +37,13 @@ namespace FlourishAPI.Controllers
         public Boolean Post([FromBody]LoginDetailsDTO userDetails)
         {
 
-<<<<<<< HEAD
-            //LoginDetailsDTO details = JsonConvert.DeserializeObject<LoginDetailsDTO>(userDetails);
-
-            SignInManager signIn = new SignInManager(userDetails.Username, userDetails.Password);
-=======
+//<<<<<<< HEAD
            
-            //bool success = false;
-
-            LoginDetailsDTO userDetail =  JsonConvert.DeserializeObject<LoginDetailsDTO>(userDetails);
-            LoginDetails verifyingAccount = new LoginDetails() { Username = userDetail.Username, Hash = userDetail.Password };
->>>>>>> 859ead71d0c9dbe349a27818ca8fc2cbfde807e5
+            SignInManager signIn = new SignInManager(userDetails.Username, userDetails.Password);
+//=======
+          
+            LoginDetails verifyingAccount = new LoginDetails() { Username = userDetails.Username, Hash = userDetails.Password };
+//>>>>>>> 859ead71d0c9dbe349a27818ca8fc2cbfde807e5
 
 
             if (verifyingAccount.verifyLoginDetails() != null)
@@ -66,13 +63,13 @@ namespace FlourishAPI.Controllers
         }
 
 
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 
 
 
         
->>>>>>> 859ead71d0c9dbe349a27818ca8fc2cbfde807e5
+//>>>>>>> 859ead71d0c9dbe349a27818ca8fc2cbfde807e5
 
         // GET api/login/AlternativeGet
         //[HttpGet("AlternativeGet")] // <-- Specify your own Method name
