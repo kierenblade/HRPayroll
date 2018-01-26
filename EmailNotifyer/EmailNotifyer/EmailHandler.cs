@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -16,7 +17,7 @@ namespace EmailNotifyer
             ConnectionError,
             ServerError
         }
-        public static async Task<SuccessStatus> SendEmail(EmailNotification email)
+        public static async Task<SuccessStatus> SendEmail(List<EmailNotification> email)
         {
             string url = "http://gateway5.sybrin.systems/Services/api/session";
             string sessionID;
@@ -43,16 +44,24 @@ namespace EmailNotifyer
             url = "http://gateway5.sybrin.systems/Services/api/addemailmessage";
             using (var client = new HttpClient())
             {
+                List<EmailRequest.MessageContent> mailMessages= new List<EmailRequest.MessageContent>();
+                foreach (var emailItem in email)
+                {
+                    mailMessages.Add(new EmailRequest.MessageContent()
+                    {
+                        To = emailItem.ContactDetails.Email,
+                        From = "test.mail@sybrin.com",
+                        Subject = "Test Message",
+                        Message64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(emailItem.Message)),
+                        MessageHtml64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(emailItem.Message)),
+                        Source = "Flourish-Systems-Payroll",
+                        ReferenceID = "123456"
+                    });
+                }
                 EmailRequest emailRequest = new EmailRequest()
                 {
                     SessionId = sessionID,
-                    Messages = new EmailRequest.MessageContent()
-                    {
-                        To = email.ContactDetails.Email,
-                        From = "test.mail@sybrin.com",
-                        Subject = "Test Message",
-                        Message64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(email.Message))
-                        }
+                    Messages = mailMessages
                 };
                 var mycontent = JsonConvert.SerializeObject(emailRequest);
                 var buffer = System.Text.Encoding.UTF8.GetBytes(mycontent);
@@ -63,7 +72,8 @@ namespace EmailNotifyer
 
                 if (response.IsSuccessStatusCode)
                 {
-                    EmailResponse sesh = JsonConvert.DeserializeObject<EmailResponse>(await response.Content.ReadAsStringAsync());
+                    string result = await response.Content.ReadAsStringAsync();
+                    List<EmailResponse> sesh = JsonConvert.DeserializeObject<List<EmailResponse>>(result);
                 }
                 else
                 {
@@ -103,7 +113,7 @@ namespace EmailNotifyer
         public class EmailRequest
         {
             public string SessionId { get; set; }
-            public MessageContent Messages{ get; set; }
+            public List<MessageContent> Messages{ get; set; }
 
             public class MessageContent
             {
@@ -111,7 +121,7 @@ namespace EmailNotifyer
                 public string CC { get; set; }
                 public string BCC { get; set; }
                 public string From { get; set; }
-                public string Referenceid { get; set; }
+                public string ReferenceID { get; set; }
                 public string Subject { get; set; }
                 public string Message64 { get; set; }
                 public string MessageHtml64 { get; set; }
