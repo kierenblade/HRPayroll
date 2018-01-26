@@ -12,6 +12,7 @@ namespace HRPayroll.Classes.Models
         #region Fields
         //[BsonId]
         //public ObjectId Id { get; set; }
+        
 
         [BsonElement("IdNumber")]
         public string IdNumber { get; set; }
@@ -55,10 +56,15 @@ namespace HRPayroll.Classes.Models
         [BsonElement("SyncDate")]
         public DateTime SyncDate { get; set; }
 
-        
+
         #endregion
 
         #region Methods
+
+        public Employee():base()
+        {
+            base._t = "Employee";
+        }
 
         public override string createHash()
         {
