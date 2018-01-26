@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FlourishAPI.DTOs;
 using HRPayroll.Classes.Models;
+using FlorishTestEnviroment;
 
 namespace FlourishAPI.Controllers
 {
@@ -46,7 +47,9 @@ namespace FlourishAPI.Controllers
         [HttpPost("GenReportRequest")]
         public IEnumerable<Transaction> GeneralReportRequest([FromBody] GeneralReportRequestDTO reportRequestDetails)
         {
-          
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("Company.Name", reportRequestDetails.Company);
+            var w = new Transaction().SearchDocument(parameters);
 
             List<Transaction> transactionsResults = new List<Transaction>();
             transactionsResults.Add(new Transaction() { Company = new Company() { Name = "Sybrin" }, Amount = 12000 });

@@ -34,7 +34,7 @@ namespace HRPayroll.Classes.Models
         #region Methods
         public override string createHash()
         {
-            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}", TransactionId,Employee,EmployeeReference,Company,CompanyReference,Amount);
+            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}", TransactionId,Employee.IdNumber,EmployeeReference,Company.Name,CompanyReference,Amount);
         }
         #endregion
     }
