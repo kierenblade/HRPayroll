@@ -17,9 +17,11 @@ namespace EmailNotifyer
                     Email = "jason.vanheerden@sybrin.com",
                     ContactName = "Jason"
                 },
-                Message = "Test Message"
+                Message = "This is an attempt at a test message"
             };
-            Console.WriteLine(EmailHandler.SendEmail(email).GetAwaiter().GetResult());
+            List<EmailNotification> output = new List<EmailNotification>();
+            output.Add(email);
+            Console.WriteLine(EmailHandler.SendEmail(output).GetAwaiter().GetResult());
             Console.ReadKey();
         }
     }
