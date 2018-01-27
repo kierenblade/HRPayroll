@@ -5,7 +5,7 @@ using System;
 namespace HRPayroll.Classes.Models
 {
     #region Enum
-    public enum Status { Success = 1, Fail }
+    public enum Status { Success = 1, Fail , Pending}
     #endregion
     public class Transaction : CRUDAble{
         #region Fields
