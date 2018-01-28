@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace HRPayroll.Classes.Models
 {
-    class BusinessUnit
+     public class BusinessUnit
     {
         #region Fields
         [BsonId]
