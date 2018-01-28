@@ -24,9 +24,10 @@ namespace FlorishTestEnviroment
             //new LoginDetails() { Username = "admin", Hash = "admin" , Role = new Role() { Name = "administrator" } , Company = new Company() {Name = "Sybrin" } }.InsertDocument();
             //new LoginDetails() { Username = "Tshief", Hash = "Poi" , Role = new Role() { Name="administrator"} , Company = new Company() { Name = "Sybrin" } }.InsertDocument();
 
-            new Transaction() { Company = new Company() { Name = "Sybrin" }, Amount = 12000, Employee = new Employee() { IdNumber = "9509045284081", FirstName = "Wade", AccountNumber = "10101125" },DateCreated = DateTime.Now }.InsertDocument();
-            new Transaction() { Company = new Company() { Name = "Sybrin" }, Amount = 12000, Employee = new Employee() { IdNumber = "9509042284081", FirstName = "Jean", AccountNumber = "101011125" }, DateCreated = DateTime.Now }.InsertDocument();
-            new Transaction() { Company = new Company() { Name = "Flourish" }, Amount = 12000, Employee = new Employee() { IdNumber = "9509042284081", FirstName = "tshief", AccountNumber = "101125" }, DateCreated = DateTime.Now }.InsertDocument();
+            new Transaction() { Company = new Company() { Name = "Sybrin" }, Amount = 1000, Employee = new Employee() { IdNumber = "9509045284081", FirstName = "Wade", AccountNumber = "10101125" , BusinessUnitName = "CM"},DateCreated = new  DateTime(2018,4,12) }.InsertDocument();
+            new Transaction() { Company = new Company() { Name = "Sybrin" }, Amount = 5000, Employee = new Employee() { IdNumber = "9509042284081", FirstName = "Jean", AccountNumber = "101011125", BusinessUnitName = "Payments" }, DateCreated = new DateTime(2018, 4, 12) }.InsertDocument();
+            new Transaction() { Company = new Company() { Name = "Sybrin" }, Amount = 7000, Employee = new Employee() { IdNumber = "9509042284081", FirstName = "Jason", AccountNumber = "101011125", BusinessUnitName = "Payments" }, DateCreated = new DateTime(2018, 2, 12) }.InsertDocument();
+            new Transaction() { Company = new Company() { Name = "Flourish" }, Amount = 12000, Employee = new Employee() { IdNumber = "9509042284081", FirstName = "tshief", AccountNumber = "101125" }, DateCreated = new DateTime(2018, 1, 12) }.InsertDocument();
             //updateList.UpdateManyDocument();
             //Dictionary<string, object> searchFieldsAndCols = new Dictionary<string, object>();
             ////searchFieldsAndCols.Add("FirstName", "Jason");

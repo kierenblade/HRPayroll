@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace FlourishAPI.DTOs
 {
-    public class DashboardData
+    public class DashboardDataDTO
     {
 
         public string FieldName { get; set; }
-        public int Value { get; set; }
+        public decimal Value { get; set; }
     }
 }
