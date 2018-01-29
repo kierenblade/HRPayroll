@@ -3,6 +3,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PayswitchInitializer
 {
@@ -11,6 +15,11 @@ namespace PayswitchInitializer
         static List<Employee> employees;
         static List<Company> companies;
         static List<Bank> banks;
+
+
+        static List<BankAccDetails> bankAcc = new List<BankAccDetails>();
+        static List<CardDetail> cards = new List<CardDetail>();
+
         static void Main(string[] args)
         {
             using (StreamReader r = new StreamReader("empOut.json"))
@@ -30,10 +39,6 @@ namespace PayswitchInitializer
                 string json = r.ReadToEnd();
                 banks = JsonConvert.DeserializeObject<List<Bank>>(json);
             }
-
-            List<BankAccDetails> bankAcc = new List<BankAccDetails>();
-            List<CardDetail> cards = new List<CardDetail>();
-
             foreach (var item in employees)
             {
                BankAccDetails acc = new BankAccDetails() {
@@ -117,8 +122,64 @@ namespace PayswitchInitializer
                 bankAcc.Add(acc);
                 cards.Add(c);
             }
+
+            foreach (var item in bankAcc)
+            {
+                Console.WriteLine(insertBankAcc(item).GetAwaiter().GetResult());
+            }
+            foreach (var item in cards)
+            {
+                Console.WriteLine(insertCards(item).GetAwaiter().GetResult());
+            }
+            Console.ReadKey();
         }
+
+        public static async Task<bool> insertBankAcc(BankAccDetails b)
+        {
+            string url = "http://localhost:62337/Api/AddDBEntries/AddBankAccount";
+            using (var client = new HttpClient())
+            {
+                var request = JsonConvert.SerializeObject(b);
+                var buffer = Encoding.UTF8.GetBytes(request);
+                var bytecontent = new ByteArrayContent(buffer);
+                bytecontent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                HttpResponseMessage res = await client.PostAsync(url, bytecontent);
+                if (res.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public static async Task<bool> insertCards(CardDetail c)
+        {
+            string url = "http://localhost:62337/Api/AddDBEntries/AddCardAccount";
+            using (var client = new HttpClient())
+            {
+                var request = JsonConvert.SerializeObject(c);
+                var buffer = Encoding.UTF8.GetBytes(request);
+                var bytecontent = new ByteArrayContent(buffer);
+                bytecontent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                HttpResponseMessage res = await client.PostAsync(url, bytecontent);
+                if (res.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
     }
+
 
     class BankAccDetails
     {
