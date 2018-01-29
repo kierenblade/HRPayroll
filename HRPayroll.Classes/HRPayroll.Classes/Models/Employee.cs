@@ -69,7 +69,7 @@ namespace HRPayroll.Classes.Models
 
         public override string createHash()
         {
-            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}", IdNumber, FirstName, LastName, AccountNumber, BusinessUnitName, Salary, Position, EmployeeStatus);
+            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}", IdNumber, FirstName, LastName, AccountNumber, BusinessUnit.Name, Salary, Position, EmployeeStatus);
         }
         #endregion
     }
