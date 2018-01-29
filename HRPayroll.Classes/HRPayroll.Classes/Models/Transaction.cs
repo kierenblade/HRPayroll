@@ -10,9 +10,6 @@ namespace HRPayroll.Classes.Models
     public class Transaction : CRUDAble{
         #region Fields
 
-        [BsonElement("TransactionId")]
-        public int TransactionId { get; set; }
-
         [BsonElement("Amount")]
         public decimal Amount { get; set; }
 
@@ -38,7 +35,7 @@ namespace HRPayroll.Classes.Models
         #region Methods
         public override string createHash()
         {
-            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}", TransactionId,Employee.IdNumber,EmployeeReference,Company.Name,CompanyReference,Amount);
+            return string.Format("{0}-{1}-{2}-{3}-{4}",Employee.IdNumber,EmployeeReference,Company.Name,CompanyReference,Amount);
         }
         #endregion
     }
