@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FlourishAPI.DTOs;
-using HRPayroll.Classes.Models;
-using FlorishTestEnviroment;
 using FlourishAPI.Models;
+using FlourishAPI.Models.Classes;
 
 namespace FlourishAPI.Controllers
 {
