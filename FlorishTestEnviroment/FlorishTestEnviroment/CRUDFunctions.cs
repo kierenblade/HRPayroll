@@ -185,7 +185,7 @@ namespace FlorishTestEnviroment
         public static void Delete(this CRUDAble obj, string databaseName = "FlourishDB")
         {
             var selectedCollection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<CRUDAble>(obj.GetType().Name);
-            BsonDocument filter = new BsonDocument().Add("_id",obj.Id);
+            BsonDocument filter = new BsonDocument().Add("HashCode", obj.HashCode);
             selectedCollection.DeleteOne(filter);
         }
 

@@ -27,7 +27,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters);
+            w.Remove(t);
             t.Delete();
 
 
@@ -89,7 +90,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters);
+            w.Remove(t);
             t.Delete();
 
             foreach (Transaction item in w)
@@ -132,7 +134,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters);
+            w.Remove(t);
             t.Delete();
 
             return w.Count;
@@ -151,7 +154,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters);
+            w.Remove(t);
             t.Delete();
 
             foreach (Transaction item in w)
@@ -172,7 +176,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> notes = new DesktopNotification().SearchDocument(parameters);
+            List<CRUDAble> notes = t.SearchDocument(parameters);
+            notes.Remove(t);
 
             List<DesktopNotification> notifications = new List<DesktopNotification>();
 
@@ -197,7 +202,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", reportRequestDetails.Company);
-            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters);
+            w.Remove(t);
             t.Delete();
 
             foreach (Transaction item in w)

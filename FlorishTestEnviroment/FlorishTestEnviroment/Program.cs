@@ -17,7 +17,7 @@ namespace FlorishTestEnviroment
 
 
 
-
+          
             using (StreamReader r = new StreamReader("empOut.json"))
             {
                 string json = r.ReadToEnd();
@@ -37,11 +37,13 @@ namespace FlorishTestEnviroment
             List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
             List<Transaction> toUpdateTransactions = new List<Transaction>();
             e.Delete();
+            existingEmployees.Remove(e);
             foreach (Employee item in existingEmployees)
             {
                 Dictionary<string, object> filterList = new Dictionary<string, object>();
                 filterList.Add("Employee.HashCode", item.HashCode);
                 List<CRUDAble> result = t.SearchDocument(filterList);
+                result.Remove(t);
                 if (result.LongCount() > 0)
                 {
                     result.UpdateManyDocument();
