@@ -1,4 +1,5 @@
 ﻿using HRPayroll.Classes.Models;
+using MongoDB.Bson;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace PaymentSwitchHandler
                         output.Add(await ProcessVisa(transaction));
                         break;
                     default:
-                        output.Add(new ProcessResults() { TransactionId = transaction.TransactionId, FailReason = "Invalid Payment Type. Only [ABSA] and [Visa] supported" , Code = StatusCode.Other});
+                        output.Add(new ProcessResults() { TransactionId = transaction.Id, FailReason = "Invalid Payment Type. Only [ABSA] and [Visa] supported" , Code = StatusCode.Other});
                         break;
                 }
             }
@@ -58,7 +59,7 @@ namespace PaymentSwitchHandler
             }
             catch (Exception e)
             {
-                return new ProcessResults() { TransactionId = t.TransactionId, FailReason = e.Message, Code = StatusCode.Other};
+                return new ProcessResults() { TransactionId = t.Id, FailReason = e.Message, Code = StatusCode.Other};
             }
 
             using (var client = new HttpClient())
@@ -80,17 +81,17 @@ namespace PaymentSwitchHandler
                 else
                 {
                     //returns that the connection to the API failed. 
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = "Post request failed" , Code = StatusCode.Network};
+                    return new ProcessResults() { TransactionId = t.Id, FailReason = "Post request failed" , Code = StatusCode.Network};
                 }
                 
                 //if the result of the transaction wasn't succesfull, returns the results along with the fialure reason
                 if (result.SuccessCode != 1)
                 {
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = result.Message , Code = StatusCode.Network};
+                    return new ProcessResults() { TransactionId = t.Id, FailReason = result.Message , Code = StatusCode.Network};
                 }
             }
 
-            return new ProcessResults() { TransactionId = t.TransactionId, Code = StatusCode.Success };
+            return new ProcessResults() { TransactionId = t.Id, Code = StatusCode.Success };
         }
 
         private static async Task<ProcessResults> ProcessVisa(Transaction t)
@@ -112,7 +113,7 @@ namespace PaymentSwitchHandler
             }
             catch (Exception e)
             {
-                return new ProcessResults() { TransactionId = t.TransactionId, FailReason = e.Message , Code = StatusCode.Other};
+                return new ProcessResults() { TransactionId = t.Id, FailReason = e.Message , Code = StatusCode.Other};
             }
 
             using (var client = new HttpClient())
@@ -130,16 +131,16 @@ namespace PaymentSwitchHandler
                 }
                 else
                 {
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = "Post request failed" , Code = StatusCode.Network};
+                    return new ProcessResults() { TransactionId = t.Id, FailReason = "Post request failed" , Code = StatusCode.Network};
                 }
 
                 if (result.SuccessCode != 1)
                 {
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = result.Message , Code = StatusCode.Other};
+                    return new ProcessResults() { TransactionId = t.Id, FailReason = result.Message , Code = StatusCode.Other};
                 }
             }
 
-            return new ProcessResults() { TransactionId = t.TransactionId, Code = StatusCode.Success };
+            return new ProcessResults() { TransactionId = t.Id, Code = StatusCode.Success };
         }
     }
 
@@ -152,7 +153,7 @@ namespace PaymentSwitchHandler
     //the reply that will be sent back to the caller to handle failed transactions
     public class ProcessResults
     {
-        public int TransactionId { get; set; }
+        public ObjectId TransactionId { get; set; }
         public string FailReason { get; set; }
 
         public StatusCode Code { get; set; }

@@ -30,6 +30,93 @@ namespace PayswitchInitializer
                 string json = r.ReadToEnd();
                 banks = JsonConvert.DeserializeObject<List<Bank>>(json);
             }
+
+            List<BankAccDetails> bankAcc = new List<BankAccDetails>();
+            List<CardDetail> cards = new List<CardDetail>();
+
+            foreach (var item in employees)
+            {
+               BankAccDetails acc = new BankAccDetails() {
+                    AccountBalance = new Random().Next(100000000, 999999999),
+                    AccountNum = item.AccountNumber,
+                    AccStatus = AccountStatus.Active
+                };
+
+                CardDetail c = new CardDetail()
+                {
+                    AccountBalance = new Random().Next(100000000, 999999999),
+                    CardNumber = item.CardNumber,
+                    CardStatus = AccountStatus.Active,
+                    Currency = CurrencyEnum.ZAR
+                };
+
+                switch (item.Bank.Name)
+                {
+                    case "ABSA":
+                        acc.BankCode = BankCode.ABSA;
+                        c.BankCode = BankCode.ABSA;
+                        break;
+                    case "FNB":
+                        acc.BankCode = BankCode.FNB;
+                        c.BankCode = BankCode.FNB;
+                        break;
+                    default:
+                        acc.BankCode = BankCode.None;
+                        c.BankCode = BankCode.None;
+                        break;
+                }
+
+                switch (item.PaymentType)
+                {
+                    case PaymentType.VISA:
+                        c.CardClass = CardClassification.Visa;
+                        break;
+                    default:
+                        c.CardClass = CardClassification.None;
+                        break;
+                }
+                bankAcc.Add(acc);
+                cards.Add(c);
+            }
+
+            foreach (var item in companies)
+            {
+                BankAccDetails acc = new BankAccDetails()
+                {
+                    AccountBalance = new Random().Next(100000000, 999999999),
+                    AccountNum = item.AccountNumber,
+                    AccStatus = AccountStatus.Active
+                };
+
+                CardDetail c = new CardDetail()
+                {
+                    AccountBalance = new Random().Next(100000000, 999999999),
+                    CardNumber = item.CardNumber,
+                    CardStatus = AccountStatus.Active,
+                    Currency = CurrencyEnum.ZAR
+                };
+
+                switch (item.Bank.Name)
+                {
+                    case "ABSA":
+                        acc.BankCode = BankCode.ABSA;
+                        c.BankCode = BankCode.ABSA;
+                        break;
+                    case "FNB":
+                        acc.BankCode = BankCode.FNB;
+                        c.BankCode = BankCode.FNB;
+                        break;
+                    default:
+                        acc.BankCode = BankCode.None;
+                        c.BankCode = BankCode.None;
+                        break;
+                }
+
+                c.CardClass = CardClassification.None;
+
+                bankAcc.Add(acc);
+                cards.Add(c);
+            }
         }
     }
 

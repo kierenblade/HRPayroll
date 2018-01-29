@@ -5783,6 +5783,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "Microsoft.NETCore.App >= 2.0.0",
+      "MongoDB.Bson >= 2.5.0",
       "MongoDB.Driver >= 2.5.0",
       "Newtonsoft.Json >= 10.0.3"
     ]
@@ -5797,11 +5798,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\jvanheerden\\source\\repos\\HRPayroll\\PaymentSwitchHandler\\PaymentSwitchHandler\\PaymentSwitchHandler.csproj",
-      "projectName": "PaymentSwitchHandler",
-      "projectPath": "C:\\Users\\jvanheerden\\source\\repos\\HRPayroll\\PaymentSwitchHandler\\PaymentSwitchHandler\\PaymentSwitchHandler.csproj",
+      "projectUniqueName": "C:\\Users\\jvanheerden\\Desktop\\GenerateData\\GenerateData\\GenerateData.csproj",
+      "projectName": "GenerateData",
+      "projectPath": "C:\\Users\\jvanheerden\\Desktop\\GenerateData\\GenerateData\\GenerateData.csproj",
       "packagesPath": "C:\\Users\\jvanheerden\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jvanheerden\\source\\repos\\HRPayroll\\PaymentSwitchHandler\\PaymentSwitchHandler\\obj\\",
+      "outputPath": "C:\\Users\\jvanheerden\\Desktop\\GenerateData\\GenerateData\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -5832,10 +5833,13 @@
       "netcoreapp2.0": {
         "dependencies": {
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.0.0, )",
             "autoReferenced": true
+          },
+          "MongoDB.Bson": {
+            "target": "Package",
+            "version": "[2.5.0, )"
           },
           "MongoDB.Driver": {
             "target": "Package",

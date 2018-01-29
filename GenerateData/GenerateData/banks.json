@@ -1,0 +1,19 @@
+﻿[
+
+  {
+    "BankId": 1,
+    "Name": "Standard Bank"
+  },
+  {
+    "BankId": 2,
+    "Name": "ABSA"
+  },
+  {
+    "BankId": 3,
+    "Name": "FNB"
+  },
+  {
+    "BankId": 4,
+    "Name": "Capitec"
+  }
+]
