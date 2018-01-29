@@ -98,7 +98,7 @@ namespace FlourishAPI.Controllers
 
         public void UpdateAndCreateTransactions()
         {
-            Employee e = new Employee() { Company = new Company()};
+            Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit()};
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             e.InsertDocument();
             t.InsertDocument();

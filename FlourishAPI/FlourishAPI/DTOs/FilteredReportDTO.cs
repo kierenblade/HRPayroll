@@ -24,7 +24,7 @@ namespace FlourishAPI.DTOs
         public FilteredReportDTO(Transaction x)
         {
             DateOfTransaction = x.DateCreated;
-            BUName = x.Employee.BusinessUnitName;
+            BUName = x.Employee.BusinessUnit.Name;
             TransactionId = x.Id.ToString();
             Amount = x.Amount;
             EmployeeId = x.EmployeeReference;
