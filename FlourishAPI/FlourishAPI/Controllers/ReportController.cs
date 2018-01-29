@@ -101,13 +101,13 @@ namespace FlourishAPI.Controllers
 
             foreach (var item in outgoingTransactions)
             {
-                if (totlSalariesPerBU.Keys.Contains(item.Employee.BusinessUnitName))
+                if (totlSalariesPerBU.Keys.Contains(item.Employee.BusinessUnit.Name))
                 {
-                    totlSalariesPerBU[item.Employee.BusinessUnitName] += item.Amount;
+                    totlSalariesPerBU[item.Employee.BusinessUnit.Name] += item.Amount;
                 }
                 else
                 {
-                    totlSalariesPerBU.Add(item.Employee.BusinessUnitName, item.Amount);
+                    totlSalariesPerBU.Add(item.Employee.BusinessUnit.Name, item.Amount);
                 }
             }
 
@@ -235,7 +235,7 @@ namespace FlourishAPI.Controllers
 
                 foreach (var item in reportRequestDetails.BU)
                 {
-                    filter = filter.AsQueryable().Where(x => x.Employee.BusinessUnitName == item).ToList(); ;
+                    filter = filter.AsQueryable().Where(x => x.Employee.BusinessUnit.Name == item).ToList(); ;
                 }
                
             }
