@@ -3,14 +3,18 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace HRPayroll.Classes.Models
 {
-    public class Role
+    public class Role : CRUDAble
     {
         #region Fields
-        [BsonId]
-        public ObjectId Id { get; set; }
+
 
         [BsonElement("Name")]
         public string Name { get; set; }
+
+        public override string createHash()
+        {
+            return string.Format("{0}",Name);
+        }
         #endregion
     }
 }
