@@ -1,4 +1,6 @@
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
+
 namespace HRPayroll.Classes.Models
 {
     public class Company: CRUDAble
@@ -21,6 +23,9 @@ namespace HRPayroll.Classes.Models
 
         [BsonElement("CardCVV")]
         public string CardCVV { get; set; }
+
+        [BsonElement("BusinessUnits")]
+        public List<BusinessUnit> BusinessUnits { get; set; }
 
         #region Methods
         public override string createHash()

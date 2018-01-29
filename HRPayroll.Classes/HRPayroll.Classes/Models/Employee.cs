@@ -32,7 +32,7 @@ namespace HRPayroll.Classes.Models
         public Bank Bank { get; set; }
 
         [BsonElement("BusinessUnit")]
-        public string BusinessUnitName { get; set; }
+        public BusinessUnit BusinessUnit { get; set; }
 
         [BsonElement("Position")]
         public string Position { get; set; }
@@ -69,7 +69,7 @@ namespace HRPayroll.Classes.Models
 
         public override string createHash()
         {
-            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}", IdNumber, FirstName, LastName, AccountNumber, BusinessUnitName, Salary, Position, EmployeeStatus);
+            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}-{7}", IdNumber, FirstName, LastName, AccountNumber, BusinessUnit.Name, Salary, Position, EmployeeStatus);
         }
         #endregion
     }

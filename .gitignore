@@ -29,3 +29,6 @@ PaymentSwitchHandler/.vs/*
 PaymentSwitchHandler/PaymentSwitchHandler/obj/*
 PaymentSwitchHandler/PaymentSwitchHandler/bin/*
 Bootcamp.Payroll.Simulator/.git/
+HRPayroll.EmailService/.vs/*
+HRPayroll.EmailService/HRPayroll.EmailService/obj/*
+HRPayroll.EmailService/HRPayroll.EmailService/bin/*

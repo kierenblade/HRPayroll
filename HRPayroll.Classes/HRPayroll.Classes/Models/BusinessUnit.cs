@@ -6,8 +6,8 @@ namespace HRPayroll.Classes.Models
      public class BusinessUnit
     {
         #region Fields
-        [BsonId]
-        public ObjectId Id { get; set; }
+        //[BsonId]
+        //public ObjectId Id { get; set; }
 
         [BsonElement("Name")] public string Name { get; set; }
         #endregion
