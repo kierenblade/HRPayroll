@@ -33,7 +33,7 @@ namespace HRPayroll.Audit
         #region Methods
         public override string createHash()
         {
-            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}", Name,Company,Email,ChangeBy,ChangeTime,ChangeLog);
+            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}", Name,Company.Name,Email,ChangeBy,ChangeTime,ChangeLog);
         }
         #endregion
     }

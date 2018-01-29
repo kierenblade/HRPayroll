@@ -25,7 +25,7 @@ namespace HRPayroll.Classes.Models
         #region Methods
         public override string createHash()
         {
-            return "";//string.Format("{0}-{1}--{3}", CompanyId,Name,AccountNumber);
+            return string.Format("{0}-{1}-{2}", CompanyId,Name,AccountNumber);
         }
         #endregion
 
