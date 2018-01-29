@@ -32,7 +32,7 @@ namespace HRPayroll.Classes.Models
         public Bank Bank { get; set; }
 
         [BsonElement("BusinessUnit")]
-        public string BusinessUnitName { get; set; }
+        public BusinessUnit BusinessUnit { get; set; }
 
         [BsonElement("Position")]
         public string Position { get; set; }
