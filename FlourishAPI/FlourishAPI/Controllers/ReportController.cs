@@ -27,7 +27,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters);
+            w.Remove(t);
             t.Delete();
 
 
@@ -89,7 +90,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters);
+            w.Remove(t);
             t.Delete();
 
             foreach (Transaction item in w)
@@ -101,13 +103,13 @@ namespace FlourishAPI.Controllers
 
             foreach (var item in outgoingTransactions)
             {
-                if (totlSalariesPerBU.Keys.Contains(item.Employee.BusinessUnitName))
+                if (totlSalariesPerBU.Keys.Contains(item.Employee.BusinessUnit.Name))
                 {
-                    totlSalariesPerBU[item.Employee.BusinessUnitName] += item.Amount;
+                    totlSalariesPerBU[item.Employee.BusinessUnit.Name] += item.Amount;
                 }
                 else
                 {
-                    totlSalariesPerBU.Add(item.Employee.BusinessUnitName, item.Amount);
+                    totlSalariesPerBU.Add(item.Employee.BusinessUnit.Name, item.Amount);
                 }
             }
 
@@ -132,7 +134,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters);
+            w.Remove(t);
             t.Delete();
 
             return w.Count;
@@ -151,7 +154,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters);
+            w.Remove(t);
             t.Delete();
 
             foreach (Transaction item in w)
@@ -172,7 +176,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> notes = new DesktopNotification().SearchDocument(parameters);
+            List<CRUDAble> notes = t.SearchDocument(parameters);
+            notes.Remove(t);
 
             List<DesktopNotification> notifications = new List<DesktopNotification>();
 
@@ -197,7 +202,8 @@ namespace FlourishAPI.Controllers
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", reportRequestDetails.Company);
-            List<CRUDAble> w = new Transaction().SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters);
+            w.Remove(t);
             t.Delete();
 
             foreach (Transaction item in w)
@@ -210,24 +216,24 @@ namespace FlourishAPI.Controllers
             if (reportRequestDetails.StartDate != null)
             {
 
-                filter = filter.Where(x => x.DateCreated >= reportRequestDetails.StartDate); 
+                filter = filter.AsQueryable().Where(x => x.DateCreated >= reportRequestDetails.StartDate).ToList(); 
             }
 
             if (reportRequestDetails.EndDate != null)
             {
 
-                filter = filter.Where(x => x.DateCreated <= reportRequestDetails.EndDate);
+                filter = filter.AsQueryable().Where(x => x.DateCreated <= reportRequestDetails.EndDate).ToList(); ;
             }
 
             if (reportRequestDetails.StartAmount != 0)
             {
 
-                filter = filter.Where(x => x.Amount >= reportRequestDetails.StartAmount);
+                filter = filter.AsQueryable().Where(x => x.Amount >= reportRequestDetails.StartAmount).ToList(); ;
             }
 
             if (reportRequestDetails.EndAmount != 0)
             {
-                filter = filter.Where(x => x.Amount <= reportRequestDetails.EndAmount);
+                filter = filter.AsQueryable().Where(x => x.Amount <= reportRequestDetails.EndAmount).ToList(); ;
             }
 
             if (reportRequestDetails.BU.Length != 0)
@@ -235,21 +241,21 @@ namespace FlourishAPI.Controllers
 
                 foreach (var item in reportRequestDetails.BU)
                 {
-                    filter = filter.Where(x => x.Employee.BusinessUnitName == item);
+                    filter = filter.AsQueryable().Where(x => x.Employee.BusinessUnit.Name == item).ToList(); ;
                 }
                
             }
 
             if (reportRequestDetails.EmployeeID != null)
             {
-                filter = filter.Where(x => x.EmployeeReference == reportRequestDetails.EmployeeID);
+                filter = filter.AsQueryable().Where(x => x.EmployeeReference == reportRequestDetails.EmployeeID).ToList(); ;
             }
 
             List<FilteredReportDTO> outGoingData = new List<FilteredReportDTO>();
 
             if (reportRequestDetails.EmployeeID != null)
             {
-                filter = outgoingTransactions.Where(x => x.EmployeeReference == reportRequestDetails.EmployeeID);
+                filter = outgoingTransactions.AsQueryable().Where(x => x.EmployeeReference == reportRequestDetails.EmployeeID).ToList();
             }
 
             foreach (var item in filter)

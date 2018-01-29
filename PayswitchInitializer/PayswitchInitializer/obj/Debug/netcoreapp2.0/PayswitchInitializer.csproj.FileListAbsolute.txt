@@ -1,0 +1,10 @@
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\bin\Debug\netcoreapp2.0\PayswitchInitializer.deps.json
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\bin\Debug\netcoreapp2.0\PayswitchInitializer.runtimeconfig.json
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\bin\Debug\netcoreapp2.0\PayswitchInitializer.runtimeconfig.dev.json
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\bin\Debug\netcoreapp2.0\PayswitchInitializer.dll
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\bin\Debug\netcoreapp2.0\HRPayroll.Classes.dll
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\bin\Debug\netcoreapp2.0\HRPayroll.Classes.pdb
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\obj\Debug\netcoreapp2.0\PayswitchInitializer.csprojResolveAssemblyReference.cache
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\obj\Debug\netcoreapp2.0\PayswitchInitializer.csproj.CoreCompileInputs.cache
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\obj\Debug\netcoreapp2.0\PayswitchInitializer.AssemblyInfoInputs.cache
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\obj\Debug\netcoreapp2.0\PayswitchInitializer.AssemblyInfo.cs

@@ -12,50 +12,36 @@ namespace PaymentSwitchHandler
 
     public class SwitchHandler
     {
+        private static string _apiUrl = "";
         //public async task that will handle the processing of a list of transactions
         public static async Task<List<ProcessResults>> ProcessTransaction(List<Transaction> transactionsIn)
         {
-            //represents the list of failed processes that will be returned to the caller for notification purposese
+            //represents the list of all processed transactions and their completion status
             List<ProcessResults> output = new List<ProcessResults>();
             foreach (var transaction in transactionsIn)
             {
                 //using the appropraite payment switch for the appropriate payment type
-                switch (transaction.Employee.PaymentType.Name.ToUpper())
+                switch (transaction.Employee.PaymentType)
                 {
-                    case "ABSA":
+                    case PaymentType.ABSA:
                         //processes the transaction in accordance with the ABSA payswitch
-                        var processABSA = await ProcessAbsa(transaction);
-                        //if the payswitch responds with an anomoly, log it to the list of output values that failed.
-                        if (processABSA != null)
-                        {
-                            output.Add(processABSA);
-                        }
+                        output.Add(await ProcessAbsa(transaction));
                         break;
-                    case "VISA":
-                        var processVisa = await ProcessVisa(transaction);
-                        if (processVisa != null)
-                        {
-                            output.Add(processVisa);
-                        }
+                    case PaymentType.VISA:
+                        output.Add(await ProcessVisa(transaction));
                         break;
                     default:
-                        //report that the payment method is not supported
-                        output.Add(new ProcessResults() { TransactionId = transaction.TransactionId, FailReason = "Invalid Payment Type. Only [Absa] and [Visa] supported" , Code = FailCode.Other});
+                        output.Add(new ProcessResults() { TransactionId = transaction.TransactionId, FailReason = "Invalid Payment Type. Only [ABSA] and [Visa] supported" , Code = StatusCode.Other});
                         break;
                 }
             }
-            //if there are erroneous output values, reutnr it to the caller
-            if (output.Count > 0)
-            {
-                return output;
-            }
-            return null;
+            return output;
         }
 
         private static async Task<ProcessResults> ProcessAbsa(Transaction t)
         {
             
-            string paymentURL = "[ip]/api/ABSA/Payment";
+            string paymentURL = _apiUrl + "/api/ABSA/Payment";
             //create an object matching how the ABSA Api accepts requests
             ABSARequest req;
             try
@@ -72,7 +58,7 @@ namespace PaymentSwitchHandler
             }
             catch (Exception e)
             {
-                return new ProcessResults() { TransactionId = t.TransactionId, FailReason = e.Message, Code = FailCode.Other};
+                return new ProcessResults() { TransactionId = t.TransactionId, FailReason = e.Message, Code = StatusCode.Other};
             }
 
             using (var client = new HttpClient())
@@ -94,38 +80,39 @@ namespace PaymentSwitchHandler
                 else
                 {
                     //returns that the connection to the API failed. 
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = "Post request failed" , Code = FailCode.Network};
+                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = "Post request failed" , Code = StatusCode.Network};
                 }
                 
                 //if the result of the transaction wasn't succesfull, returns the results along with the fialure reason
                 if (result.SuccessCode != 1)
                 {
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = result.Message , Code = FailCode.Network};
+                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = result.Message , Code = StatusCode.Network};
                 }
-                return null;
             }
+
+            return new ProcessResults() { TransactionId = t.TransactionId, Code = StatusCode.Success };
         }
 
         private static async Task<ProcessResults> ProcessVisa(Transaction t)
         {
-            string paymentURL = "[ip]/api/ProcessPayment";
+            string paymentURL = _apiUrl + "[ip]/api/ProcessPayment";
             VisaRequest req;
             try
             {
                 req = new VisaRequest()
                 {
-                    Currency = "ZAR",
-                    DestinationCardNumber = t.Employee.AccountNumber, //add
+                    Currency = Currency.ZAR,
+                    DestinationCardNumber = t.Employee.CardNumber, //add
                     OriginatorBankCode = t.Company.Bank.BankId,
-                    OriginatorCardNumber = "", //add
-                    OriginatorCVV = 0,//add
+                    OriginatorCardNumber = t.Company.CardNumber, //add
+                    OriginatorCVV = int.Parse(t.Company.CardCVV),//add
                     TransactionAmount = t.Amount.ToString(),
                     VendorID = t.Company.CompanyId
                 };
             }
             catch (Exception e)
             {
-                return new ProcessResults() { TransactionId = t.TransactionId, FailReason = e.Message , Code = FailCode.Other};
+                return new ProcessResults() { TransactionId = t.TransactionId, FailReason = e.Message , Code = StatusCode.Other};
             }
 
             using (var client = new HttpClient())
@@ -143,15 +130,16 @@ namespace PaymentSwitchHandler
                 }
                 else
                 {
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = "Post request failed" , Code = FailCode.Network};
+                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = "Post request failed" , Code = StatusCode.Network};
                 }
 
                 if (result.SuccessCode != 1)
                 {
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = result.Message , Code = FailCode.Other};
+                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = result.Message , Code = StatusCode.Other};
                 }
-                return null;
             }
+
+            return new ProcessResults() { TransactionId = t.TransactionId, Code = StatusCode.Success };
         }
     }
 
@@ -167,7 +155,7 @@ namespace PaymentSwitchHandler
         public int TransactionId { get; set; }
         public string FailReason { get; set; }
 
-        public FailCode Code { get; set; }
+        public StatusCode Code { get; set; }
     }
     //format of an ABSA transaction request
     class ABSARequest
@@ -185,14 +173,24 @@ namespace PaymentSwitchHandler
         public string OriginatorCardNumber { get; set; }
         public int OriginatorCVV { get; set; }
         public string TransactionAmount { get; set; }
-        public string Currency { get; set; }
+        public Currency Currency { get; set; }
         public int VendorID { get; set; }
         public int OriginatorBankCode { get; set; }
     }
-    public enum FailCode
+    public enum StatusCode
     {
         Network = 1,
-        Other
+        Other,
+        Success
+    }
+
+    enum Currency
+    {
+        None = 0,
+        ZAR,
+        USD,
+        GBP,
+        EUR
     }
 }
 

@@ -58,6 +58,7 @@ namespace FlourishAPI.Controllers
                     Employee e = new Employee();
                     e.InsertDocument();
                     List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
+                    existingEmployees.Remove(e);
 
                     List<CRUDAble> crud = new List<CRUDAble>();
                     //List<Employee> emp = new List<Employee>();
@@ -74,6 +75,7 @@ namespace FlourishAPI.Controllers
                             filterList.Clear();
                             filterList.Add("HashCode", employee.HashCode);
                             List<CRUDAble> preFilter = e.SearchDocument(filterList).ToList();
+                            preFilter.Remove(e);
                             if (preFilter.Count < 1)
                             {
                                 crud.Add(employee);
@@ -98,11 +100,12 @@ namespace FlourishAPI.Controllers
 
         public void UpdateAndCreateTransactions()
         {
-            Employee e = new Employee() { Company = new Company()};
+            Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit()};
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             e.InsertDocument();
             t.InsertDocument();
             List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
+            existingEmployees.Remove(e);
             List<Transaction> toUpdateTransactions = new List<Transaction>();
 
             foreach (Employee item in existingEmployees)
@@ -110,6 +113,7 @@ namespace FlourishAPI.Controllers
                 Dictionary<string, object> filterList = new Dictionary<string, object>();
                 filterList.Add("Employee.HashCode", item.HashCode);
                 List<CRUDAble> result = t.SearchDocument(filterList);
+                result.Remove(t);
                 if (result.LongCount() > 0)
                 {
                     result.UpdateManyDocument();
