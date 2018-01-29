@@ -210,24 +210,24 @@ namespace FlourishAPI.Controllers
             if (reportRequestDetails.StartDate != null)
             {
 
-                filter = filter.Where(x => x.DateCreated >= reportRequestDetails.StartDate); 
+                filter = filter.AsQueryable().Where(x => x.DateCreated >= reportRequestDetails.StartDate).ToList(); 
             }
 
             if (reportRequestDetails.EndDate != null)
             {
 
-                filter = filter.Where(x => x.DateCreated <= reportRequestDetails.EndDate);
+                filter = filter.AsQueryable().Where(x => x.DateCreated <= reportRequestDetails.EndDate).ToList(); ;
             }
 
             if (reportRequestDetails.StartAmount != 0)
             {
 
-                filter = filter.Where(x => x.Amount >= reportRequestDetails.StartAmount);
+                filter = filter.AsQueryable().Where(x => x.Amount >= reportRequestDetails.StartAmount).ToList(); ;
             }
 
             if (reportRequestDetails.EndAmount != 0)
             {
-                filter = filter.Where(x => x.Amount <= reportRequestDetails.EndAmount);
+                filter = filter.AsQueryable().Where(x => x.Amount <= reportRequestDetails.EndAmount).ToList(); ;
             }
 
             if (reportRequestDetails.BU.Length != 0)
@@ -235,21 +235,21 @@ namespace FlourishAPI.Controllers
 
                 foreach (var item in reportRequestDetails.BU)
                 {
-                    filter = filter.Where(x => x.Employee.BusinessUnitName == item);
+                    filter = filter.AsQueryable().Where(x => x.Employee.BusinessUnitName == item).ToList(); ;
                 }
                
             }
 
             if (reportRequestDetails.EmployeeID != null)
             {
-                filter = filter.Where(x => x.EmployeeReference == reportRequestDetails.EmployeeID);
+                filter = filter.AsQueryable().Where(x => x.EmployeeReference == reportRequestDetails.EmployeeID).ToList(); ;
             }
 
             List<FilteredReportDTO> outGoingData = new List<FilteredReportDTO>();
 
             if (reportRequestDetails.EmployeeID != null)
             {
-                filter = outgoingTransactions.Where(x => x.EmployeeReference == reportRequestDetails.EmployeeID);
+                filter = outgoingTransactions.AsQueryable().Where(x => x.EmployeeReference == reportRequestDetails.EmployeeID).ToList();
             }
 
             foreach (var item in filter)

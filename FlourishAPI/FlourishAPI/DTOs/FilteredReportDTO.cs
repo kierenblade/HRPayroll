@@ -25,7 +25,7 @@ namespace FlourishAPI.DTOs
         {
             DateOfTransaction = x.DateCreated;
             BUName = x.Employee.BusinessUnitName;
-            TransactionId = x.TransactionId.ToString();
+            TransactionId = x.Id.ToString();
             Amount = x.Amount;
             EmployeeId = x.EmployeeReference;
             EmployeeFullname = x.Employee.FirstName + " " + x.Employee.LastName;
