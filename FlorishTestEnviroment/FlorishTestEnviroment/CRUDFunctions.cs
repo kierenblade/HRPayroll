@@ -21,23 +21,22 @@ namespace FlorishTestEnviroment
         /// </summary>
         public static bool InsertDocument(this CRUDAble obj, string databaseName = "FlourishDB")
         {
-                //the following method will do the following tasks in order:
+            //the following method will do the following tasks in order:
 
-                // 1. establishes a connection to the database with the databasename specified, if none specified then it will use its
-                // predefined database name of 'FlourishDB'.
-                //2. Once established, it will obtain the collection that is of the same type of the object that initiated the method.
-                //3. Once collection is obtained, it then inserts the object that initiated the method into the database in the correct Collection and returns a True bool.
-                // ~ if the object already exists in the document then it will return false to the system that called the method.
+            // 1. establishes a connection to the database with the databasename specified, if none specified then it will use its
+            // predefined database name of 'FlourishDB'.
+            //2. Once established, it will obtain the collection that is of the same type of the object that initiated the method.
+            //3. Once collection is obtained, it then inserts the object that initiated the method into the database in the correct Collection and returns a True bool.
+            // ~ if the object already exists in the document then it will return false to the system that called the method.
 
-                IMongoCollection<CRUDAble> collection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<CRUDAble>(obj.GetType().Name); //  ~ Consists of Point 1
-                if(collection.AsQueryable().Where(p=> p.HashCode == obj.HashCode).LongCount() > 0) //  used to check if the current object already exists
-                {
-                    return false; //  returns a false statement if it does
-                }
+            IMongoCollection<CRUDAble> collection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<CRUDAble>(obj.GetType().Name); //  ~ Consists of Point 1
+            if (collection.AsQueryable().Where(p => p.HashCode == obj.HashCode).LongCount() > 0) //  used to check if the current object already exists
+            {
+                return false; //  returns a false statement if it does
+            }
 
-            obj.PreviousHashCode = obj.HashCode;
             collection.InsertOne((CRUDAble)obj); // this will insert the object
-                    return true; // everything completed successfully
+            return true; // everything completed successfully
         }
 
 
@@ -50,9 +49,36 @@ namespace FlorishTestEnviroment
             List<CRUDAble> updatedQuery = new List<CRUDAble>(); // holds a collection of objects that will be updated
             foreach (CRUDAble item in changedObjects) // will check each item in the list of items that have changed
             {
-                var selectedCollection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<CRUDAble>(item.GetType().Name); // obtains the collection that is linked to the object that is currently being viewed
-                List<CRUDAble> query = selectedCollection.AsQueryable().Where(sb => sb.Id == item.Id).ToList(); // queries the collection to make sure the document already exists
-                if (query.Count > 0)
+                // obtains the collection that is linked to the object that is currently being viewed
+                List<CRUDAble> query = new List<CRUDAble>();
+                int listCount = 0;
+
+                switch (item.GetType().Name)
+                {
+                    case "Employee":
+                        var selectedEmp = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<Employee>(item.GetType().Name);
+                        Employee emp = (Employee)item;
+                        List<Employee> eL = selectedEmp.AsQueryable().Where(p => p.IdNumber == emp.IdNumber).ToList();
+                        listCount = eL.Count;
+                        if (listCount > 0)
+                        {
+                            query.Add(eL[0]);
+                        }
+                        break;
+                    case "Transaction":
+                        var selectedTrans = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<Transaction>(item.GetType().Name);
+                        Transaction trans = (Transaction)item;
+                        List<Transaction> tL = selectedTrans.AsQueryable().Where(p => p.Employee.IdNumber == trans.Employee.IdNumber).ToList();
+
+                        listCount = tL.Count;
+                        if (listCount > 0)
+                        {
+                            query.Add(tL[0]);
+                        }
+                        break;
+                }
+                // queries the collection to make sure the document already exists
+                if (listCount > 0)
                 {
                     List<ChangeLog> changes = new List<ChangeLog>(); // holds a list of changes that were made for that specific document
                     foreach (var prop in item.GetType().GetProperties()) // this will iterate through the objects properties to check what has changed
@@ -62,6 +88,10 @@ namespace FlorishTestEnviroment
                         {
                             var chosenObject = prop.GetValue(item); // gets the new object within the item
                             var existingObject = prop.GetValue(query[0]); // gets the old object within the item
+                            if (prop.Name.Equals("Id"))
+                            {
+                                item.Id = (ObjectId)existingObject;
+                            }
                             if (chosenObject != null) //  checks if the object was orginally null
                             {
                                 foreach (var otherProp in chosenObject.GetType().GetProperties()) // this will iterate through the objects properties to check what has changed
@@ -84,6 +114,7 @@ namespace FlorishTestEnviroment
                             // this does the same as the above, with the only difference that its a System defined
                             var afterChangeMain = prop.GetValue(item);
                             var beforeChangeMain = prop.GetValue(query[0]);
+
                             if (beforeChangeMain != null && afterChangeMain != null)
                             {
                                 if (beforeChangeMain.ToString() != afterChangeMain.ToString())
@@ -108,8 +139,8 @@ namespace FlorishTestEnviroment
                             new LoginDetailsAud() { Username = l.Username, Hash = l.Hash, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
                             break;
                         case "ContactDetails":
-                         //   ContactDetails c = (ContactDetails)item;
-                           // new ContactDetailsAud() { Company = c, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            //   ContactDetails c = (ContactDetails)item;
+                            // new ContactDetailsAud() { Company = c, FirstName = "change later", LastName = "change later", ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
                             break;
                         case "Company":
                             Company o = (Company)item;
@@ -118,7 +149,8 @@ namespace FlorishTestEnviroment
 
 
                     }
-                    item.PreviousHashCode = item.HashCode;
+
+
                     updatedQuery.Add(item); // adds the item to the list that will be iterated through to update
                 }
             }
@@ -136,6 +168,7 @@ namespace FlorishTestEnviroment
 
         /// <summary>
         /// This will search for a collection of objects based on a user specified list of criteria, it then returns a of List<CRUDAble> objects which the user can then manipulate
+        /// Please note that this method will only do "Equals to" comparison    
         /// </summary>
 
         public static List<CRUDAble> SearchDocument(this CRUDAble searchObject, Dictionary<string, object> queryDictionary, string databaseName = "FlourishDB")
@@ -157,9 +190,9 @@ namespace FlorishTestEnviroment
 
         public static LoginDetails verifyLoginDetails(this LoginDetails details)
         {
-           List<LoginDetails> lookUpCollection = new DatabaseConnection().DatabaseConnect().GetCollection<LoginDetails>("LoginDetails").AsQueryable().Where(p=> p.Username == details.Username && p.Hash == details.Hash).ToList();
+            List<LoginDetails> lookUpCollection = new DatabaseConnection().DatabaseConnect().GetCollection<LoginDetails>("LoginDetails").AsQueryable().Where(p => p.Username == details.Username && p.Hash == details.Hash).ToList();
 
-            if(lookUpCollection.Count > 0)
+            if (lookUpCollection.Count > 0)
             {
                 return lookUpCollection[0];
             }
@@ -193,3 +226,4 @@ namespace FlorishTestEnviroment
 
     }
 }
+

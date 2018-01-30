@@ -196,6 +196,7 @@ namespace FlourishAPI.Controllers
         {
             
 
+
             Transaction t = new Transaction() { Employee = new Employee(),Company = new Company()};
             List<Transaction> outgoingTransactions = new List<Transaction>();
             t.InsertDocument();
