@@ -17,16 +17,16 @@ namespace FlourishAPI.Models.Scheduler
 
     public class EmployeeSync : IJob
     {
-        private const string _clientEmpSyncURL = "http://localhost:51422/api/Employee";
+        private const string _clientEmpSyncURL = "http://172.18.12.209/api/ClientData/SyncEmployees";
         public EmployeeSync()
         {
             
         }
         public async void Execute()
         {
-            new EventLogger("STARTED: Scheduled Employee Sync Tasks", Severity.Event);
+            new EventLogger("STARTED: Scheduled Employee Sync Tasks", Severity.Event).Log();
             await SyncEmployeeDetailsFromClient();
-            new EventLogger("COMPLETED: Scheduled Employee Sync Tasks", Severity.Event);
+            new EventLogger("COMPLETED: Scheduled Employee Sync Tasks", Severity.Event).Log();
         }
 
         public static async Task SyncEmployeeDetailsFromClient()
@@ -68,7 +68,7 @@ namespace FlourishAPI.Models.Scheduler
                     {
                         new EventLogger(
                             string.Format("Failed to sync employee details from client. Exception: \"{0}\"", e.Message),
-                            Severity.Severe);
+                            Severity.Severe).Log();
 
                         //Send an email notification about the response
                         MailMessage emailMessage = new MailMessage
@@ -88,7 +88,7 @@ namespace FlourishAPI.Models.Scheduler
 
                     if (responsePost.IsSuccessStatusCode)
                     {
-                        new EventLogger("Connected to client API to recieve employee details", Severity.Event);
+                        new EventLogger("Connected to client API to recieve employee details", Severity.Event).Log();
 
                         //Get the list of employee objects from the Client
                         string result = await responsePost.Content.ReadAsStringAsync();
@@ -104,7 +104,7 @@ namespace FlourishAPI.Models.Scheduler
                     }
                     else
                     {
-                        new EventLogger(string.Format("Failed to connect to client API with reason \"{0}\"", responsePost.ReasonPhrase), Severity.Severe);
+                        new EventLogger(string.Format("Failed to connect to client API with reason \"{0}\"", responsePost.ReasonPhrase), Severity.Severe).Log();
 
                         //Send an email notification about the response
                         MailMessage emailMessage = new MailMessage
@@ -131,6 +131,7 @@ namespace FlourishAPI.Models.Scheduler
 
         public static async Task InsertUpdateEmployeeDetails(List<Employee> employeeList)
         {
+            new EventLogger("STARTED: Inserting/Updating Employee details from recieved Employee list", Severity.Event).Log();
             Employee e = new Employee();
             e.InsertDocument();
             List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
@@ -160,6 +161,8 @@ namespace FlourishAPI.Models.Scheduler
 
             crud.UpdateManyDocument();
             e.Delete();
+
+            new EventLogger("COMPLETED: Inserting/Updating Employee details from recieved Employee list", Severity.Event).Log();
         }
     }
 }

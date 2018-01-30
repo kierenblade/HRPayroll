@@ -35,3 +35,6 @@ EmailNotifyer/EmailNotifyer/bin/*
 HRPayroll.EmailService/.vs/*
 HRPayroll.EmailService/HRPayroll.EmailService/obj/*
 HRPayroll.EmailService/HRPayroll.EmailService/bin/*
+ClientAPI/.vs/*
+ClientAPI/ClientAPI/obj/*
+ClientAPI/ClientAPI/bin/*

@@ -17,7 +17,7 @@ namespace FlourishAPI.Models
         public static async Task GenerateTransactionsForToday()
         {
             new EventLogger(string.Format("STARTED: Generation of transactions for \"{0}\"", DateTime.Now),
-                Severity.Event);
+                Severity.Event).Log();
 
             Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit() };
             e.InsertDocument();
@@ -38,8 +38,9 @@ namespace FlourishAPI.Models
             GenerateTransactionFromEmployeeList(monthlyEmployees);
 
             e.Delete();
+
             new EventLogger(string.Format("COMPLETED: Generation of transactions for \"{0}\"", DateTime.Now),
-                Severity.Event);
+                Severity.Event).Log();
         }
 
         public static async Task UpdateAndCreateTransactions()
@@ -59,7 +60,7 @@ namespace FlourishAPI.Models
 
         private static void GenerateTransactionFromEmployeeList(List<Employee> existingEmployees)
         {
-            new EventLogger("STARTED: Generation of Transactions from recieved Employee list", Severity.Event);
+            new EventLogger("STARTED: Generation of Transactions from recieved Employee list", Severity.Event).Log();
 
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             t.InsertDocument();
@@ -95,7 +96,7 @@ namespace FlourishAPI.Models
             }
 
             t.Delete();
-            new EventLogger("COMPLETED: Generation of Transactions from recieved Employee list", Severity.Event);
+            new EventLogger("COMPLETED: Generation of Transactions from recieved Employee list", Severity.Event).Log();
         }
     }
 }
