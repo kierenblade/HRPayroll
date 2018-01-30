@@ -23,13 +23,14 @@ namespace FlourishAPI.Models.Scheduler
         }
         public async void Execute()
         {
-            new EventLogger("Scheduled Tasks Started", Severity.Event);
+            new EventLogger("STARTED: Scheduled Employee Sync Tasks", Severity.Event);
             await SyncEmployeeDetailsFromClient();
+            new EventLogger("COMPLETED: Scheduled Employee Sync Tasks", Severity.Event);
         }
 
         public static async Task SyncEmployeeDetailsFromClient()
         {
-            new EventLogger("Sync Employee Started", Severity.Event).Log();
+            new EventLogger("STARTED: Syncing Employee details from Client", Severity.Event).Log();
             bool retryFlag = true;
             int retryCount = 0;
             
@@ -124,6 +125,8 @@ namespace FlourishAPI.Models.Scheduler
                     }
                 }
             }
+
+            new EventLogger("COMPLETED: Syncing Employee details from Client", Severity.Event).Log();
         }
 
         public static async Task InsertUpdateEmployeeDetails(List<Employee> employeeList)
