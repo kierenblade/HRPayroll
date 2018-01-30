@@ -13,7 +13,7 @@ namespace HRPayroll.EmailService
 {
     public class EmailHandler
     {
-        private const string _apiKey = "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";
+        private const string _apiKey = "";
         private static MailMessage _email;
 
         public static void SendMail(MailMessage emailMessage)
