@@ -13,7 +13,7 @@ namespace HRPayroll.EmailService
 {
     public class EmailHandler
     {
-        private const string _apiKey = "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";
+        private const string _apiKey = "";
         private static MailMessage _email;
 
         public static void SendMail(MailMessage emailMessage)
@@ -25,13 +25,20 @@ namespace HRPayroll.EmailService
 
         static async Task Execute()
         {
+            var sendGridMessage = new SendGridMessage();
             var client = new SendGridClient(_apiKey);
-            var from = new EmailAddress("test@example.com", "Example User");
-            var to = new EmailAddress(_email.To.First().Address, _email.To.First().DisplayName);
-            var subject = _email.Subject;
-            var message = _email.Body;
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, message, message);
-            var response = await client.SendEmailAsync(msg);
+
+            sendGridMessage.From = new EmailAddress("test@example.com", "Example User");
+            foreach (MailAddress mailAddress in _email.To)
+            {
+                sendGridMessage.AddTo(mailAddress.Address, mailAddress.DisplayName);
+            }
+
+            sendGridMessage.Subject = _email.Subject;
+            sendGridMessage.HtmlContent = _email.Body;
+            sendGridMessage.TemplateId = "3a7d307b-598d-4eb0-90c2-c16b3b82c806";
+
+            var response = await client.SendEmailAsync(sendGridMessage);
         }
     }
 }
