@@ -17,9 +17,11 @@ namespace FlourishAPI.Controllers
 
         // GET api/Report/SalsPerBU
         [HttpGet("TotSalsPerMonth/{id}")]
-        public IEnumerable<DashboardDataDTO> SalariesPerMonth(string id) {
+        public IEnumerable<DashboardDataDTO> SalariesPerMonth(string id,[FromBody] SuccesfullLoginDTO logCred) {
 
-            
+           if(!new TokenAuthentication().VerifyToken(logCred)){
+                return null;
+            }
 
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
@@ -80,10 +82,13 @@ namespace FlourishAPI.Controllers
 
         
         [HttpGet("SalariesPerBU/{id}")]
-        public IEnumerable<DashboardDataDTO> SalariesPerBU(string id)
+        public IEnumerable<DashboardDataDTO> SalariesPerBU(string id, [FromBody] SuccesfullLoginDTO logCred)
         {
-            
 
+            if (!new TokenAuthentication().VerifyToken(logCred))
+            {
+                return null;
+            }
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
             t.InsertDocument();
@@ -143,9 +148,12 @@ namespace FlourishAPI.Controllers
         }
 
         [HttpGet("SumOfTransactions/{id}")]
-        public decimal TotalSumOfAllTransactions(string id)
+        public decimal TotalSumOfAllTransactions(string id, [FromBody] SuccesfullLoginDTO logCred)
         {
-
+            if (!new TokenAuthentication().VerifyToken(logCred))
+            {
+                return 0;
+            }
             decimal SumOfTransactions = 0;
 
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
@@ -168,9 +176,12 @@ namespace FlourishAPI.Controllers
         }
 
         [HttpGet("GetNotifications/{id}")]
-        public IEnumerable<DesktopNotification> GetNotifications(string id)//Wade Please Review this Code, Will this work?
+        public IEnumerable<DesktopNotification> GetNotifications(string id, [FromBody] SuccesfullLoginDTO logCred)//Wade Please Review this Code, Will this work?
         {
-
+            if (!new TokenAuthentication().VerifyToken(logCred))
+            {
+                return null;
+            }
             DesktopNotification t = new DesktopNotification() { };
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
@@ -192,11 +203,14 @@ namespace FlourishAPI.Controllers
 
         // POST api/Report/GenReportRequest
         [HttpPost("GenReportRequest")]
-        public IEnumerable<FilteredReportDTO> GeneralReportRequest([FromBody] GeneralReportRequestDTO reportRequestDetails)
+        public IEnumerable<FilteredReportDTO> GeneralReportRequest([FromBody] GeneralReportRequestDTO reportRequestDetails, [FromBody] SuccesfullLoginDTO logCred)
         {
-            
 
 
+            if (!new TokenAuthentication().VerifyToken(logCred))
+            {
+                return null;
+            }
             Transaction t = new Transaction() { Employee = new Employee(),Company = new Company()};
             List<Transaction> outgoingTransactions = new List<Transaction>();
             t.InsertDocument();
