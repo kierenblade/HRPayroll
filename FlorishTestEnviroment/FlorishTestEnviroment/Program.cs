@@ -18,16 +18,16 @@ namespace FlorishTestEnviroment
 
 
 
-            using (StreamReader r = new StreamReader("transOut.json"))
-            {
-                string json = r.ReadToEnd();
-                List<Transaction> employees = JsonConvert.DeserializeObject<List<Transaction>>(json);
-                foreach (Transaction item in employees)
-                {
-                    item.InsertDocument();
-                    Console.WriteLine(item.Employee.FirstName);
-                }
-            }
+            //using (StreamReader r = new StreamReader("transOut.json"))
+            //{
+            //    string json = r.ReadToEnd();
+            //    List<Transaction> employees = JsonConvert.DeserializeObject<List<Transaction>>(json);
+            //    foreach (Transaction item in employees)
+            //    {
+            //        item.InsertDocument();
+            //        Console.WriteLine(item.Employee.FirstName);
+            //    }
+            //}
 
 
             //Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit() };
@@ -59,32 +59,32 @@ namespace FlorishTestEnviroment
 
 
 
-            //using (StreamReader r = new StreamReader("compOut.json"))
-            //{
-            //    string json = r.ReadToEnd();
-            //    List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(json);
+            using (StreamReader r = new StreamReader("compOut.json"))
+            {
+                string json = r.ReadToEnd();
+                List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(json);
 
-            //    foreach (Company item in companies)
-            //    {
-            //        new LoginDetails() { Company = item, Username = "Wade", Hash = "Wade", Role = new Role() { Name = "Human Relations Manager" } }.InsertDocument();
-            //        item.InsertDocument();
-            //        Console.WriteLine(item.Name);
-            //    }
-            //}
+                foreach (Company item in companies)
+                {
+                    new LoginDetails() { Company = item, Username = "Wade", Hash = "Wade", Role = new Role() { Name = "Human Relations Manager" } }.InsertDocument();
+                    item.InsertDocument();
+                    Console.WriteLine(item.Name);
+                }
+            }
 
-            //using (StreamReader r = new StreamReader("banksOut.json"))
-            //{
-            //    string json = r.ReadToEnd();
-            //    List<Bank> banks = JsonConvert.DeserializeObject<List<Bank>>(json);
+            using (StreamReader r = new StreamReader("banksOut.json"))
+            {
+                string json = r.ReadToEnd();
+                List<Bank> banks = JsonConvert.DeserializeObject<List<Bank>>(json);
 
-            //    foreach (Bank item in banks)
-            //    {
-            //        item.InsertDocument();
-            //        Console.WriteLine(item.Name);
-            //    }
-            //}
-          //  Employee e = new Employee() { Company = new Company(), Bank = new Bank()};
-            
+                foreach (Bank item in banks)
+                {
+                    item.InsertDocument();
+                    Console.WriteLine(item.Name);
+                }
+            }
+            //  Employee e = new Employee() { Company = new Company(), Bank = new Bank()};
+
             //e.InsertDocument();
 
             //List<CRUDAble> eList = e.SearchDocument(new Dictionary<string, object>());
