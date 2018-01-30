@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FlourishAPI.DTOs;
 using FlourishAPI.Models.Audit;
+using FlourishAPI.Models;
 
 namespace FlourishAPI.Controllers
 {
@@ -17,7 +18,7 @@ namespace FlourishAPI.Controllers
         [HttpPost]
         public void LogAction([FromBody] LogActionDTO log)
         {
-          //  new ActionsAud() { }
+            new ActionsAud(log).InsertDocument("FlourishAUD_DB");
         }
     }
 }

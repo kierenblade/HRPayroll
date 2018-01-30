@@ -33,13 +33,13 @@ namespace FlourishAPI.Models.Audit
             return string.Format("{0}-{1}-{2}-{3}-{4}", DoneBy, DoneByCompanyName, Message, Origin, LogTime);
         }
 
-        //public ActionsAud(LogActionDTO log)
-        //{
-        //    Message = log.Message;
-        //    Origin = log.Origin;
-        //    DoneBy = log.DoneBy;
-        //    DoneByCompanyName = log.DoneByCompanyName;
-        //    LogTime = DateTime.Now;
-        //}
+        public ActionsAud(LogActionDTO log)
+        {
+            Message = log.Message;
+            Origin = log.Origin;
+            DoneBy = log.DoneBy;
+            DoneByCompanyName = log.DoneByCompanyName;
+            LogTime = DateTime.Now;
+        }
     }
 }
