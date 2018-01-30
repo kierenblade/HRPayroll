@@ -34,8 +34,9 @@ namespace FlorishTestEnviroment
                 {
                     return false; //  returns a false statement if it does
                 }
-            
-                    collection.InsertOne((CRUDAble)obj); // this will insert the object
+
+            obj.PreviousHashCode = obj.HashCode;
+            collection.InsertOne((CRUDAble)obj); // this will insert the object
                     return true; // everything completed successfully
         }
 
@@ -117,7 +118,7 @@ namespace FlorishTestEnviroment
 
 
                     }
-
+                    item.PreviousHashCode = item.HashCode;
                     updatedQuery.Add(item); // adds the item to the list that will be iterated through to update
                 }
             }

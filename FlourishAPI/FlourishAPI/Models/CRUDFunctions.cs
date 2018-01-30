@@ -31,7 +31,7 @@ namespace FlourishAPI.Models
                 {
                     return false; //  returns a false statement if it does
                 }
-            
+            obj.PreviousHashCode = obj.HashCode;
                     collection.InsertOne((CRUDAble)obj); // this will insert the object
                     return true; // everything completed successfully
         }
@@ -47,7 +47,7 @@ namespace FlourishAPI.Models
             foreach (CRUDAble item in changedObjects) // will check each item in the list of items that have changed
             {
                 var selectedCollection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<CRUDAble>(item.GetType().Name); // obtains the collection that is linked to the object that is currently being viewed
-                List<CRUDAble> query = selectedCollection.AsQueryable().Where(sb => sb.HashCode == item.HashCode).ToList(); // queries the collection to make sure the document already exists
+                List<CRUDAble> query = selectedCollection.AsQueryable().Where(sb => sb.PreviousHashCode == item.HashCode).ToList(); // queries the collection to make sure the document already exists
                 if (query.Count > 0)
                 {
                     List<ChangeLog> changes = new List<ChangeLog>(); // holds a list of changes that were made for that specific document
@@ -114,7 +114,7 @@ namespace FlourishAPI.Models
 
 
                     }
-
+                    item.PreviousHashCode = item.HashCode;
                     updatedQuery.Add(item); // adds the item to the list that will be iterated through to update
                 }
             }
