@@ -22,6 +22,7 @@ namespace PayswitchInitializer
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Reading data");
             using (StreamReader r = new StreamReader("empOut.json"))
             {
                 string json = r.ReadToEnd();
@@ -39,6 +40,7 @@ namespace PayswitchInitializer
                 string json = r.ReadToEnd();
                 banks = JsonConvert.DeserializeObject<List<Bank>>(json);
             }
+            Console.WriteLine("Processing Employees");
             foreach (var item in employees)
             {
                BankAccDetails acc = new BankAccDetails() {
@@ -84,6 +86,7 @@ namespace PayswitchInitializer
                 cards.Add(c);
             }
 
+            Console.WriteLine("Processing Companies");
             foreach (var item in companies)
             {
                 BankAccDetails acc = new BankAccDetails()
@@ -123,14 +126,21 @@ namespace PayswitchInitializer
                 cards.Add(c);
             }
 
+            Console.WriteLine("Submitting bank accounts");
             foreach (var item in bankAcc)
             {
                 Console.WriteLine(insertBankAcc(item).GetAwaiter().GetResult());
             }
+            Console.WriteLine("Submitting cards");
             foreach (var item in cards)
             {
                 Console.WriteLine(insertCards(item).GetAwaiter().GetResult());
             }
+
+            Console.WriteLine("Completed");
+            Console.WriteLine();
+            Console.WriteLine(bankAcc.Count);
+            Console.WriteLine(cards.Count);
             Console.ReadKey();
         }
 
@@ -145,6 +155,7 @@ namespace PayswitchInitializer
                 bytecontent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                 HttpResponseMessage res = await client.PostAsync(url, bytecontent);
+                Console.WriteLine(b.AccountNum);
                 if (res.IsSuccessStatusCode)
                 {
                     return true;
@@ -167,6 +178,7 @@ namespace PayswitchInitializer
                 bytecontent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                 HttpResponseMessage res = await client.PostAsync(url, bytecontent);
+                Console.WriteLine(c.CardNumber);
                 if (res.IsSuccessStatusCode)
                 {
                     return true;
