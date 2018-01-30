@@ -13,7 +13,7 @@ namespace PaymentSwitchHandler
 
     public class SwitchHandler
     {
-        private static string _apiUrl = "";
+        private static string _apiUrl = "http://localhost:62337";
         //public async task that will handle the processing of a list of transactions
         public static async Task<List<ProcessResults>> ProcessTransaction(List<Transaction> transactionsIn)
         {
@@ -42,7 +42,7 @@ namespace PaymentSwitchHandler
         private static async Task<ProcessResults> ProcessAbsa(Transaction t)
         {
             
-            string paymentURL = _apiUrl + "/api/ABSA/Payment";
+            string paymentURL = _apiUrl + "/api/ABSA/ProccessPayment";
             //create an object matching how the ABSA Api accepts requests
             ABSARequest req;
             try
@@ -52,9 +52,23 @@ namespace PaymentSwitchHandler
                     AmountToPay = t.Amount.ToString(),
                     ClientID = t.Company.CompanyId.ToString(),
                     DestinationAccount = t.Employee.AccountNumber,
-                    DestinationBankCode = t.Employee.Bank.BankId,
                     OriginationAccount = t.Company.AccountNumber
                 };
+
+                switch (t.Employee.Bank.Name)
+                {
+                    case "ABSA":
+                        req.DestinationBankCode = (int)BankCode.ABSA;
+                        break;
+                    case "FNB":
+                        req.DestinationBankCode = (int)BankCode.FNB;
+                        break;
+                    default:
+                        req.DestinationBankCode = (int)BankCode.None;
+                        break;
+                }
+
+                //req.DestinationBankCode = (int)BankCode.ABSA;
 
             }
             catch (Exception e)
@@ -87,7 +101,7 @@ namespace PaymentSwitchHandler
                 //if the result of the transaction wasn't succesfull, returns the results along with the fialure reason
                 if (result.SuccessCode != 1)
                 {
-                    return new ProcessResults() { TransactionId = t.Id, FailReason = result.Message , Code = StatusCode.Network};
+                    return new ProcessResults() { TransactionId = t.Id, FailReason = result.Message , Code = StatusCode.Other};
                 }
             }
 
@@ -96,7 +110,7 @@ namespace PaymentSwitchHandler
 
         private static async Task<ProcessResults> ProcessVisa(Transaction t)
         {
-            string paymentURL = _apiUrl + "[ip]/api/ProcessPayment";
+            string paymentURL = _apiUrl + "/api/VISA/ProccessPayment";
             VisaRequest req;
             try
             {
@@ -104,12 +118,25 @@ namespace PaymentSwitchHandler
                 {
                     Currency = Currency.ZAR,
                     DestinationCardNumber = t.Employee.CardNumber, //add
-                    OriginatorBankCode = t.Company.Bank.BankId,
                     OriginatorCardNumber = t.Company.CardNumber, //add
                     OriginatorCVV = int.Parse(t.Company.CardCVV),//add
                     TransactionAmount = t.Amount.ToString(),
                     VendorID = t.Company.CompanyId
                 };
+
+                switch (t.Company.Bank.Name)
+                {
+                    case "ABSA":
+                        req.OriginatorBankCode = (int)BankCode.ABSA;
+                        break;
+                    case "FNB":
+                        req.OriginatorBankCode = (int)BankCode.FNB;
+                        break;
+                    default:
+                        req.OriginatorBankCode = (int)BankCode.None;
+                        break;
+                }
+
             }
             catch (Exception e)
             {
@@ -193,5 +220,17 @@ namespace PaymentSwitchHandler
         GBP,
         EUR
     }
+
+    enum BankCode
+    {
+        None = 0,
+        ABSA,
+        FNB,
+        Nedbank,
+        AfricaBank,
+        Barclays,
+        NBC
+    }
+
 }
 
