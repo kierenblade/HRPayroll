@@ -16,9 +16,11 @@ namespace FlourishAPI.Controllers
     {
 
         [HttpPost]
-        public void LogAction([FromBody] LogActionDTO log)
+        public bool LogAction([FromBody] LogActionDTO log)
         {
+            log.LogTime = DateTime.Now;
             new ActionsAud(log).InsertDocument("FlourishAUD_DB");
+            return true;
         }
     }
 }

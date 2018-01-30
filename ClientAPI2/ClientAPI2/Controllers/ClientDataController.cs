@@ -65,8 +65,8 @@ namespace ClientAPI2.Controllers
             List<Employee> monthly = emps.Where(x => x.PayFrequency == PayFrequency.Monthly).ToList();
             List<Employee> toSend = new List<Employee>();
 
-            weekly = weekly.Where(x => x.PayDate == (int)DateTime.Now.DayOfWeek).ToList();
-            monthly = monthly.Where(x => x.PayDate == DateTime.Now.Day).ToList();
+            weekly = weekly.Where(x => x.PayDate == (int)DateTime.Now.DayOfWeek && x.EmployeeStatus == EmployeeStatus.Employed).ToList();
+            monthly = monthly.Where(x => x.PayDate == DateTime.Now.Day && x.EmployeeStatus == EmployeeStatus.Employed).ToList();
 
             toSend = monthly;
             

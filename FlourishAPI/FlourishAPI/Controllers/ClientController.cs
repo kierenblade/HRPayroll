@@ -48,37 +48,7 @@ namespace FlourishAPI.Controllers
             await EmployeeSync.InsertUpdateEmployeeDetails(employeeDetails);
         }
 
-        [HttpPost("CompanyOnboarding")]
-        public async void CompanyOnboarding([FromBody] LoginDetails newCompany)
-        {
-            newCompany.Role = new Role() {
-                Name = "admin"
-            };
-            Company c = new Company() {
-                Bank = new Bank()
-            };
-            c.InsertDocument();
-            List<CRUDAble> clist = c.SearchDocument(new Dictionary<string, object>());
-            clist.Remove(c);
-            c.Delete();
-            int companyID = 0;
-            List<Company> comp = new List<Company>();
-            foreach (Company item in clist)
-            {
-                comp.Add(item);
-            }
-            for (int i = 0; i < 1000; i++)
-            {
-                if (comp.AsQueryable().Where(p => p.CompanyId == i).LongCount() < 1)
-                {
-                    companyID = i;
-                    break;
-                }
-            }
-            newCompany.Company.CompanyId = companyID;
-            newCompany.InsertDocument();
-            newCompany.Company.InsertDocument();
-        }
+        
 
         [HttpGet("SyncAllEmployees")]
         public async void SyncAllEmployees()

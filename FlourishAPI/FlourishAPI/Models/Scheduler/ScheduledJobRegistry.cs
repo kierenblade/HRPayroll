@@ -22,8 +22,8 @@ namespace FlourishAPI.Models.Scheduler
             //Schedule<GenerateTransaction>()
             //    .NonReentrant()
             //    .ToRunNow()
-            //    .AndEvery(1)
-            //    .Days();
+            //    .AndEvery(2)
+            //    .Minutes();
 
             //==================
             //Add more jobs here
