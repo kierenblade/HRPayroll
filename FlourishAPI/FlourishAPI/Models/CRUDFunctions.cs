@@ -55,16 +55,27 @@ namespace FlourishAPI.Models
                     case "Employee":
                         var selectedEmp  = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<Employee>(item.GetType().Name);
                         Employee emp = (Employee)item;
-                        listCount = selectedEmp.AsQueryable().Where(p => p.IdNumber == emp.IdNumber).ToList().Count;
+                        List<Employee> eL = selectedEmp.AsQueryable().Where(p => p.IdNumber == emp.IdNumber).ToList();
+                        listCount = eL.Count;
+                        if(listCount > 0)
+                        {
+                            query.Add(eL[0]);
+                        }
                         break;
                     case "Transaction":
                         var selectedTrans = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<Transaction>(item.GetType().Name);
                         Transaction trans = (Transaction)item;
-                        listCount = selectedTrans.AsQueryable().Where(p => p.Employee.IdNumber == trans.Employee.IdNumber).ToList().Count;
+                        List<Transaction> tL = selectedTrans.AsQueryable().Where(p => p.Employee.IdNumber == trans.Employee.IdNumber).ToList();
+                        
+                        listCount = tL.Count;
+                        if (listCount > 0)
+                        {
+                            query.Add(tL[0]);
+                        }
                         break;
                 }
                  // queries the collection to make sure the document already exists
-                if (query.Count > 0)
+                if (listCount > 0)
                 {
                     List<ChangeLog> changes = new List<ChangeLog>(); // holds a list of changes that were made for that specific document
                     foreach (var prop in item.GetType().GetProperties()) // this will iterate through the objects properties to check what has changed
