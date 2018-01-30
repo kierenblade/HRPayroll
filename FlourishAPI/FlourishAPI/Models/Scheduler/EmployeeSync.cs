@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mail;
@@ -8,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using FlourishAPI.Models.Classes;
 using FluentScheduler;
-using HRPayroll.EmailService;
 using Newtonsoft.Json;
 using System.Threading;
 
@@ -21,14 +21,15 @@ namespace FlourishAPI.Models.Scheduler
         {
             
         }
-        public void Execute()
+        public async void Execute()
         {
-            Console.WriteLine("Sync started");
-            SyncEmployeeDetailsFromClient().Start();
+            new EventLogger("Scheduled Tasks Started", Severity.Event);
+            await SyncEmployeeDetailsFromClient();
         }
 
         public static async Task SyncEmployeeDetailsFromClient()
         {
+            new EventLogger("Sync Employee Started", Severity.Event).Log();
             bool retryFlag = true;
             int retryCount = 0;
             
@@ -64,14 +65,18 @@ namespace FlourishAPI.Models.Scheduler
                     }
                     catch (Exception e)
                     {
+                        new EventLogger(
+                            string.Format("Failed to sync employee details from client. Exception: \"{0}\"", e.Message),
+                            Severity.Severe);
+
                         //Send an email notification about the response
                         MailMessage emailMessage = new MailMessage
                         {
                             Subject = "Failed to sync Employee details",
                             Body = "Failed to sync Employee details from Client with error \"" + e.Message + "\"",
-                            To = { new MailAddress("kieren.gerling@sybrin.co.za") }
+                            To = { new MailAddress("gerling.kieren@gmail.com") }
                         };
-
+                        
                         EmailHandler.SendMail(emailMessage);
 
                         //Wait X amount of time before retrying
@@ -82,6 +87,8 @@ namespace FlourishAPI.Models.Scheduler
 
                     if (responsePost.IsSuccessStatusCode)
                     {
+                        new EventLogger("Connected to client API to recieve employee details", Severity.Event);
+
                         //Get the list of employee objects from the Client
                         string result = await responsePost.Content.ReadAsStringAsync();
                         var employeeResult = JsonConvert.DeserializeObject<List<Employee>>(result);
@@ -91,8 +98,29 @@ namespace FlourishAPI.Models.Scheduler
                        // new DesktopNotification() { Company = employeeResult[0].Company, CreationDate = DateTime.Now, Message = (crud.Count + " records have been updated from the previous list") }.InsertDocument();
                         //==================================================
                         //  new Thread(UpdateAndCreateTransactions).Start();
-                        await UpdateAndCreateTransactions();
+                        //await GenerateTransaction.UpdateAndCreateTransactions();
                         retryFlag = false;
+                    }
+                    else
+                    {
+                        new EventLogger(string.Format("Failed to connect to client API with reason \"{0}\"", responsePost.ReasonPhrase), Severity.Severe);
+
+                        //Send an email notification about the response
+                        MailMessage emailMessage = new MailMessage
+                        {
+                            Subject = "Failed to sync Employee details",
+                            Body = "Failed to sync Employee details from Client with error \"" + responsePost.ReasonPhrase + "\"",
+                            To = { new MailAddress("gerling.kieren@gmail.com", "Flourish User") }
+                        };
+
+                        EmailHandler.SendMail(emailMessage);
+
+                        switch (responsePost.StatusCode)
+                        {
+                            case HttpStatusCode.NotFound:
+                                retryFlag = false;
+                                break;
+                        }
                     }
                 }
             }
@@ -129,43 +157,6 @@ namespace FlourishAPI.Models.Scheduler
 
             crud.UpdateManyDocument();
             e.Delete();
-        }
-
-        public static async Task UpdateAndCreateTransactions()
-        {
-            Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit() };
-            Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
-            e.InsertDocument();
-            t.InsertDocument();
-            List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
-            existingEmployees.Remove(e);
-            List<Transaction> toUpdateTransactions = new List<Transaction>();
-
-            foreach (Employee item in existingEmployees)
-            {
-                Dictionary<string, object> filterList = new Dictionary<string, object>();
-                filterList.Add("Employee.IdNumber", item.IdNumber);
-                List<CRUDAble> result = t.SearchDocument(filterList);
-                result.Remove(t);
-                if (result.LongCount() > 0)
-                {
-                    List<CRUDAble> emp = new List<CRUDAble>(); 
-                    foreach (Transaction i in result)
-                    {
-                        i.Employee = item;
-                        emp.Add(i);
-                    }
-                    emp.UpdateManyDocument();
-                }
-                else
-                {
-                    new Transaction() { Employee = item, Company = item.Company, Amount = item.Salary, DateCreated = DateTime.Now, Status = Status.Pending }.InsertDocument();
-                }
-            }
-
-            e.Delete();
-            t.Delete();
-
         }
     }
 }
