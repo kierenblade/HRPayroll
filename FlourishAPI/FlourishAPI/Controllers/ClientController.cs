@@ -14,14 +14,14 @@ using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 namespace FlourishAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class ClientController : Controller
     {
-        [HttpGet]
-        public void Get()
-        {
-            Console.WriteLine("GET");
-        }
+        //[HttpGet]
+        //public string Get()
+        //{
+        //    return "test";
+        //}
 
         [HttpPost]
         public async void Post()
@@ -29,10 +29,10 @@ namespace FlourishAPI.Controllers
             Console.WriteLine("POST");
         }
 
-        [HttpGet]
+        [HttpGet("SyncEmp")]
         public void SyncEmployees()
         {
-            EmployeeSync.SyncEmployeeDetailsFromClient().Start();
+            EmployeeSync.SyncEmployeeDetailsFromClient().Wait();
         }
     }
 }

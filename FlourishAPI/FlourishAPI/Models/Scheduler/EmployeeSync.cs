@@ -14,6 +14,7 @@ using System.Threading;
 
 namespace FlourishAPI.Models.Scheduler
 {
+
     public class EmployeeSync : IJob
     {
         public EmployeeSync()
@@ -30,16 +31,55 @@ namespace FlourishAPI.Models.Scheduler
         {
             bool retryFlag = true;
             int retryCount = 0;
-
-            string url = "http://localhost:54497/api/values";
+            
+            string url = "http://localhost:51422/api/Employee";
             using (var client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(url);
                 while (retryFlag && retryCount <= 3)
                 {
-                    if (response.IsSuccessStatusCode)
+                    //Get list of employees from DB
+                    Employee emp = new Employee();
+                    List<Employee> employeeList = emp.GetAllEmployees();
+                    List<string> employeeIdList = new List<string>();
+                    foreach (Employee employee in employeeList)
                     {
-                        string result = await response.Content.ReadAsStringAsync();
+                        employeeIdList.Add(employee.IdNumber);
+                    }
+
+                    var mycontent = JsonConvert.SerializeObject(employeeIdList);
+                    var buffer = Encoding.UTF8.GetBytes(mycontent);
+                    var bytecontent = new ByteArrayContent(buffer);
+                    bytecontent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                    HttpResponseMessage responsePost = null;
+
+                    try
+                    {
+                        //Try connect to the client
+                        responsePost = await client.PostAsync(url, bytecontent);
+                    }
+                    catch (Exception e)
+                    {
+                        //Send an email notification about the response
+                        MailMessage emailMessage = new MailMessage
+                        {
+                            Subject = "Failed to sync Employee details",
+                            Body = "Failed to sync Employee details from Client with error \"" + e.Message + "\"",
+                            To = { new MailAddress("kieren.gerling@sybrin.co.za") }
+                        };
+
+                        EmailHandler.SendMail(emailMessage);
+
+                        //Wait X amount of time before retrying
+                        Thread.Sleep(200);
+                        retryCount++;
+                        continue;
+                    }
+
+                    if (responsePost.IsSuccessStatusCode)
+                    {
+                        //Get the list of employees from the Client
+                        string result = await responsePost.Content.ReadAsStringAsync();
                         var employeeResult = JsonConvert.DeserializeObject<List<Employee>>(result);
 
                         Employee e = new Employee();
@@ -71,27 +111,11 @@ namespace FlourishAPI.Models.Scheduler
                         crud.UpdateManyDocument();
                         e.Delete();
                         //=================Testing notifications===================
-                        new DesktopNotification() { Company = employeeResult[0].Company, CreationDate = DateTime.Now, Message = (crud.Count + " records have been updated from the previous list") }.InsertDocument();
+                       // new DesktopNotification() { Company = employeeResult[0].Company, CreationDate = DateTime.Now, Message = (crud.Count + " records have been updated from the previous list") }.InsertDocument();
                         //==================================================
                         //  new Thread(UpdateAndCreateTransactions).Start();
                         UpdateAndCreateTransactions();
                         retryFlag = false;
-                    }
-                    else
-                    {
-                        //Send an email notification about the response
-                        MailMessage emailMessage = new MailMessage
-                        {
-                            Subject = "Failed to sync Employee details",
-                            Body = "Failed to sync Employee details from Client with error code \"" + response.StatusCode + "\"",
-                            To = { new MailAddress("kieren.gerling@sybrin.co.za") }
-                        };
-
-                        EmailHandler.SendMail(emailMessage);
-
-                        //Wait X amount of time before retrying
-                        Thread.Sleep(200);
-                        retryCount++;
                     }
                 }
             }
