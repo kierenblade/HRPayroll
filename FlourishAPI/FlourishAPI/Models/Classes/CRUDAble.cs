@@ -14,11 +14,6 @@ namespace FlourishAPI.Models.Classes
             get { return createHash(); }
         }
 
-        [BsonElement]
-        public string PreviousHashCode
-        {
-            get; set;
-        }
 
         public abstract string createHash();
 
