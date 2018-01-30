@@ -32,7 +32,14 @@ namespace FlourishAPI.Controllers
         [HttpGet("SyncEmp")]
         public void SyncEmployees()
         {
-            EmployeeSync.SyncEmployeeDetailsFromClient().Wait();
+            //Get list of employees from DB
+            Employee emp = new Employee();
+            emp.InsertDocument();
+            List<Employee> employeeList = emp.GetAllEmployees();
+            emp.Delete();
+            employeeList.Remove(emp);
+
+            EmployeeSync.SyncEmployeeDetailsFromClient(employeeList).Wait();
 
         }
 
