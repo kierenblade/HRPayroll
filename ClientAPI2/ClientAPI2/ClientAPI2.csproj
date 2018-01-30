@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <Reference Include="FlourishAPI">
-      <HintPath>..\..\..\HR Payroll\HR Payroll.WebService\FlourishAPI\FlourishAPI\bin\Debug\netcoreapp2.0\FlourishAPI.dll</HintPath>
+      <HintPath>..\..\FlourishAPI\FlourishAPI\bin\Debug\netcoreapp2.0\FlourishAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
 
