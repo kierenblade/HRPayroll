@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace FlourishAPI.Models.Classes
 {
+    public enum PaymentType { ABSA = 1, VISA }
     public class Company: CRUDAble
         {
 
@@ -26,6 +27,8 @@ namespace FlourishAPI.Models.Classes
 
         [BsonElement("BusinessUnits")]
         public List<BusinessUnit> BusinessUnits { get; set; }
+        [BsonElement("PaymentType")]
+        public PaymentType PaymentType { get; set; }
 
         #region Methods
         public override string createHash()
