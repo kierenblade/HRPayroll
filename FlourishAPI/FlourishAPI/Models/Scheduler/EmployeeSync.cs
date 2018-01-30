@@ -39,13 +39,17 @@ namespace FlourishAPI.Models.Scheduler
                 {
                     //Get list of employees from DB
                     Employee emp = new Employee();
+                    emp.InsertDocument();
                     List<Employee> employeeList = emp.GetAllEmployees();
+                    emp.Delete();
+                    employeeList.Remove(emp);
                     List<string> employeeIdList = new List<string>();
                     foreach (Employee employee in employeeList)
                     {
                         employeeIdList.Add(employee.IdNumber);
                     }
 
+                    //Send the list of employee IDs to the client
                     var mycontent = JsonConvert.SerializeObject(employeeIdList);
                     var buffer = Encoding.UTF8.GetBytes(mycontent);
                     var bytecontent = new ByteArrayContent(buffer);
@@ -78,7 +82,7 @@ namespace FlourishAPI.Models.Scheduler
 
                     if (responsePost.IsSuccessStatusCode)
                     {
-                        //Get the list of employees from the Client
+                        //Get the list of employee objects from the Client
                         string result = await responsePost.Content.ReadAsStringAsync();
                         var employeeResult = JsonConvert.DeserializeObject<List<Employee>>(result);
 
@@ -134,12 +138,18 @@ namespace FlourishAPI.Models.Scheduler
             foreach (Employee item in existingEmployees)
             {
                 Dictionary<string, object> filterList = new Dictionary<string, object>();
-                filterList.Add("Employee.HashCode", item.HashCode);
+                filterList.Add("Employee.IdNumber", item.IdNumber);
                 List<CRUDAble> result = t.SearchDocument(filterList);
                 result.Remove(t);
                 if (result.LongCount() > 0)
                 {
-                    result.UpdateManyDocument();
+                    List<CRUDAble> emp = new List<CRUDAble>(); 
+                    foreach (Transaction i in result)
+                    {
+                        i.Employee = item;
+                        emp.Add(i);
+                    }
+                    emp.UpdateManyDocument();
                 }
                 else
                 {

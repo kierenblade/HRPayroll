@@ -34,5 +34,11 @@ namespace FlourishAPI.Controllers
         {
             EmployeeSync.SyncEmployeeDetailsFromClient().Wait();
         }
+
+        [HttpGet("RecieveEmployeeDetails")]
+        public void RecieveEmployeeDetails([FromBody] List<Employee> employeeDetails)
+        {
+            Console.WriteLine("TEST");
+        }
     }
 }
