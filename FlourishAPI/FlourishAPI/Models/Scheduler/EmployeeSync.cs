@@ -86,46 +86,52 @@ namespace FlourishAPI.Models.Scheduler
                         string result = await responsePost.Content.ReadAsStringAsync();
                         var employeeResult = JsonConvert.DeserializeObject<List<Employee>>(result);
 
-                        Employee e = new Employee();
-                        e.InsertDocument();
-                        List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
-                        existingEmployees.Remove(e);
-
-                        List<CRUDAble> crud = new List<CRUDAble>();
-                        foreach (Employee employee in employeeResult)
-                        {
-                            Dictionary<string, object> filterList = new Dictionary<string, object>();
-                            filterList.Add("IdNumber", employee.IdNumber);
-                            if (e.SearchDocument(filterList).LongCount() > 0)
-                            {
-                                filterList.Clear();
-                                filterList.Add("HashCode", employee.HashCode);
-                                List<CRUDAble> preFilter = e.SearchDocument(filterList).ToList();
-                                preFilter.Remove(e);
-                                if (preFilter.Count < 1)
-                                {
-                                    crud.Add(employee);
-                                }
-                            }
-                            else
-                            {
-                                employee.InsertDocument();
-                            }
-                        }
-                        crud.UpdateManyDocument();
-                        e.Delete();
+                        await InsertUpdateEmployeeDetails(employeeResult);
                         //=================Testing notifications===================
                        // new DesktopNotification() { Company = employeeResult[0].Company, CreationDate = DateTime.Now, Message = (crud.Count + " records have been updated from the previous list") }.InsertDocument();
                         //==================================================
                         //  new Thread(UpdateAndCreateTransactions).Start();
-                        UpdateAndCreateTransactions();
+                        await UpdateAndCreateTransactions();
                         retryFlag = false;
                     }
                 }
             }
         }
 
-        public static void UpdateAndCreateTransactions()
+        public static async Task InsertUpdateEmployeeDetails(List<Employee> employeeList)
+        {
+            Employee e = new Employee();
+            e.InsertDocument();
+            List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
+            existingEmployees.Remove(e);
+
+            List<CRUDAble> crud = new List<CRUDAble>();
+            foreach (Employee employee in employeeList)
+            {
+                Dictionary<string, object> filterList = new Dictionary<string, object>();
+                filterList.Add("IdNumber", employee.IdNumber);
+                if (e.SearchDocument(filterList).LongCount() > 0)
+                {
+                    filterList.Clear();
+                    filterList.Add("HashCode", employee.HashCode);
+                    List<CRUDAble> preFilter = e.SearchDocument(filterList).ToList();
+                    preFilter.Remove(e);
+                    if (preFilter.Count < 1)
+                    {
+                        crud.Add(employee);
+                    }
+                }
+                else
+                {
+                    employee.InsertDocument();
+                }
+            }
+
+            crud.UpdateManyDocument();
+            e.Delete();
+        }
+
+        public static async Task UpdateAndCreateTransactions()
         {
             Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit() };
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
