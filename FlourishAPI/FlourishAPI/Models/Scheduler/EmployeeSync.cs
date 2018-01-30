@@ -25,26 +25,31 @@ namespace FlourishAPI.Models.Scheduler
         public async void Execute()
         {
             new EventLogger("STARTED: Scheduled Employee Sync Tasks", Severity.Event).Log();
-            await SyncEmployeeDetailsFromClient();
+
+            //Get list of employees from DB
+            Employee emp = new Employee();
+            emp.InsertDocument();
+            List<Employee> employeeList = emp.GetAllEmployees();
+            emp.Delete();
+            employeeList.Remove(emp);
+
+            await SyncEmployeeDetailsFromClient(employeeList);
+
             new EventLogger("COMPLETED: Scheduled Employee Sync Tasks", Severity.Event).Log();
         }
 
-        public static async Task SyncEmployeeDetailsFromClient()
+        //Send the client a list of employee IDs, client checks which employees are missing or need to be removed, recieve a list of employees
+        public static async Task SyncEmployeeDetailsFromClient(List<Employee> employeeList, string url = _clientEmpSyncURL)
         {
             new EventLogger("STARTED: Syncing Employee details from Client", Severity.Event).Log();
-            bool retryFlag = true;
-            int retryCount = 0;
-            
+
             using (var client = new HttpClient())
             {
+                bool retryFlag = true;
+                int retryCount = 0;
                 while (retryFlag && retryCount <= 3)
                 {
-                    //Get list of employees from DB
-                    Employee emp = new Employee();
-                    emp.InsertDocument();
-                    List<Employee> employeeList = emp.GetAllEmployees();
-                    emp.Delete();
-                    employeeList.Remove(emp);
+                    
                     List<string> employeeIdList = new List<string>();
                     foreach (Employee employee in employeeList)
                     {
@@ -62,7 +67,7 @@ namespace FlourishAPI.Models.Scheduler
                     try
                     {
                         //Try connect to the client
-                        responsePost = await client.PostAsync(_clientEmpSyncURL, bytecontent);
+                        responsePost = await client.PostAsync(url, bytecontent);
                     }
                     catch (Exception e)
                     {
@@ -95,11 +100,6 @@ namespace FlourishAPI.Models.Scheduler
                         var employeeResult = JsonConvert.DeserializeObject<List<Employee>>(result);
 
                         await InsertUpdateEmployeeDetails(employeeResult);
-                        //=================Testing notifications===================
-                       // new DesktopNotification() { Company = employeeResult[0].Company, CreationDate = DateTime.Now, Message = (crud.Count + " records have been updated from the previous list") }.InsertDocument();
-                        //==================================================
-                        //  new Thread(UpdateAndCreateTransactions).Start();
-                        //await GenerateTransaction.UpdateAndCreateTransactions();
                         retryFlag = false;
                     }
                     else
