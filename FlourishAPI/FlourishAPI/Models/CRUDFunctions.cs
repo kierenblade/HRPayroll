@@ -18,13 +18,13 @@ namespace FlourishAPI.Models
         /// </summary>
         public static bool InsertDocument(this CRUDAble obj, string databaseName = "FlourishDB")
         {
-                //the following method will do the following tasks in order:
+            //the following method will do the following tasks in order:
 
-                // 1. establishes a connection to the database with the databasename specified, if none specified then it will use its
-                // predefined database name of 'FlourishDB'.
-                //2. Once established, it will obtain the collection that is of the same type of the object that initiated the method.
-                //3. Once collection is obtained, it then inserts the object that initiated the method into the database in the correct Collection and returns a True bool.
-                // ~ if the object already exists in the document then it will return false to the system that called the method.
+            // 1. establishes a connection to the database with the databasename specified, if none specified then it will use its
+            // predefined database name of 'FlourishDB'.
+            //2. Once established, it will obtain the collection that is of the same type of the object that initiated the method.
+            //3. Once collection is obtained, it then inserts the object that initiated the method into the database in the correct Collection and returns a True bool.
+            // ~ if the object already exists in the document then it will return false to the system that called the method.
 
                 IMongoCollection<CRUDAble> collection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<CRUDAble>(obj.GetType().Name); //  ~ Consists of Point 1
                 if(collection.AsQueryable().Where(p=> p.HashCode == obj.HashCode).LongCount() > 0) //  used to check if the current object already exists
@@ -132,6 +132,7 @@ namespace FlourishAPI.Models
 
         /// <summary>
         /// This will search for a collection of objects based on a user specified list of criteria, it then returns a of List<CRUDAble> objects which the user can then manipulate
+        /// Please note that this method will only do "Equals to" comparison    
         /// </summary>
 
         public static List<CRUDAble> SearchDocument(this CRUDAble searchObject, Dictionary<string, object> queryDictionary, string databaseName = "FlourishDB")

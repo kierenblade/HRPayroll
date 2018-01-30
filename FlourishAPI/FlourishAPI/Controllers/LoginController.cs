@@ -35,12 +35,6 @@ namespace FlourishAPI.Controllers
       
         public Boolean Post([FromBody]LoginDetailsDTO userDetails)
         {
-
-
-           
-            //SignInManager signIn = new SignInManager(userDetails.Username, userDetails.Password);
-
-          
             LoginDetails verifyingAccount = new LoginDetails() { Username = userDetails.Username, Hash = userDetails.Password };
 
             verifyingAccount = verifyingAccount.verifyLoginDetails();
@@ -55,11 +49,6 @@ namespace FlourishAPI.Controllers
                 return false;
             }
 
-            //SignInManager signIn = new SignInManager(details.Username, details.Password);
-
-            //success = signIn.ValidateUserDetails();
-
-            //return success;
         }
 
 
