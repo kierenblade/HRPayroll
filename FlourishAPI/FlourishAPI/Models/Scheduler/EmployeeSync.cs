@@ -17,6 +17,7 @@ namespace FlourishAPI.Models.Scheduler
 
     public class EmployeeSync : IJob
     {
+        private const string _clientEmpSyncURL = "http://localhost:51422/api/Employee";
         public EmployeeSync()
         {
             
@@ -34,7 +35,6 @@ namespace FlourishAPI.Models.Scheduler
             bool retryFlag = true;
             int retryCount = 0;
             
-            string url = "http://localhost:51422/api/Employee";
             using (var client = new HttpClient())
             {
                 while (retryFlag && retryCount <= 3)
@@ -62,7 +62,7 @@ namespace FlourishAPI.Models.Scheduler
                     try
                     {
                         //Try connect to the client
-                        responsePost = await client.PostAsync(url, bytecontent);
+                        responsePost = await client.PostAsync(_clientEmpSyncURL, bytecontent);
                     }
                     catch (Exception e)
                     {
