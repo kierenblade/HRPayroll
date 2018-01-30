@@ -1,4 +1,5 @@
-﻿using FlourishAPI.Models.Classes;
+﻿using FlourishAPI.DTOs;
+using FlourishAPI.Models.Classes;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -31,5 +32,14 @@ namespace FlourishAPI.Models.Audit
         {
             return string.Format("{0}-{1}-{2}-{3}-{4}", DoneBy, DoneByCompanyName, Message, Origin, LogTime);
         }
+
+        //public ActionsAud(LogActionDTO log)
+        //{
+        //    Message = log.Message;
+        //    Origin = log.Origin;
+        //    DoneBy = log.DoneBy;
+        //    DoneByCompanyName = log.DoneByCompanyName;
+        //    LogTime = DateTime.Now;
+        //}
     }
 }
