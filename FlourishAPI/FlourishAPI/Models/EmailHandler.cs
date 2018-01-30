@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using FlourishAPI.Models.Classes;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace HRPayroll.EmailService
+namespace FlourishAPI.Models
 {
     public class EmailHandler
     {
-        private const string _apiKey = "";
+        private const string _base64ApiKey =
+            "U0cuMHJoWk1xMVpSU0tHcXp1VWg5VnRfQS5TUFVOOTVsOEM5S1NUT0pYVHNqa3hEaFhYRkNrZF9QZ2prb3k4ckJ3MHIw";
         private static MailMessage _email;
 
         public static void SendMail(MailMessage emailMessage)
@@ -26,19 +24,29 @@ namespace HRPayroll.EmailService
         static async Task Execute()
         {
             var sendGridMessage = new SendGridMessage();
-            var client = new SendGridClient(_apiKey);
+            byte[] data = Convert.FromBase64String(_base64ApiKey);
+            string decodedString = Encoding.UTF8.GetString(data);
+            var client = new SendGridClient(decodedString);
 
-            sendGridMessage.From = new EmailAddress("test@example.com", "Example User");
+            sendGridMessage.From = new EmailAddress("kieren.gerling@sybrin.co.za", "HRPayroll");
             foreach (MailAddress mailAddress in _email.To)
             {
                 sendGridMessage.AddTo(mailAddress.Address, mailAddress.DisplayName);
+                sendGridMessage.AddSubstitution("#Name#", mailAddress.DisplayName);
             }
 
             sendGridMessage.Subject = _email.Subject;
             sendGridMessage.HtmlContent = _email.Body;
-            sendGridMessage.TemplateId = "3a7d307b-598d-4eb0-90c2-c16b3b82c806";
+            sendGridMessage.TemplateId = "661fbfd5-e6ed-42c7-b436-adc9651c0db8";
 
             var response = await client.SendEmailAsync(sendGridMessage);
+            
+            foreach (MailAddress emailAddress in _email.To)
+            {
+                new EventLogger(
+                    string.Format("Email logged to \"{0}\" with subject \"{1}\" with status code \"{2}\"",
+                        emailAddress.DisplayName, _email.Subject, response.StatusCode.ToString()), Severity.Event);
+            }
         }
     }
 }

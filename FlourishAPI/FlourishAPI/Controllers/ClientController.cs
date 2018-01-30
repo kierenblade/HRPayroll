@@ -40,5 +40,11 @@ namespace FlourishAPI.Controllers
         {
             await EmployeeSync.InsertUpdateEmployeeDetails(employeeDetails);
         }
+
+        [HttpPost("CompanyOnboarding")]
+        public async void CompanyOnboarding(Company newCompany)
+        {
+            newCompany.InsertDocument();
+        }
     }
 }

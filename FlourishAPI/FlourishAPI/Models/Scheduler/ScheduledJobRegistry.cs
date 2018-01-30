@@ -13,11 +13,17 @@ namespace FlourishAPI.Models.Scheduler
         public ScheduledJobRegistry()
         {
             //Create new schedule for job
-            Schedule<EmployeeSync>()
-                .NonReentrant()     //Only one instance of the job can run at a time
-                .ToRunNow()         //Run the job immediately 
-                .AndEvery(5)        //Run the job every minute
-                .Minutes();
+            //Schedule<EmployeeSync>()
+            //    .NonReentrant()     //Only one instance of the job can run at a time
+            //    .ToRunNow()         //Run the job immediately 
+            //    .AndEvery(5)        //Run the job every minute
+            //    .Minutes();
+
+            //Schedule<GenerateTransaction>()
+            //    .NonReentrant()
+            //    .ToRunNow()
+            //    .AndEvery(1)
+            //    .Days();
 
             //==================
             //Add more jobs here

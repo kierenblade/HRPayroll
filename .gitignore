@@ -32,3 +32,6 @@ Bootcamp.Payroll.Simulator/.git/
 EmailNotifyer/.vs/*
 EmailNotifyer/EmailNotifyer/obj/*
 EmailNotifyer/EmailNotifyer/bin/*
+HRPayroll.EmailService/.vs/*
+HRPayroll.EmailService/HRPayroll.EmailService/obj/*
+HRPayroll.EmailService/HRPayroll.EmailService/bin/*

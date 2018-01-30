@@ -18,7 +18,7 @@ namespace FlourishAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            //JobManager.Initialize(new ScheduledJobRegistry());
+            JobManager.Initialize(new ScheduledJobRegistry());
         }
 
         public IConfiguration Configuration { get; }
