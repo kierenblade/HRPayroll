@@ -199,9 +199,9 @@ namespace FlourishAPI.Models
             }
         }
 
-        public static List<Employee> GetAllEmployees(this Employee def)
+        public static List<Employee> GetAllEmployees(this Employee def, string databaseName = "FlourishDB")
         {
-            List<Employee> lookUpCollection = new DatabaseConnection().DatabaseConnect().GetCollection<Employee>("Employee").AsQueryable().ToList();
+            List<Employee> lookUpCollection = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<Employee>("Employee").AsQueryable().ToList();
 
             if (lookUpCollection.Count > 0)
             {
