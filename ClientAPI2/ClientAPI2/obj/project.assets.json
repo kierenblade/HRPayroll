@@ -13646,7 +13646,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ttshifularo\\.nuget\\packages\\": {},
+    "C:\\Users\\WMartin\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13655,17 +13655,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\ttshifularo\\Documents\\Visual Studio 2017 Projects\\ClientAPI2\\ClientAPI2\\ClientAPI2.csproj",
+      "projectUniqueName": "C:\\Users\\WMartin\\Desktop\\Bootcamp 2018\\Project\\Flourish.Backend\\ClientAPI2\\ClientAPI2\\ClientAPI2.csproj",
       "projectName": "ClientAPI2",
-      "projectPath": "C:\\Users\\ttshifularo\\Documents\\Visual Studio 2017 Projects\\ClientAPI2\\ClientAPI2\\ClientAPI2.csproj",
-      "packagesPath": "C:\\Users\\ttshifularo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ttshifularo\\Documents\\Visual Studio 2017 Projects\\ClientAPI2\\ClientAPI2\\obj\\",
+      "projectPath": "C:\\Users\\WMartin\\Desktop\\Bootcamp 2018\\Project\\Flourish.Backend\\ClientAPI2\\ClientAPI2\\ClientAPI2.csproj",
+      "packagesPath": "C:\\Users\\WMartin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\WMartin\\Desktop\\Bootcamp 2018\\Project\\Flourish.Backend\\ClientAPI2\\ClientAPI2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\ttshifularo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\WMartin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

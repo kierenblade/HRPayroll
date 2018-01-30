@@ -61,8 +61,8 @@ namespace ClientAPI2.Controllers
             emps.Remove(e);
             e.Delete("ClientDB");
 
-            List<Employee> weekly = emps.Where(x => x.PayFrequency == PayFrequency.Weekly).ToList();
-            List<Employee> monthly = emps.Where(x => x.PayFrequency == PayFrequency.Monthly).ToList();
+            List<Employee> weekly = emps.Where(x => x.PayFrequency == PayFrequency.Weekly && x.EmployeeStatus == EmployeeStatus.Employed).ToList();
+            List<Employee> monthly = emps.Where(x => x.PayFrequency == PayFrequency.Monthly && x.EmployeeStatus == EmployeeStatus.Employed).ToList();
             List<Employee> toSend = new List<Employee>();
 
             weekly = weekly.Where(x => x.PayDate == (int)DateTime.Now.DayOfWeek).ToList();
