@@ -13747,11 +13747,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\ttshifularo\\Documents\\Visual Studio 2017 Projects\\ClientAPI\\ClientAPI\\ClientAPI.csproj",
+      "projectUniqueName": "C:\\Users\\ttshifularo\\Documents\\HR Payroll\\HR Payroll.WebService\\ClientAPI\\ClientAPI\\ClientAPI.csproj",
       "projectName": "ClientAPI",
-      "projectPath": "C:\\Users\\ttshifularo\\Documents\\Visual Studio 2017 Projects\\ClientAPI\\ClientAPI\\ClientAPI.csproj",
+      "projectPath": "C:\\Users\\ttshifularo\\Documents\\HR Payroll\\HR Payroll.WebService\\ClientAPI\\ClientAPI\\ClientAPI.csproj",
       "packagesPath": "C:\\Users\\ttshifularo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ttshifularo\\Documents\\Visual Studio 2017 Projects\\ClientAPI\\ClientAPI\\obj\\",
+      "outputPath": "C:\\Users\\ttshifularo\\Documents\\HR Payroll\\HR Payroll.WebService\\ClientAPI\\ClientAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

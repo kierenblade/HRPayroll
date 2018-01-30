@@ -28,8 +28,7 @@
           "Microsoft.NETCore.App": "2.0.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.0",
           "MongoDB.Driver": "2.5.0",
-          "FlourishAPI": "1.0.0.0",
-          "HRPayroll.Classes": "1.0.0.0"
+          "FlourishAPI": "1.0.0.0"
         },
         "runtime": {
           "ClientAPI.dll": {}
@@ -4322,14 +4321,6 @@
           "FlourishAPI.dll": {}
         }
       },
-      "HRPayroll.Classes/1.0.0.0": {
-        "runtime": {
-          "HRPayroll.Classes.dll": {}
-        },
-        "compile": {
-          "HRPayroll.Classes.dll": {}
-        }
-      },
       "Microsoft.NETCore.App/2.0.0": {
         "dependencies": {
           "Microsoft.NETCore.DotNetHostPolicy": "2.0.0",
@@ -6908,11 +6899,6 @@
       "runtimeStoreManifestName": "aspnetcore-store-2.0.0-linux-x64.xml;aspnetcore-store-2.0.0-osx-x64.xml;aspnetcore-store-2.0.0-win7-x64.xml;aspnetcore-store-2.0.0-win7-x86.xml"
     },
     "FlourishAPI/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "HRPayroll.Classes/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

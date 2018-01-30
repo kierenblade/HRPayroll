@@ -1,5 +1,5 @@
-C:\Users\ttshifularo\Documents\Visual Studio 2017 Projects\ClientAPI\ClientAPI
+C:\Users\ttshifularo\Documents\HR Payroll\HR Payroll.WebService\ClientAPI\ClientAPI
 --output-path=obj\Release\netcoreapp2.0\
 --application-name=ClientAPI
---content-root=C:\Users\ttshifularo\Documents\Visual Studio 2017 Projects\ClientAPI\ClientAPI
+--content-root=C:\Users\ttshifularo\Documents\HR Payroll\HR Payroll.WebService\ClientAPI\ClientAPI
 --file=
