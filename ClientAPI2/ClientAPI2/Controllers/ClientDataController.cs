@@ -38,7 +38,7 @@ namespace ClientAPI2.Controllers
         }
 
         [HttpPost("SyncEmployees")]
-        public IEnumerable<Employee> SyncEmployees(string[] empIDs)
+        public IEnumerable<Employee> SyncEmployees(List<string> empIDs)
         {
 
             Employee e = new Employee();
@@ -52,7 +52,7 @@ namespace ClientAPI2.Controllers
         }
 
         [HttpPost("SyncEmployees4Today")]
-        public IEnumerable<Employee> GetEmployees4Today(string[] empIDs)
+        public IEnumerable<Employee> GetEmployees4Today([FromBody] List<string> empIDs)
         {
 
             Employee e = new Employee();
