@@ -33,12 +33,8 @@ namespace FlourishAPI.Controllers
         // POST api/login
         [HttpPost]
       
-        public Boolean Post([FromBody]LoginDetailsDTO userDetails)
+        public SuccesfullLoginDTO Post([FromBody]LoginDetailsDTO userDetails)
         {
-
-
-           
-            //SignInManager signIn = new SignInManager(userDetails.Username, userDetails.Password);
 
           
             LoginDetails verifyingAccount = new LoginDetails() { Username = userDetails.Username, Hash = userDetails.Password };
@@ -48,18 +44,13 @@ namespace FlourishAPI.Controllers
             if (verifyingAccount != null)
             {
 
-                return true;
+                return new SuccesfullLoginDTO(verifyingAccount);
             }
             else
             {
-                return false;
+                return new SuccesfullLoginDTO();
             }
 
-            //SignInManager signIn = new SignInManager(details.Username, details.Password);
-
-            //success = signIn.ValidateUserDetails();
-
-            //return success;
         }
 
 

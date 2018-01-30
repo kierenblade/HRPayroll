@@ -235,14 +235,22 @@ namespace FlourishAPI.Controllers
                 filter = filter.AsQueryable().Where(x => x.Amount <= reportRequestDetails.EndAmount).ToList(); ;
             }
 
+            List<Transaction> withBUs = new List<Transaction>();
+
             if (reportRequestDetails.BU.Length != 0)
             {
-
+                IEnumerable<Transaction> temp = new List<Transaction>();
                 foreach (var item in reportRequestDetails.BU)
                 {
-                    filter = filter.AsQueryable().Where(x => x.Employee.BusinessUnit.Name == item).ToList(); ;
+                    temp = filter.AsQueryable().Where(x => x.Employee.BusinessUnit.Name == item).ToList();
+
+                    foreach (Transaction instant in temp)
+                    {
+                        withBUs.Add(instant);
+                    }
                 }
-               
+
+                filter = withBUs;
             }
 
             if (reportRequestDetails.EmployeeID != null)
