@@ -17,7 +17,7 @@ namespace FlourishAPI.Models.Scheduler
 
     public class EmployeeSync : IJob
     {
-        private const string _clientEmpSyncURL = "http://localhost:51422/api/Employee";
+        private const string _clientEmpSyncURL = "http://172.18.12.209/api/ClientData/SyncEmployees";
         public EmployeeSync()
         {
             

@@ -38,6 +38,7 @@ namespace FlourishAPI.Models
             GenerateTransactionFromEmployeeList(monthlyEmployees);
 
             e.Delete();
+
             new EventLogger(string.Format("COMPLETED: Generation of transactions for \"{0}\"", DateTime.Now),
                 Severity.Event).Log();
         }

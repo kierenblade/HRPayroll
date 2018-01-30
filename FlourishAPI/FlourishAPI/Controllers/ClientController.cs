@@ -33,6 +33,7 @@ namespace FlourishAPI.Controllers
         public void SyncEmployees()
         {
             EmployeeSync.SyncEmployeeDetailsFromClient().Wait();
+
         }
 
         [HttpPost("RecieveEmployeeDetails")]
@@ -45,6 +46,24 @@ namespace FlourishAPI.Controllers
         public async void CompanyOnboarding([FromBody] Company newCompany)
         {
             newCompany.InsertDocument();
+        }
+
+        [HttpGet("SyncAllEmployees")]
+        public async void SyncAllEmployees()
+        {
+            string url = "http://172.18.12.209/api/ClientData/SyncAllEmployees";
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    var rootresult = JsonConvert.DeserializeObject<List<Employee>>(result);
+
+                    await EmployeeSync.InsertUpdateEmployeeDetails(rootresult);
+                }
+            }
         }
     }
 }

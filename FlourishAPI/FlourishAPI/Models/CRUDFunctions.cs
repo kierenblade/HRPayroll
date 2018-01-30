@@ -129,11 +129,11 @@ namespace FlourishAPI.Models
                     {
                         case "Employee":
                             Employee e = (Employee)item;
-                            new EmployeeAud() { EmployeeId = 1, FirstName = e.FirstName, LastName = e.LastName, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            new EmployeeAud() { EmployeeId = 1, FirstName = e.FirstName, LastName = e.LastName, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishDB_Aud");
                             break;
                         case "LoginDetails":
                             LoginDetails l = (LoginDetails)item;
-                            new LoginDetailsAud() { Username = l.Username, Hash = l.Hash, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            new LoginDetailsAud() { Username = l.Username, Hash = l.Hash, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishDB_Aud");
                             break;
                         case "ContactDetails":
                          //   ContactDetails c = (ContactDetails)item;
@@ -141,7 +141,7 @@ namespace FlourishAPI.Models
                             break;
                         case "Company":
                             Company o = (Company)item;
-                            new CompanyAud() { Name = o.Name, AccountNumber = o.AccountNumber, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishAUD_DB");
+                            new CompanyAud() { Name = o.Name, AccountNumber = o.AccountNumber, ChangeBy = "System", ChangeTime = DateTime.Now, ChangeLog = changes }.InsertDocument("FlourishDB_Aud");
                             break;
 
 
