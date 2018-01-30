@@ -17,9 +17,11 @@ namespace FlourishAPI.Controllers
 
         // GET api/Report/SalsPerBU
         [HttpGet("TotSalsPerMonth/{id}")]
-        public IEnumerable<DashboardDataDTO> SalariesPerMonth(string id) {
+        public IEnumerable<DashboardDataDTO> SalariesPerMonth(string id,[FromBody] SuccesfullLoginDTO logCred) {
 
-            
+           if(!new TokenAuthentication().VerifyToken(logCred)){
+                return null;
+            }
 
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
