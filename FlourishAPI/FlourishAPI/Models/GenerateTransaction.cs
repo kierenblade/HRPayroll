@@ -26,8 +26,8 @@ namespace FlourishAPI.Models
             List<Employee> monthlyEmployees = await GetEmployeesPaidToday(PayFrequency.Monthly);
 
             //Send list of employees being paid today to client to verify that the employees get paid today
-            await EmployeeSync.SyncEmployeeDetailsFromClient(weeklyEmployees, "");
-            await EmployeeSync.SyncEmployeeDetailsFromClient(monthlyEmployees, "");
+            await EmployeeSync.SyncEmployeeDetailsFromClient(weeklyEmployees, "http://172.18.12.209/api/ClientData/SyncEmployees4Today");
+            await EmployeeSync.SyncEmployeeDetailsFromClient(monthlyEmployees, "http://172.18.12.209/api/ClientData/SyncEmployees4Today");
 
             //Get the updated records
             weeklyEmployees = await GetEmployeesPaidToday(PayFrequency.Weekly);
@@ -36,8 +36,6 @@ namespace FlourishAPI.Models
             //Generate weekly transactions
             await GenerateTransactionFromEmployeeList(weeklyEmployees, true);
             await GenerateTransactionFromEmployeeList(monthlyEmployees, true);
-            
-
 
             new EventLogger(string.Format("COMPLETED: Generation of transactions for \"{0}\"", DateTime.Now),
                 Severity.Event).Log();
@@ -101,7 +99,7 @@ namespace FlourishAPI.Models
             }
 
             t.Delete();
-            if (imediatePayment)
+            if (imediatePayment && existingEmployees.Count > 0)
             {
                 await ProcessTransactions(transactions);
             }

@@ -43,6 +43,9 @@ namespace FlourishAPI.Models.Scheduler
         {
             new EventLogger("STARTED: Syncing Employee details from Client", Severity.Event).Log();
 
+            if (employeeList.Count == 0)
+                return true;
+
             bool successful = false;
             using (var client = new HttpClient())
             {
