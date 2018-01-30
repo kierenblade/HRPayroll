@@ -39,13 +39,17 @@ namespace FlourishAPI.Models.Scheduler
                 {
                     //Get list of employees from DB
                     Employee emp = new Employee();
+                    emp.InsertDocument();
                     List<Employee> employeeList = emp.GetAllEmployees();
+                    emp.Delete();
+                    employeeList.Remove(emp);
                     List<string> employeeIdList = new List<string>();
                     foreach (Employee employee in employeeList)
                     {
                         employeeIdList.Add(employee.IdNumber);
                     }
 
+                    //Send the list of employee IDs to the client
                     var mycontent = JsonConvert.SerializeObject(employeeIdList);
                     var buffer = Encoding.UTF8.GetBytes(mycontent);
                     var bytecontent = new ByteArrayContent(buffer);
@@ -78,50 +82,56 @@ namespace FlourishAPI.Models.Scheduler
 
                     if (responsePost.IsSuccessStatusCode)
                     {
-                        //Get the list of employees from the Client
+                        //Get the list of employee objects from the Client
                         string result = await responsePost.Content.ReadAsStringAsync();
                         var employeeResult = JsonConvert.DeserializeObject<List<Employee>>(result);
 
-                        Employee e = new Employee();
-                        e.InsertDocument();
-                        List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
-                        existingEmployees.Remove(e);
-
-                        List<CRUDAble> crud = new List<CRUDAble>();
-                        foreach (Employee employee in employeeResult)
-                        {
-                            Dictionary<string, object> filterList = new Dictionary<string, object>();
-                            filterList.Add("IdNumber", employee.IdNumber);
-                            if (e.SearchDocument(filterList).LongCount() > 0)
-                            {
-                                filterList.Clear();
-                                filterList.Add("HashCode", employee.HashCode);
-                                List<CRUDAble> preFilter = e.SearchDocument(filterList).ToList();
-                                preFilter.Remove(e);
-                                if (preFilter.Count < 1)
-                                {
-                                    crud.Add(employee);
-                                }
-                            }
-                            else
-                            {
-                                employee.InsertDocument();
-                            }
-                        }
-                        crud.UpdateManyDocument();
-                        e.Delete();
+                        await InsertUpdateEmployeeDetails(employeeResult);
                         //=================Testing notifications===================
                        // new DesktopNotification() { Company = employeeResult[0].Company, CreationDate = DateTime.Now, Message = (crud.Count + " records have been updated from the previous list") }.InsertDocument();
                         //==================================================
                         //  new Thread(UpdateAndCreateTransactions).Start();
-                        UpdateAndCreateTransactions();
+                        await UpdateAndCreateTransactions();
                         retryFlag = false;
                     }
                 }
             }
         }
 
-        public static void UpdateAndCreateTransactions()
+        public static async Task InsertUpdateEmployeeDetails(List<Employee> employeeList)
+        {
+            Employee e = new Employee();
+            e.InsertDocument();
+            List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
+            existingEmployees.Remove(e);
+
+            List<CRUDAble> crud = new List<CRUDAble>();
+            foreach (Employee employee in employeeList)
+            {
+                Dictionary<string, object> filterList = new Dictionary<string, object>();
+                filterList.Add("IdNumber", employee.IdNumber);
+                if (e.SearchDocument(filterList).LongCount() > 0)
+                {
+                    filterList.Clear();
+                    filterList.Add("HashCode", employee.HashCode);
+                    List<CRUDAble> preFilter = e.SearchDocument(filterList).ToList();
+                    preFilter.Remove(e);
+                    if (preFilter.Count < 1)
+                    {
+                        crud.Add(employee);
+                    }
+                }
+                else
+                {
+                    employee.InsertDocument();
+                }
+            }
+
+            crud.UpdateManyDocument();
+            e.Delete();
+        }
+
+        public static async Task UpdateAndCreateTransactions()
         {
             Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit() };
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
@@ -134,12 +144,18 @@ namespace FlourishAPI.Models.Scheduler
             foreach (Employee item in existingEmployees)
             {
                 Dictionary<string, object> filterList = new Dictionary<string, object>();
-                filterList.Add("Employee.HashCode", item.HashCode);
+                filterList.Add("Employee.IdNumber", item.IdNumber);
                 List<CRUDAble> result = t.SearchDocument(filterList);
                 result.Remove(t);
                 if (result.LongCount() > 0)
                 {
-                    result.UpdateManyDocument();
+                    List<CRUDAble> emp = new List<CRUDAble>(); 
+                    foreach (Transaction i in result)
+                    {
+                        i.Employee = item;
+                        emp.Add(i);
+                    }
+                    emp.UpdateManyDocument();
                 }
                 else
                 {

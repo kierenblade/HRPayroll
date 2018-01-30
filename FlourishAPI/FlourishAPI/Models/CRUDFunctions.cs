@@ -85,6 +85,10 @@ namespace FlourishAPI.Models
                         {
                             var chosenObject = prop.GetValue(item); // gets the new object within the item
                             var existingObject = prop.GetValue(query[0]); // gets the old object within the item
+                            if (prop.Name.Equals("Id"))
+                            {
+                                item.Id = (ObjectId)existingObject;
+                            }
                             if (chosenObject != null) //  checks if the object was orginally null
                             {
                                 foreach (var otherProp in chosenObject.GetType().GetProperties()) // this will iterate through the objects properties to check what has changed
@@ -107,6 +111,7 @@ namespace FlourishAPI.Models
                             // this does the same as the above, with the only difference that its a System defined
                             var afterChangeMain = prop.GetValue(item);
                             var beforeChangeMain = prop.GetValue(query[0]);
+                            
                             if (beforeChangeMain != null && afterChangeMain != null)
                             {
                                 if (beforeChangeMain.ToString() != afterChangeMain.ToString())
@@ -141,6 +146,7 @@ namespace FlourishAPI.Models
 
 
                     }
+
                     
                     updatedQuery.Add(item); // adds the item to the list that will be iterated through to update
                 }

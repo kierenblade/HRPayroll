@@ -17,7 +17,7 @@ namespace FlourishAPI.Models.Scheduler
                 .NonReentrant()     //Only one instance of the job can run at a time
                 .ToRunNow()         //Run the job immediately 
                 .AndEvery(5)        //Run the job every minute
-                .Seconds();
+                .Minutes();
 
             //==================
             //Add more jobs here
