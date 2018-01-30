@@ -24,7 +24,7 @@ namespace FlorishTestEnviroment
                 List<Employee> employees = JsonConvert.DeserializeObject<List<Employee>>(json);
                 foreach (Employee item in employees)
                 {
-                    item.InsertDocument("ClientDB");
+                    item.InsertDocument();
                     Console.WriteLine(item.FirstName);
                 }
             }
@@ -32,30 +32,30 @@ namespace FlorishTestEnviroment
 
             Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit() };
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
-            e.InsertDocument("ClientDB");
-            t.InsertDocument("ClientDB");
-            List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>(), "ClientDB");
+            e.InsertDocument();
+            t.InsertDocument();
+            List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
             List<Transaction> toUpdateTransactions = new List<Transaction>();
-            e.Delete("ClientDB");
+            e.Delete();
             existingEmployees.Remove(e);
             foreach (Employee item in existingEmployees)
             {
                 Dictionary<string, object> filterList = new Dictionary<string, object>();
                 filterList.Add("Employee.HashCode", item.HashCode);
-                List<CRUDAble> result = t.SearchDocument(filterList, "ClientDB");
+                List<CRUDAble> result = t.SearchDocument(filterList);
                 result.Remove(t);
                 if (result.LongCount() > 0)
                 {
-                    result.UpdateManyDocument("ClientDB");
+                    result.UpdateManyDocument();
                 }
                 else
                 {
-                    new Transaction() { Employee = item, Company = item.Company, Amount = item.Salary, DateCreated = DateTime.Now, Status = Status.Pending }.InsertDocument("ClientDB");
+                    new Transaction() { Employee = item, Company = item.Company, Amount = item.Salary, DateCreated = DateTime.Now, Status = Status.Pending }.InsertDocument();
                 }
             }
 
 
-            t.Delete("ClientDB");
+            t.Delete();
 
 
 
@@ -66,8 +66,8 @@ namespace FlorishTestEnviroment
 
                 foreach (Company item in companies)
                 {
-                    new LoginDetails() { Company = item, Username = "Wade", Hash = "Wade", Role = new Role() { Name = "Human Relations Manager" } }.InsertDocument("ClientDB");
-                    item.InsertDocument("ClientDB");
+                    new LoginDetails() { Company = item, Username = "Wade", Hash = "Wade", Role = new Role() { Name = "Human Relations Manager" } }.InsertDocument();
+                    item.InsertDocument();
                     Console.WriteLine(item.Name);
                 }
             }
@@ -79,7 +79,7 @@ namespace FlorishTestEnviroment
 
                 foreach (Bank item in banks)
                 {
-                    item.InsertDocument("ClientDB");
+                    item.InsertDocument();
                     Console.WriteLine(item.Name);
                 }
             }
