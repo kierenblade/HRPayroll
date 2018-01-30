@@ -39,7 +39,10 @@ namespace FlourishAPI.Models.Scheduler
                 {
                     //Get list of employees from DB
                     Employee emp = new Employee();
+                    emp.InsertDocument();
                     List<Employee> employeeList = emp.GetAllEmployees();
+                    emp.Delete();
+                    employeeList.Remove(emp);
                     List<string> employeeIdList = new List<string>();
                     foreach (Employee employee in employeeList)
                     {
