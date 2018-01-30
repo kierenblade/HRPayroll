@@ -51,5 +51,46 @@ namespace ClientAPI2.Controllers
 
         }
 
+        [HttpPost("SyncEmployees4Today")]
+        public IEnumerable<Employee> GetEmployees4Today(string[] empIDs)
+        {
+
+            Employee e = new Employee();
+            e.InsertDocument("ClientDB");
+            List<Employee> emps = e.GetAllEmployees("ClientDB");
+            emps.Remove(e);
+            e.Delete("ClientDB");
+
+            List<Employee> weekly = emps.Where(x => x.PayFrequency == PayFrequency.Weekly).ToList();
+            List<Employee> monthly = emps.Where(x => x.PayFrequency == PayFrequency.Monthly).ToList();
+            List<Employee> toSend = new List<Employee>();
+
+            foreach (Employee item in weekly)
+            {
+                if (item.PayDate ==  (int)DateTime.Now.DayOfWeek)
+                {
+                    weekly.Add(item);
+                }
+            }
+
+            foreach (Employee item in monthly)
+            {
+                if (item.PayDate == DateTime.Now.Day)
+                {
+                    monthly.Add(item);
+                }
+            }
+
+            toSend = monthly;
+            
+            foreach (Employee item in weekly)
+            {
+                toSend.Add(item);
+            }
+
+            return toSend;
+
+        }
+
     }
 }
