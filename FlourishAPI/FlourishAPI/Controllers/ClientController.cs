@@ -30,7 +30,7 @@ namespace FlourishAPI.Controllers
         }
 
         [HttpGet("SyncEmp")]
-        public void SyncEmployees()
+        public async Task<bool> SyncEmployees()
         {
             //Get list of employees from DB
             Employee emp = new Employee();
@@ -39,8 +39,7 @@ namespace FlourishAPI.Controllers
             emp.Delete();
             employeeList.Remove(emp);
 
-            EmployeeSync.SyncEmployeeDetailsFromClient(employeeList).Wait();
-
+            return await EmployeeSync.SyncEmployeeDetailsFromClient(employeeList);
         }
 
         [HttpPost("RecieveEmployeeDetails")]

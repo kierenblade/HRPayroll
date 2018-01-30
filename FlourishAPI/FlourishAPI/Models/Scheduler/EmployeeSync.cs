@@ -39,10 +39,11 @@ namespace FlourishAPI.Models.Scheduler
         }
 
         //Send the client a list of employee IDs, client checks which employees are missing or need to be removed, recieve a list of employees
-        public static async Task SyncEmployeeDetailsFromClient(List<Employee> employeeList, string url = _clientEmpSyncURL)
+        public static async Task<bool> SyncEmployeeDetailsFromClient(List<Employee> employeeList, string url = _clientEmpSyncURL)
         {
             new EventLogger("STARTED: Syncing Employee details from Client", Severity.Event).Log();
 
+            bool successful = false;
             using (var client = new HttpClient())
             {
                 bool retryFlag = true;
@@ -101,6 +102,7 @@ namespace FlourishAPI.Models.Scheduler
 
                         await InsertUpdateEmployeeDetails(employeeResult);
                         retryFlag = false;
+                        successful = true;
                     }
                     else
                     {
@@ -127,6 +129,7 @@ namespace FlourishAPI.Models.Scheduler
             }
 
             new EventLogger("COMPLETED: Syncing Employee details from Client", Severity.Event).Log();
+            return successful;
         }
 
         public static async Task InsertUpdateEmployeeDetails(List<Employee> employeeList)

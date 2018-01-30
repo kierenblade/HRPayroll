@@ -141,7 +141,6 @@ namespace FlourishAPI.Models
         {
             //Push transactions to payment switch
             SwitchHandler switchHandler = new SwitchHandler("http://172.18.12.224");
-            //TODO: Add Switch URL
             List<TransactionProcessResult> processResults = await switchHandler.ProcessTransaction(transactionList);
 
             foreach (TransactionProcessResult processResult in processResults)
