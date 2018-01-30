@@ -56,15 +56,22 @@ namespace FlourishAPI.Models
                         var selectedEmp  = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<Employee>(item.GetType().Name);
                         Employee emp = (Employee)item;
                         List<Employee> eL = selectedEmp.AsQueryable().Where(p => p.IdNumber == emp.IdNumber).ToList();
-                        query.Add(eL[0]);
                         listCount = eL.Count;
+                        if(listCount > 0)
+                        {
+                            query.Add(eL[0]);
+                        }
                         break;
                     case "Transaction":
                         var selectedTrans = new DatabaseConnection().DatabaseConnect(databaseName).GetCollection<Transaction>(item.GetType().Name);
                         Transaction trans = (Transaction)item;
                         List<Transaction> tL = selectedTrans.AsQueryable().Where(p => p.Employee.IdNumber == trans.Employee.IdNumber).ToList();
-                        query.Add(tL[0]);
+                        
                         listCount = tL.Count;
+                        if (listCount > 0)
+                        {
+                            query.Add(tL[0]);
+                        }
                         break;
                 }
                  // queries the collection to make sure the document already exists
