@@ -13,16 +13,26 @@ namespace PaymentSwitchHandler
 
     public class SwitchHandler
     {
-        public string _apiUrl { get; set; }
-
+        private string _apiUrl { get; set; }
         public SwitchHandler(string apiUrl)
         {
             this._apiUrl = apiUrl;
         }
         public async Task<List<TransactionProcessResult>> ProcessTransaction(List<Transaction> transactionsIn)
         {
-            Console.WriteLine("PayeBoi");
+            //Console.WriteLine("PayeBoi");
             List<TransactionProcessResult> output = new List<TransactionProcessResult>();
+            for (int i = 0; i < 3; i++)
+            {
+                if (await TestApi())
+                {
+                    break;
+                }
+                if (i == 2)
+                {
+                    return output;
+                }
+            }
             foreach (var transaction in transactionsIn)
             {
                 switch (transaction.Company.PaymentType)
@@ -40,7 +50,6 @@ namespace PaymentSwitchHandler
             }
             return output;
         }
-
         private async Task<TransactionProcessResult> ProcessAbsa(Transaction t)
         {
             string paymentURL = _apiUrl + "/api/ABSA/ProccessPayment";
@@ -87,7 +96,6 @@ namespace PaymentSwitchHandler
 
             return new TransactionProcessResult() { TransactionId = t.Id, Code = StatusCode.Success };
         }
-
         private async Task<TransactionProcessResult> ProcessVisa(Transaction t)
         {
             string paymentURL = _apiUrl + "/api/VISA/ProccessPayment";
@@ -136,6 +144,14 @@ namespace PaymentSwitchHandler
             }
 
             return new TransactionProcessResult() { TransactionId = t.Id, Code = StatusCode.Success };
+        }
+        private async Task<bool> TestApi()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage res = await client.GetAsync(_apiUrl + "/api/values");
+                return res.IsSuccessStatusCode;
+            }
         }
     }
     class PaymentResponse
