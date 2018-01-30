@@ -4,11 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FlourishAPI.DTOs;
-using HRPayroll.Classes.Models;
 using Newtonsoft.Json;
 using System.Text;
-using FlorishTestEnviroment;
-using HRPayroll.Classes;
+using FlourishAPI.Models;
+using FlourishAPI.Models.Classes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

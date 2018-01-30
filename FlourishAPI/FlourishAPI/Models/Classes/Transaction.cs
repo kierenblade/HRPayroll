@@ -1,0 +1,41 @@
+using System;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace FlourishAPI.Models.Classes
+{
+    #region Enum
+    public enum Status { Success = 1, Fail , Pending}
+    #endregion
+    public class Transaction : CRUDAble{
+        #region Fields
+
+        [BsonElement("Amount")]
+        public decimal Amount { get; set; }
+
+        [BsonElement("Employee")]
+        public Employee Employee { get; set; }
+
+        [BsonElement("EmpReference")]
+        public string EmployeeReference { get; set; }
+
+        [BsonElement("Company")]
+        public Company Company { get; set; }
+
+        [BsonElement("CompReference")]
+        public string CompanyReference { get; set; }
+
+        [BsonElement("Status")]
+        public Status Status { get; set; }
+
+        [BsonElement("DateCreated")]
+        public DateTime DateCreated { get; set; }
+        #endregion
+
+        #region Methods
+        public override string createHash()
+        {
+            return string.Format("{0}-{1}-{2}-{3}-{4}",Employee.IdNumber,EmployeeReference,Company.Name,CompanyReference,Amount);
+        }
+        #endregion
+    }
+}

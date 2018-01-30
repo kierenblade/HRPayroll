@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using HRPayroll.Classes.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using FlorishTestEnviroment;
 using System.Threading;
+using FlourishAPI.Models;
+using FlourishAPI.Models.Classes;
 
 namespace FlourishAPI.Controllers
 {
@@ -25,23 +25,6 @@ namespace FlourishAPI.Controllers
         public async void Post()
         {
             Console.WriteLine("POST");
-        }
-
-        [HttpPost("{query}")]
-        public async void Post(string query)
-        {
-            switch (query)
-            {
-                case "SyncEmp":
-
-                    break;
-            }
-        }
-
-        [HttpPost]
-        public async void SyncEmp()
-        {
-            
         }
 
         public async void SyncAllEmployees()
