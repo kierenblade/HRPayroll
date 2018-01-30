@@ -42,7 +42,7 @@ namespace FlourishAPI.Controllers
         }
 
         [HttpPost("CompanyOnboarding")]
-        public async void CompanyOnboarding(Company newCompany)
+        public async void CompanyOnboarding([FromBody] Company newCompany)
         {
             newCompany.InsertDocument();
         }
