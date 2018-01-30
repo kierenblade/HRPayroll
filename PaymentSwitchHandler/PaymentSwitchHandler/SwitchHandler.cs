@@ -17,12 +17,13 @@ namespace PaymentSwitchHandler
         //public async task that will handle the processing of a list of transactions
         public static async Task<List<ProcessResults>> ProcessTransaction(List<Transaction> transactionsIn)
         {
+            Console.WriteLine("PayeBoi");
             //represents the list of all processed transactions and their completion status
             List<ProcessResults> output = new List<ProcessResults>();
             foreach (var transaction in transactionsIn)
             {
                 //using the appropraite payment switch for the appropriate payment type
-                switch (transaction.Employee.PaymentType)
+                switch (transaction.Company.PaymentType)
                 {
                     case PaymentType.ABSA:
                         //processes the transaction in accordance with the ABSA payswitch
@@ -52,23 +53,9 @@ namespace PaymentSwitchHandler
                     AmountToPay = t.Amount.ToString(),
                     ClientID = t.Company.CompanyId.ToString(),
                     DestinationAccount = t.Employee.AccountNumber,
-                    OriginationAccount = t.Company.AccountNumber
+                    OriginationAccount = t.Company.AccountNumber,
+                    DestinationBankCode = t.Employee.Bank.BankId
                 };
-
-                switch (t.Employee.Bank.Name)
-                {
-                    case "ABSA":
-                        req.DestinationBankCode = (int)BankCode.ABSA;
-                        break;
-                    case "FNB":
-                        req.DestinationBankCode = (int)BankCode.FNB;
-                        break;
-                    default:
-                        req.DestinationBankCode = (int)BankCode.None;
-                        break;
-                }
-
-                //req.DestinationBankCode = (int)BankCode.ABSA;
 
             }
             catch (Exception e)
@@ -119,23 +106,11 @@ namespace PaymentSwitchHandler
                     Currency = Currency.ZAR,
                     DestinationCardNumber = t.Employee.CardNumber, //add
                     OriginatorCardNumber = t.Company.CardNumber, //add
-                    OriginatorCVV = int.Parse(t.Company.CardCVV),//add
+                    OriginatorCVV = int.Parse(t.Company.CardCVV), //add
                     TransactionAmount = t.Amount.ToString(),
-                    VendorID = t.Company.CompanyId
+                    VendorID = t.Company.CompanyId,
+                    OriginatorBankCode = t.Company.Bank.BankId
                 };
-
-                switch (t.Company.Bank.Name)
-                {
-                    case "ABSA":
-                        req.OriginatorBankCode = (int)BankCode.ABSA;
-                        break;
-                    case "FNB":
-                        req.OriginatorBankCode = (int)BankCode.FNB;
-                        break;
-                    default:
-                        req.OriginatorBankCode = (int)BankCode.None;
-                        break;
-                }
 
             }
             catch (Exception e)
@@ -151,19 +126,19 @@ namespace PaymentSwitchHandler
                 bytecontent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                 HttpResponseMessage res = await client.PostAsync(paymentURL, bytecontent);
-                PaymentResponse result;
+                VisaPaymentResponse result;
                 if (res.IsSuccessStatusCode)
                 {
-                    result = JsonConvert.DeserializeObject<PaymentResponse>(await res.Content.ReadAsStringAsync());
+                    result = JsonConvert.DeserializeObject<VisaPaymentResponse>(await res.Content.ReadAsStringAsync());
                 }
                 else
                 {
                     return new ProcessResults() { TransactionId = t.Id, FailReason = "Post request failed" , Code = StatusCode.Network};
                 }
 
-                if (result.SuccessCode != 1)
+                if (result.PaymentResultCode != 1)
                 {
-                    return new ProcessResults() { TransactionId = t.Id, FailReason = result.Message , Code = StatusCode.Other};
+                    return new ProcessResults() { TransactionId = t.Id, FailReason = result.PaymentResultDescription , Code = StatusCode.Other};
                 }
             }
 
@@ -176,6 +151,12 @@ namespace PaymentSwitchHandler
     {
         public int SuccessCode { get; set; }
         public string Message { get; set; }
+    }
+
+    public class VisaPaymentResponse
+    {
+        public int PaymentResultCode { get; set; }
+        public string PaymentResultDescription { get; set; }
     }
     //the reply that will be sent back to the caller to handle failed transactions
     public class ProcessResults
