@@ -18,44 +18,44 @@ namespace FlorishTestEnviroment
 
 
 
-            using (StreamReader r = new StreamReader("empOut.json"))
-            {
-                string json = r.ReadToEnd();
-                List<Employee> employees = JsonConvert.DeserializeObject<List<Employee>>(json);
-                foreach (Employee item in employees)
-                {
-                    item.InsertDocument();
-                    Console.WriteLine(item.FirstName);
-                }
-            }
+            //using (StreamReader r = new StreamReader("transOut.json"))
+            //{
+            //    string json = r.ReadToEnd();
+            //    List<Transaction> employees = JsonConvert.DeserializeObject<List<Transaction>>(json);
+            //    foreach (Transaction item in employees)
+            //    {
+            //        item.InsertDocument();
+            //        Console.WriteLine(item.Employee.FirstName);
+            //    }
+            //}
 
 
-            Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit() };
-            Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
-            e.InsertDocument();
-            t.InsertDocument();
-            List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
-            List<Transaction> toUpdateTransactions = new List<Transaction>();
-            e.Delete();
-            existingEmployees.Remove(e);
-            foreach (Employee item in existingEmployees)
-            {
-                Dictionary<string, object> filterList = new Dictionary<string, object>();
-                filterList.Add("Employee.HashCode", item.HashCode);
-                List<CRUDAble> result = t.SearchDocument(filterList);
-                result.Remove(t);
-                if (result.LongCount() > 0)
-                {
-                    result.UpdateManyDocument();
-                }
-                else
-                {
-                    new Transaction() { Employee = item, Company = item.Company, Amount = item.Salary, DateCreated = DateTime.Now, Status = Status.Pending }.InsertDocument();
-                }
-            }
+            //Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit() };
+            //Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
+            //e.InsertDocument();
+            //t.InsertDocument();
+            //List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
+            //List<Transaction> toUpdateTransactions = new List<Transaction>();
+            //e.Delete();
+            //existingEmployees.Remove(e);
+            //foreach (Employee item in existingEmployees)
+            //{
+            //    Dictionary<string, object> filterList = new Dictionary<string, object>();
+            //    filterList.Add("Employee.HashCode", item.HashCode);
+            //    List<CRUDAble> result = t.SearchDocument(filterList);
+            //    result.Remove(t);
+            //    if (result.LongCount() > 0)
+            //    {
+            //        result.UpdateManyDocument();
+            //    }
+            //    else
+            //    {
+            //        new Transaction() { Employee = item, Company = item.Company, Amount = item.Salary, DateCreated = DateTime.Now, Status = Status.Pending }.InsertDocument();
+            //    }
+            //}
 
 
-            t.Delete();
+            //t.Delete();
 
 
 
@@ -83,8 +83,8 @@ namespace FlorishTestEnviroment
                     Console.WriteLine(item.Name);
                 }
             }
-          //  Employee e = new Employee() { Company = new Company(), Bank = new Bank()};
-            
+            //  Employee e = new Employee() { Company = new Company(), Bank = new Bank()};
+
             //e.InsertDocument();
 
             //List<CRUDAble> eList = e.SearchDocument(new Dictionary<string, object>());

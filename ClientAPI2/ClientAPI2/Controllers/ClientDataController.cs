@@ -38,7 +38,7 @@ namespace ClientAPI2.Controllers
         }
 
         [HttpPost("SyncEmployees")]
-        public IEnumerable<Employee> SyncEmployees(string[] empIDs)
+        public IEnumerable<Employee> SyncEmployees([FromBody] List<string> empIDs)
         {
 
             Employee e = new Employee();
@@ -48,6 +48,34 @@ namespace ClientAPI2.Controllers
             e.Delete("ClientDB");
 
             return emps.Where(x => x.EmployeeStatus == EmployeeStatus.Employed).ToList();
+
+        }
+
+        [HttpPost("SyncEmployees4Today")]
+        public IEnumerable<Employee> GetEmployees4Today([FromBody] List<string> empIDs)
+        {
+
+            Employee e = new Employee();
+            e.InsertDocument("ClientDB");
+            List<Employee> emps = e.GetAllEmployees("ClientDB");
+            emps.Remove(e);
+            e.Delete("ClientDB");
+
+            List<Employee> weekly = emps.Where(x => x.PayFrequency == PayFrequency.Weekly).ToList();
+            List<Employee> monthly = emps.Where(x => x.PayFrequency == PayFrequency.Monthly).ToList();
+            List<Employee> toSend = new List<Employee>();
+
+            weekly = weekly.Where(x => x.PayDate == (int)DateTime.Now.DayOfWeek && x.EmployeeStatus == EmployeeStatus.Employed).ToList();
+            monthly = monthly.Where(x => x.PayDate == DateTime.Now.Day && x.EmployeeStatus == EmployeeStatus.Employed).ToList();
+
+            toSend = monthly;
+            
+            foreach (Employee item in weekly)
+            {
+                toSend.Add(item);
+            }
+
+            return toSend;
 
         }
 

@@ -38,3 +38,4 @@ HRPayroll.EmailService/HRPayroll.EmailService/bin/*
 ClientAPI/.vs/*
 ClientAPI/ClientAPI/obj/*
 ClientAPI/ClientAPI/bin/*
+ClientAPI2/ClientAPI2/obj/ClientAPI2.csproj.nuget.cache
