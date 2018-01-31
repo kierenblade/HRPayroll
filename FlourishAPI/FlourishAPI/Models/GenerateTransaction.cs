@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FlourishAPI.Models.Classes;
 using FlourishAPI.Models.Scheduler;
 using FluentScheduler;
+using MongoDB.Bson;
 using PaymentSwitchHandler;
 
 namespace FlourishAPI.Models
@@ -146,9 +147,12 @@ namespace FlourishAPI.Models
                 if (processResult.Code == StatusCode.Success)
                 {
                     Dictionary<string, object> dictionary = new Dictionary<string, object>();
-                    dictionary.Add("TransactionId", processResult.TransactionId);
-
-                    List<CRUDAble> crudAbles = transactionList[0].SearchDocument(dictionary);
+                    dictionary.Add("_id", processResult.TransactionId);
+                    Transaction t = new Transaction(){Employee = new Employee(),Company = new Company()};
+                    t.InsertDocument();
+                    List<CRUDAble> crudAbles = t.SearchDocument(dictionary);
+                    crudAbles.Remove(t);
+                    t.Delete();
 
                     foreach (Transaction crud in crudAbles)
                     {

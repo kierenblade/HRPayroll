@@ -14,7 +14,6 @@ namespace PayswitchInitializer
     {
         static List<Employee> employees;
         static List<Company> companies;
-        static List<Bank> banks;
 
 
         static List<BankAccDetails> bankAcc = new List<BankAccDetails>();
@@ -33,12 +32,6 @@ namespace PayswitchInitializer
             {
                 string json = r.ReadToEnd();
                 companies = JsonConvert.DeserializeObject<List<Company>>(json);
-            }
-
-            using (StreamReader r = new StreamReader("banksOut.json"))
-            {
-                string json = r.ReadToEnd();
-                banks = JsonConvert.DeserializeObject<List<Bank>>(json);
             }
 
             Console.WriteLine("Processing Employees");
@@ -110,7 +103,7 @@ namespace PayswitchInitializer
 
         public static async Task<bool> insertBankAcc(BankAccDetails b)
         {
-            string url = "http://localhost:62337/Api/AddDBEntries/AddBankAccount";
+            string url = "http://172.18.12.224/Api/AddDBEntries/AddBankAccount";
             using (var client = new HttpClient())
             {
                 var request = JsonConvert.SerializeObject(b);
@@ -133,7 +126,7 @@ namespace PayswitchInitializer
 
         public static async Task<bool> insertCards(CardDetail c)
         {
-            string url = "http://localhost:62337/Api/AddDBEntries/AddCardAccount";
+            string url = "http://172.18.12.224/Api/AddDBEntries/AddCardAccount";
             using (var client = new HttpClient())
             {
                 var request = JsonConvert.SerializeObject(c);
