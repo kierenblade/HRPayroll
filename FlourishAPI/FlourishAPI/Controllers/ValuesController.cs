@@ -25,7 +25,7 @@ namespace FlourishAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        public string Post([FromBody]string value)
+        public string Post([FromHeader] string token,[FromBody]string value)
         {
             return "You code entered the post method";
         }

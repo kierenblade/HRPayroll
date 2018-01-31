@@ -1,0 +1,121 @@
+[
+  {
+    "CompanyId": 979,
+    "Name": "Ozean",
+    "AccountNumber": 523948940733,
+    "Bank": {
+      "BankId": 0,
+      "Name": "AAA"
+    },
+    "CardNumber": 219911601095,
+    "CardCVV": 251,
+    "BusinessUnits": [
+      {
+        "Name": "Norsul"
+      },
+      {
+        "Name": "Viagrand"
+      }
+    ]
+  },
+  {
+    "CompanyId": 512,
+    "Name": "Bleendot",
+    "AccountNumber": 662515209775,
+    "Bank": {
+      "BankId": 0,
+      "Name": "AAA"
+    },
+    "CardNumber": 300917703353,
+    "CardCVV": 451,
+    "BusinessUnits": [
+      {
+        "Name": "Artiq"
+      },
+      {
+        "Name": "Fibrodyne"
+      },
+      {
+        "Name": "Xymonk"
+      },
+      {
+        "Name": "Gallaxia"
+      },
+      {
+        "Name": "Comtour"
+      },
+      {
+        "Name": "Vidto"
+      }
+    ]
+  },
+  {
+    "CompanyId": 209,
+    "Name": "Zenthall",
+    "AccountNumber": 251256825884,
+    "Bank": {
+      "BankId": 0,
+      "Name": "AAA"
+    },
+    "CardNumber": 759045139006,
+    "CardCVV": 756,
+    "BusinessUnits": [
+      {
+        "Name": "Gynko"
+      },
+      {
+        "Name": "Pyramax"
+      }
+    ]
+  },
+  {
+    "CompanyId": 596,
+    "Name": "Koffee",
+    "AccountNumber": 649960023758,
+    "Bank": {
+      "BankId": 0,
+      "Name": "AAA"
+    },
+    "CardNumber": 974974158443,
+    "CardCVV": 402,
+    "BusinessUnits": [
+      {
+        "Name": "Farmage"
+      },
+      {
+        "Name": "Micronaut"
+      }
+    ]
+  },
+  {
+    "CompanyId": 564,
+    "Name": "Scentric",
+    "AccountNumber": 942019786049,
+    "Bank": {
+      "BankId": 0,
+      "Name": "AAA"
+    },
+    "CardNumber": 196078805702,
+    "CardCVV": 460,
+    "BusinessUnits": [
+      {
+        "Name": "Portico"
+      },
+      {
+        "Name": "Nitracyr"
+      },
+      {
+        "Name": "Geeky"
+      },
+      {
+        "Name": "Endipin"
+      },
+      {
+        "Name": "Comdom"
+      },
+      {
+        "Name": "Fiberox"
+      }
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" Version="2.5.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="HRPayroll.Classes">
+      <HintPath>..\..\..\source\repos\HRPayroll\HRPayroll.Classes\HRPayroll.Classes\bin\Debug\netcoreapp2.0\HRPayroll.Classes.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

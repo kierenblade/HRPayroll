@@ -35,7 +35,7 @@ namespace FlourishAPI.Models.Classes
         #region Methods
         public override string createHash()
         {
-            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}-{6}", NotificationId,CreationDate,Company.Name,Message,LoginDetails.Username,Area,AreaStatus);
+            return string.Format("{0}-{1}-{2}-{3}-{4}-{5}", NotificationId,CreationDate,Company.Name,Message,Area,AreaStatus);
         }
         #endregion
     }

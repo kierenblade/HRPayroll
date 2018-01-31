@@ -32,3 +32,10 @@ Bootcamp.Payroll.Simulator/.git/
 EmailNotifyer/.vs/*
 EmailNotifyer/EmailNotifyer/obj/*
 EmailNotifyer/EmailNotifyer/bin/*
+HRPayroll.EmailService/.vs/*
+HRPayroll.EmailService/HRPayroll.EmailService/obj/*
+HRPayroll.EmailService/HRPayroll.EmailService/bin/*
+ClientAPI/.vs/*
+ClientAPI/ClientAPI/obj/*
+ClientAPI/ClientAPI/bin/*
+ClientAPI2/ClientAPI2/obj/ClientAPI2.csproj.nuget.cache

@@ -14,6 +14,7 @@ namespace FlourishAPI.Models.Classes
             get { return createHash(); }
         }
 
+
         public abstract string createHash();
 
     }

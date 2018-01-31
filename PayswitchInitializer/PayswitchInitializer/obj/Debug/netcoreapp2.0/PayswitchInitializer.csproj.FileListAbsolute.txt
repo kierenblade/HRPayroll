@@ -8,3 +8,6 @@ C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitia
 C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\obj\Debug\netcoreapp2.0\PayswitchInitializer.csproj.CoreCompileInputs.cache
 C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\obj\Debug\netcoreapp2.0\PayswitchInitializer.AssemblyInfoInputs.cache
 C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\obj\Debug\netcoreapp2.0\PayswitchInitializer.AssemblyInfo.cs
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\bin\Debug\netcoreapp2.0\PayswitchInitializer.pdb
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\obj\Debug\netcoreapp2.0\PayswitchInitializer.dll
+C:\Users\jvanheerden\source\repos\HRPayroll\PayswitchInitializer\PayswitchInitializer\obj\Debug\netcoreapp2.0\PayswitchInitializer.pdb

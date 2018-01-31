@@ -1,4 +1,5 @@
 ﻿using HRPayroll.Classes.Models;
+using MongoDB.Bson;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,16 +13,17 @@ namespace PaymentSwitchHandler
 
     public class SwitchHandler
     {
-        private static string _apiUrl = "";
+        private static string _apiUrl = "http://localhost:62337";
         //public async task that will handle the processing of a list of transactions
         public static async Task<List<ProcessResults>> ProcessTransaction(List<Transaction> transactionsIn)
         {
+            Console.WriteLine("PayeBoi");
             //represents the list of all processed transactions and their completion status
             List<ProcessResults> output = new List<ProcessResults>();
             foreach (var transaction in transactionsIn)
             {
                 //using the appropraite payment switch for the appropriate payment type
-                switch (transaction.Employee.PaymentType)
+                switch (transaction.Company.PaymentType)
                 {
                     case PaymentType.ABSA:
                         //processes the transaction in accordance with the ABSA payswitch
@@ -31,7 +33,7 @@ namespace PaymentSwitchHandler
                         output.Add(await ProcessVisa(transaction));
                         break;
                     default:
-                        output.Add(new ProcessResults() { TransactionId = transaction.TransactionId, FailReason = "Invalid Payment Type. Only [ABSA] and [Visa] supported" , Code = StatusCode.Other});
+                        output.Add(new ProcessResults() { TransactionId = transaction.Id, FailReason = "Invalid Payment Type. Only [ABSA] and [Visa] supported" , Code = StatusCode.Other});
                         break;
                 }
             }
@@ -41,7 +43,7 @@ namespace PaymentSwitchHandler
         private static async Task<ProcessResults> ProcessAbsa(Transaction t)
         {
             
-            string paymentURL = _apiUrl + "/api/ABSA/Payment";
+            string paymentURL = _apiUrl + "/api/ABSA/ProccessPayment";
             //create an object matching how the ABSA Api accepts requests
             ABSARequest req;
             try
@@ -51,14 +53,14 @@ namespace PaymentSwitchHandler
                     AmountToPay = t.Amount.ToString(),
                     ClientID = t.Company.CompanyId.ToString(),
                     DestinationAccount = t.Employee.AccountNumber,
-                    DestinationBankCode = t.Employee.Bank.BankId,
-                    OriginationAccount = t.Company.AccountNumber
+                    OriginationAccount = t.Company.AccountNumber,
+                    DestinationBankCode = t.Employee.Bank.BankId
                 };
 
             }
             catch (Exception e)
             {
-                return new ProcessResults() { TransactionId = t.TransactionId, FailReason = e.Message, Code = StatusCode.Other};
+                return new ProcessResults() { TransactionId = t.Id, FailReason = e.Message, Code = StatusCode.Other};
             }
 
             using (var client = new HttpClient())
@@ -80,22 +82,22 @@ namespace PaymentSwitchHandler
                 else
                 {
                     //returns that the connection to the API failed. 
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = "Post request failed" , Code = StatusCode.Network};
+                    return new ProcessResults() { TransactionId = t.Id, FailReason = "Post request failed" , Code = StatusCode.Network};
                 }
                 
                 //if the result of the transaction wasn't succesfull, returns the results along with the fialure reason
                 if (result.SuccessCode != 1)
                 {
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = result.Message , Code = StatusCode.Network};
+                    return new ProcessResults() { TransactionId = t.Id, FailReason = result.Message , Code = StatusCode.Other};
                 }
             }
 
-            return new ProcessResults() { TransactionId = t.TransactionId, Code = StatusCode.Success };
+            return new ProcessResults() { TransactionId = t.Id, Code = StatusCode.Success };
         }
 
         private static async Task<ProcessResults> ProcessVisa(Transaction t)
         {
-            string paymentURL = _apiUrl + "[ip]/api/ProcessPayment";
+            string paymentURL = _apiUrl + "/api/VISA/ProccessPayment";
             VisaRequest req;
             try
             {
@@ -103,16 +105,17 @@ namespace PaymentSwitchHandler
                 {
                     Currency = Currency.ZAR,
                     DestinationCardNumber = t.Employee.CardNumber, //add
-                    OriginatorBankCode = t.Company.Bank.BankId,
                     OriginatorCardNumber = t.Company.CardNumber, //add
-                    OriginatorCVV = int.Parse(t.Company.CardCVV),//add
+                    OriginatorCVV = int.Parse(t.Company.CardCVV), //add
                     TransactionAmount = t.Amount.ToString(),
-                    VendorID = t.Company.CompanyId
+                    VendorID = t.Company.CompanyId,
+                    OriginatorBankCode = t.Company.Bank.BankId
                 };
+
             }
             catch (Exception e)
             {
-                return new ProcessResults() { TransactionId = t.TransactionId, FailReason = e.Message , Code = StatusCode.Other};
+                return new ProcessResults() { TransactionId = t.Id, FailReason = e.Message , Code = StatusCode.Other};
             }
 
             using (var client = new HttpClient())
@@ -123,23 +126,23 @@ namespace PaymentSwitchHandler
                 bytecontent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                 HttpResponseMessage res = await client.PostAsync(paymentURL, bytecontent);
-                PaymentResponse result;
+                VisaPaymentResponse result;
                 if (res.IsSuccessStatusCode)
                 {
-                    result = JsonConvert.DeserializeObject<PaymentResponse>(await res.Content.ReadAsStringAsync());
+                    result = JsonConvert.DeserializeObject<VisaPaymentResponse>(await res.Content.ReadAsStringAsync());
                 }
                 else
                 {
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = "Post request failed" , Code = StatusCode.Network};
+                    return new ProcessResults() { TransactionId = t.Id, FailReason = "Post request failed" , Code = StatusCode.Network};
                 }
 
-                if (result.SuccessCode != 1)
+                if (result.PaymentResultCode != 1)
                 {
-                    return new ProcessResults() { TransactionId = t.TransactionId, FailReason = result.Message , Code = StatusCode.Other};
+                    return new ProcessResults() { TransactionId = t.Id, FailReason = result.PaymentResultDescription , Code = StatusCode.Other};
                 }
             }
 
-            return new ProcessResults() { TransactionId = t.TransactionId, Code = StatusCode.Success };
+            return new ProcessResults() { TransactionId = t.Id, Code = StatusCode.Success };
         }
     }
 
@@ -149,10 +152,16 @@ namespace PaymentSwitchHandler
         public int SuccessCode { get; set; }
         public string Message { get; set; }
     }
+
+    public class VisaPaymentResponse
+    {
+        public int PaymentResultCode { get; set; }
+        public string PaymentResultDescription { get; set; }
+    }
     //the reply that will be sent back to the caller to handle failed transactions
     public class ProcessResults
     {
-        public int TransactionId { get; set; }
+        public ObjectId TransactionId { get; set; }
         public string FailReason { get; set; }
 
         public StatusCode Code { get; set; }
@@ -192,5 +201,17 @@ namespace PaymentSwitchHandler
         GBP,
         EUR
     }
+
+    enum BankCode
+    {
+        None = 0,
+        ABSA,
+        FNB,
+        Nedbank,
+        AfricaBank,
+        Barclays,
+        NBC
+    }
+
 }
 

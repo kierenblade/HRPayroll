@@ -19,16 +19,15 @@ namespace FlourishAPI.Controllers
         [HttpGet("TotSalsPerMonth/{id}")]
         public IEnumerable<DashboardDataDTO> SalariesPerMonth(string id) {
 
-            
-
+          
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
-            t.InsertDocument();
+            t.InsertDocument("FlourishDB_ARC");
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = t.SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters, "FlourishDB_ARC");
             w.Remove(t);
-            t.Delete();
+            t.Delete("FlourishDB_ARC");
 
 
             foreach (Transaction item in w)
@@ -82,16 +81,16 @@ namespace FlourishAPI.Controllers
         [HttpGet("SalariesPerBU/{id}")]
         public IEnumerable<DashboardDataDTO> SalariesPerBU(string id)
         {
-            
 
+            
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
-            t.InsertDocument();
+            t.InsertDocument("FlourishDB_ARC");
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = t.SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters, "FlourishDB_ARC");
             w.Remove(t);
-            t.Delete();
+            t.Delete("FlourishDB_ARC");
 
             foreach (Transaction item in w)
             {
@@ -130,12 +129,12 @@ namespace FlourishAPI.Controllers
 
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
-            t.InsertDocument();
+            t.InsertDocument("FlourishDB_ARC");
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = t.SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters, "FlourishDB_ARC");
             w.Remove(t);
-            t.Delete();
+            t.Delete("FlourishDB_ARC");
 
             return w.Count;
 
@@ -145,17 +144,17 @@ namespace FlourishAPI.Controllers
         [HttpGet("SumOfTransactions/{id}")]
         public decimal TotalSumOfAllTransactions(string id)
         {
-
+           
             decimal SumOfTransactions = 0;
 
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
-            t.InsertDocument();
+            t.InsertDocument("FlourishDB_ARC");
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = t.SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters, "FlourishDB_ARC");
             w.Remove(t);
-            t.Delete();
+            t.Delete("FlourishDB_ARC");
 
             foreach (Transaction item in w)
             {
@@ -167,23 +166,23 @@ namespace FlourishAPI.Controllers
 
         }
 
-        [HttpGet("GetNotifications/{id}")]
-        public IEnumerable<DesktopNotification> GetNotifications(string id)//Wade Please Review this Code, Will this work?
+        [HttpPost("GetNotifications")]
+        public IEnumerable<NotificationsDTO> GetNotifications([FromBody]NameDTO id)//Wade Please Review this Code, Will this work?
         {
-
-            DesktopNotification t = new DesktopNotification() { };
+            
+            DesktopNotification t = new DesktopNotification() { Company = new Company(), LoginDetails = new LoginDetails() { Company = new Company(),Role = new Role() } };
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("Company.Name", id);
+            parameters.Add("Company.Name", id.Name);
             List<CRUDAble> notes = t.SearchDocument(parameters);
             notes.Remove(t);
-
-            List<DesktopNotification> notifications = new List<DesktopNotification>();
+            t.Delete();
+            List<NotificationsDTO> notifications = new List<NotificationsDTO> ();
 
           
             foreach (DesktopNotification item in notes)
             {
-                notifications.Add(item);
+                notifications.Add(new NotificationsDTO(item));
             }
 
             return notifications;
@@ -194,16 +193,17 @@ namespace FlourishAPI.Controllers
         [HttpPost("GenReportRequest")]
         public IEnumerable<FilteredReportDTO> GeneralReportRequest([FromBody] GeneralReportRequestDTO reportRequestDetails)
         {
-            
 
+
+           
             Transaction t = new Transaction() { Employee = new Employee(),Company = new Company()};
             List<Transaction> outgoingTransactions = new List<Transaction>();
-            t.InsertDocument();
+            t.InsertDocument("FlourishDB_ARC");
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", reportRequestDetails.Company);
-            List<CRUDAble> w = t.SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters, "FlourishDB_ARC");
             w.Remove(t);
-            t.Delete();
+            t.Delete("FlourishDB_ARC");
 
             foreach (Transaction item in w)
             {
@@ -235,19 +235,27 @@ namespace FlourishAPI.Controllers
                 filter = filter.AsQueryable().Where(x => x.Amount <= reportRequestDetails.EndAmount).ToList(); ;
             }
 
+            List<Transaction> withBUs = new List<Transaction>();
+
             if (reportRequestDetails.BU.Length != 0)
             {
-
+                IEnumerable<Transaction> temp = new List<Transaction>();
                 foreach (var item in reportRequestDetails.BU)
                 {
-                    filter = filter.AsQueryable().Where(x => x.Employee.BusinessUnit.Name == item).ToList(); ;
+                    temp = filter.AsQueryable().Where(x => x.Employee.BusinessUnit.Name == item).ToList();
+
+                    foreach (Transaction instant in temp)
+                    {
+                        withBUs.Add(instant);
+                    }
                 }
-               
+
+                filter = withBUs;
             }
 
             if (reportRequestDetails.EmployeeID != null)
             {
-                filter = filter.AsQueryable().Where(x => x.EmployeeReference == reportRequestDetails.EmployeeID).ToList(); ;
+                filter = filter.AsQueryable().Where(x => x.Employee.IdNumber == reportRequestDetails.EmployeeID).ToList(); ;
             }
 
             List<FilteredReportDTO> outGoingData = new List<FilteredReportDTO>();

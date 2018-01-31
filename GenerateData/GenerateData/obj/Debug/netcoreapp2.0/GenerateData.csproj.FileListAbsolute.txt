@@ -1,0 +1,13 @@
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\bin\Debug\netcoreapp2.0\GenerateData.deps.json
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\bin\Debug\netcoreapp2.0\GenerateData.runtimeconfig.json
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\bin\Debug\netcoreapp2.0\GenerateData.runtimeconfig.dev.json
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\bin\Debug\netcoreapp2.0\GenerateData.dll
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\obj\Debug\netcoreapp2.0\GenerateData.csprojResolveAssemblyReference.cache
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\obj\Debug\netcoreapp2.0\GenerateData.csproj.CoreCompileInputs.cache
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\obj\Debug\netcoreapp2.0\GenerateData.AssemblyInfoInputs.cache
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\obj\Debug\netcoreapp2.0\GenerateData.AssemblyInfo.cs
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\bin\Debug\netcoreapp2.0\GenerateData.pdb
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\bin\Debug\netcoreapp2.0\HRPayroll.Classes.dll
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\bin\Debug\netcoreapp2.0\HRPayroll.Classes.pdb
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\obj\Debug\netcoreapp2.0\GenerateData.dll
+C:\Users\jvanheerden\Desktop\GenerateData\GenerateData\obj\Debug\netcoreapp2.0\GenerateData.pdb
