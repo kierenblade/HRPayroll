@@ -152,7 +152,7 @@ namespace FlourishAPI.Models
                         if (crud.Id == processResult.TransactionId)
                         {
                             crud.Status = Status.Success;
-                            crud.InsertDocument("FlourishDB_Arc");
+                            crud.InsertDocument("FlourishDB_ARC");
                             crud.Delete();
                         }
                     }
