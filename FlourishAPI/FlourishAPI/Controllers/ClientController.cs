@@ -50,6 +50,30 @@ namespace FlourishAPI.Controllers
 
         
 
+        [HttpGet("SyncEmployees4Today")]
+        public async  Task<IEnumerable<Employee>> SyncAllEmployees4Today()
+        {
+            string url = "http://172.18.12.209/api/ClientData/SyncAEmployees4Today";
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    List<Employee> rootresult = JsonConvert.DeserializeObject<List<Employee>>(result);
+
+                    //await EmployeeSync.InsertUpdateEmployeeDetails(rootresult);
+
+                    return  rootresult;
+                }
+                else
+                {
+                    return  new List<Employee>();
+                }
+            }
+        }
+
         [HttpGet("SyncAllEmployees")]
         public async void SyncAllEmployees()
         {

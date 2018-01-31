@@ -167,16 +167,16 @@ namespace FlourishAPI.Controllers
         }
 
         [HttpPost("GetNotifications")]
-        public IEnumerable<DesktopNotification> GetNotifications(string id)//Wade Please Review this Code, Will this work?
+        public IEnumerable<DesktopNotification> GetNotifications([FromBody]NameDTO id)//Wade Please Review this Code, Will this work?
         {
             
-            DesktopNotification t = new DesktopNotification() { };
+            DesktopNotification t = new DesktopNotification() { Company = new Company(), LoginDetails = new LoginDetails() { Company = new Company(),Role = new Role() } };
             t.InsertDocument();
             Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters.Add("Company.Name", id);
+            parameters.Add("Company.Name", id.Name);
             List<CRUDAble> notes = t.SearchDocument(parameters);
             notes.Remove(t);
-
+            t.Delete();
             List<DesktopNotification> notifications = new List<DesktopNotification>();
 
           
