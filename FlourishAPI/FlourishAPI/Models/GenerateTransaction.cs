@@ -158,6 +158,7 @@ namespace FlourishAPI.Models
                     }
                 }
             }
+           new DesktopNotification() { Message = string.Format("Successful Payments: {0} <br/><br/> Failed Payments: <br/> Network Related: {1} <br/> Other: {2}", processResults.Count(x => x.Code == StatusCode.Success), processResults.Count(x => x.Code == StatusCode.Network), processResults.Count(x => x.Code == StatusCode.Other)), Company = transactionList.First().Company, LoginDetails = new LoginDetails() { Role = new Role(), Company = new Company() } }.InsertDocument();
 
             MailMessage mailMessage = new MailMessage
             {
