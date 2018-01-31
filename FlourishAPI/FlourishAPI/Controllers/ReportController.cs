@@ -166,7 +166,7 @@ namespace FlourishAPI.Controllers
 
         }
 
-        [HttpGet("GetNotifications/{id}")]
+        [HttpPost("GetNotifications")]
         public IEnumerable<DesktopNotification> GetNotifications(string id)//Wade Please Review this Code, Will this work?
         {
             
@@ -255,7 +255,7 @@ namespace FlourishAPI.Controllers
 
             if (reportRequestDetails.EmployeeID != null)
             {
-                filter = filter.AsQueryable().Where(x => x.EmployeeReference == reportRequestDetails.EmployeeID).ToList(); ;
+                filter = filter.AsQueryable().Where(x => x.Employee.IdNumber == reportRequestDetails.EmployeeID).ToList(); ;
             }
 
             List<FilteredReportDTO> outGoingData = new List<FilteredReportDTO>();

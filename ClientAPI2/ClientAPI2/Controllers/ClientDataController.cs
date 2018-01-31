@@ -38,7 +38,7 @@ namespace ClientAPI2.Controllers
         }
 
         [HttpPost("SyncEmployees")]
-        public IEnumerable<Employee> SyncEmployees(List<string> empIDs)
+        public IEnumerable<Employee> SyncEmployees([FromBody] List<string> empIDs)
         {
 
             Employee e = new Employee();
@@ -65,21 +65,8 @@ namespace ClientAPI2.Controllers
             List<Employee> monthly = emps.Where(x => x.PayFrequency == PayFrequency.Monthly).ToList();
             List<Employee> toSend = new List<Employee>();
 
-            foreach (Employee item in weekly)
-            {
-                if (item.PayDate ==  (int)DateTime.Now.DayOfWeek)
-                {
-                    weekly.Add(item);
-                }
-            }
-
-            foreach (Employee item in monthly)
-            {
-                if (item.PayDate == DateTime.Now.Day)
-                {
-                    monthly.Add(item);
-                }
-            }
+            weekly = weekly.Where(x => x.PayDate == (int)DateTime.Now.DayOfWeek && x.EmployeeStatus == EmployeeStatus.Employed).ToList();
+            monthly = monthly.Where(x => x.PayDate == DateTime.Now.Day && x.EmployeeStatus == EmployeeStatus.Employed).ToList();
 
             toSend = monthly;
             

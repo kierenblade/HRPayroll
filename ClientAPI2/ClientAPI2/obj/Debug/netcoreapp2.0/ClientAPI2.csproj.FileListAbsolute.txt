@@ -11,3 +11,16 @@ C:\Users\ttshifularo\Documents\Visual Studio 2017 Projects\ClientAPI2\ClientAPI2
 C:\Users\ttshifularo\Documents\Visual Studio 2017 Projects\ClientAPI2\ClientAPI2\obj\Debug\netcoreapp2.0\ClientAPI2.AssemblyInfo.cs
 C:\Users\ttshifularo\Documents\Visual Studio 2017 Projects\ClientAPI2\ClientAPI2\obj\Debug\netcoreapp2.0\ClientAPI2.dll
 C:\Users\ttshifularo\Documents\Visual Studio 2017 Projects\ClientAPI2\ClientAPI2\obj\Debug\netcoreapp2.0\ClientAPI2.pdb
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\bin\Debug\netcoreapp2.0\ClientAPI2.deps.json
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\bin\Debug\netcoreapp2.0\ClientAPI2.runtimeconfig.json
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\bin\Debug\netcoreapp2.0\ClientAPI2.runtimeconfig.dev.json
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\bin\Debug\netcoreapp2.0\ClientAPI2.dll
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\bin\Debug\netcoreapp2.0\ClientAPI2.pdb
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\bin\Debug\netcoreapp2.0\FlourishAPI.dll
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\bin\Debug\netcoreapp2.0\FlourishAPI.pdb
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\obj\Debug\netcoreapp2.0\ClientAPI2.csprojResolveAssemblyReference.cache
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\obj\Debug\netcoreapp2.0\ClientAPI2.csproj.CoreCompileInputs.cache
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\obj\Debug\netcoreapp2.0\ClientAPI2.AssemblyInfoInputs.cache
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\obj\Debug\netcoreapp2.0\ClientAPI2.AssemblyInfo.cs
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\obj\Debug\netcoreapp2.0\ClientAPI2.dll
+C:\Users\WMartin\Desktop\Bootcamp 2018\Project\Flourish.Backend\ClientAPI2\ClientAPI2\obj\Debug\netcoreapp2.0\ClientAPI2.pdb

@@ -147,7 +147,7 @@ namespace FlourishAPI.Models
                 if (processResult.Code == StatusCode.Success)
                 {
                     Dictionary<string, object> dictionary = new Dictionary<string, object>();
-                    dictionary.Add("_id", "ObjectId('"+processResult.TransactionId+"')");
+                    dictionary.Add("_id", processResult.TransactionId);
                     Transaction t = new Transaction(){Employee = new Employee(),Company = new Company()};
                     t.InsertDocument();
                     List<CRUDAble> crudAbles = t.SearchDocument(dictionary);
