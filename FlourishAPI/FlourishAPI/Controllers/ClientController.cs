@@ -67,5 +67,11 @@ namespace FlourishAPI.Controllers
                 }
             }
         }
+
+        [HttpGet("GenerateTransactionForToday")]
+        public async void GenerateTransactionsForToday()
+        {
+            await GenerateTransaction.GenerateTransactionsForToday();
+        }
     }
 }
