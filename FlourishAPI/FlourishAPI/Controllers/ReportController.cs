@@ -22,12 +22,12 @@ namespace FlourishAPI.Controllers
           
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
-            t.InsertDocument();
+            t.InsertDocument("FlourishDB_ARC");
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = t.SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters, "FlourishDB_ARC");
             w.Remove(t);
-            t.Delete();
+            t.Delete("FlourishDB_ARC");
 
 
             foreach (Transaction item in w)
@@ -85,12 +85,12 @@ namespace FlourishAPI.Controllers
             
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
-            t.InsertDocument();
+            t.InsertDocument("FlourishDB_ARC");
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = t.SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters, "FlourishDB_ARC");
             w.Remove(t);
-            t.Delete();
+            t.Delete("FlourishDB_ARC");
 
             foreach (Transaction item in w)
             {
@@ -129,12 +129,12 @@ namespace FlourishAPI.Controllers
 
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
-            t.InsertDocument();
+            t.InsertDocument("FlourishDB_ARC");
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = t.SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters, "FlourishDB_ARC");
             w.Remove(t);
-            t.Delete();
+            t.Delete("FlourishDB_ARC");
 
             return w.Count;
 
@@ -149,12 +149,12 @@ namespace FlourishAPI.Controllers
 
             Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
             List<Transaction> outgoingTransactions = new List<Transaction>();
-            t.InsertDocument();
+            t.InsertDocument("FlourishDB_ARC");
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", id);
-            List<CRUDAble> w = t.SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters, "FlourishDB_ARC");
             w.Remove(t);
-            t.Delete();
+            t.Delete("FlourishDB_ARC");
 
             foreach (Transaction item in w)
             {
@@ -167,7 +167,7 @@ namespace FlourishAPI.Controllers
         }
 
         [HttpPost("GetNotifications")]
-        public IEnumerable<DesktopNotification> GetNotifications([FromBody]NameDTO id)//Wade Please Review this Code, Will this work?
+        public IEnumerable<NotificationsDTO> GetNotifications([FromBody]NameDTO id)//Wade Please Review this Code, Will this work?
         {
             
             DesktopNotification t = new DesktopNotification() { Company = new Company(), LoginDetails = new LoginDetails() { Company = new Company(),Role = new Role() } };
@@ -177,12 +177,12 @@ namespace FlourishAPI.Controllers
             List<CRUDAble> notes = t.SearchDocument(parameters);
             notes.Remove(t);
             t.Delete();
-            List<DesktopNotification> notifications = new List<DesktopNotification>();
+            List<NotificationsDTO> notifications = new List<NotificationsDTO> ();
 
           
             foreach (DesktopNotification item in notes)
             {
-                notifications.Add(item);
+                notifications.Add(new NotificationsDTO(item));
             }
 
             return notifications;
@@ -198,12 +198,12 @@ namespace FlourishAPI.Controllers
            
             Transaction t = new Transaction() { Employee = new Employee(),Company = new Company()};
             List<Transaction> outgoingTransactions = new List<Transaction>();
-            t.InsertDocument();
+            t.InsertDocument("FlourishDB_ARC");
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters.Add("Company.Name", reportRequestDetails.Company);
-            List<CRUDAble> w = t.SearchDocument(parameters);
+            List<CRUDAble> w = t.SearchDocument(parameters, "FlourishDB_ARC");
             w.Remove(t);
-            t.Delete();
+            t.Delete("FlourishDB_ARC");
 
             foreach (Transaction item in w)
             {
