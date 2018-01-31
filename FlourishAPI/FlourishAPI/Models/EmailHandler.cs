@@ -18,7 +18,7 @@ namespace FlourishAPI.Models
         {
             _email = emailMessage;
 
-            //Execute().Wait();
+            Execute().Wait();
         }
 
         static async Task Execute()

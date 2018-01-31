@@ -146,21 +146,27 @@ namespace FlourishAPI.Models
             {
                 if (processResult.Code == StatusCode.Success)
                 {
-                    Dictionary<string, object> dictionary = new Dictionary<string, object>();
-                    dictionary.Add("_id", processResult.TransactionId);
-                    Transaction t = new Transaction(){Employee = new Employee(),Company = new Company()};
-                    t.InsertDocument();
-                    List<CRUDAble> crudAbles = t.SearchDocument(dictionary);
-                    crudAbles.Remove(t);
-                    t.Delete();
 
-                    foreach (Transaction crud in crudAbles)
+                    foreach (Transaction crud in transactionList)
                     {
-                        crud.InsertDocument("FlourishDB_Arc");
-                        crud.Delete();
+                        if (crud.Id == processResult.TransactionId)
+                        {
+                            crud.Status = Status.Success;
+                            crud.InsertDocument("FlourishDB_Arc");
+                            crud.Delete();
+                        }
                     }
                 }
             }
+
+            MailMessage mailMessage = new MailMessage
+            {
+                Subject = string.Format("Payment Overview for {0}", DateTime.Now.Date),
+                Body = string.Format("Successful Payments: {0} <br/><br/> Failed Payments: <br/> Network Related: {1} <br/> Other: {2}", processResults.Count(x => x.Code == StatusCode.Success), processResults.Count(x => x.Code == StatusCode.Network), processResults.Count(x => x.Code == StatusCode.Other)),
+                To = { new MailAddress("gerling.kieren@gmail.com", "Kieren Gerling") }
+            };
+
+            EmailHandler.SendMail(mailMessage);
         }
     }
 }
