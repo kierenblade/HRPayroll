@@ -10,7 +10,22 @@ using System.Threading.Tasks;
 
 namespace PaymentSwitchHandler
 {
-
+    /*
+     * ===================================
+     * Author: Jason van Heerden
+     * Create date: 2018/01/29
+     * Description: 
+     * Takes in transactions to be processed by the selected payment switch. 
+     * Payments are processed using the relevant web service. A list of  transactiton process results are returned.
+     * This will represent he transaction IDs along with their success status.
+     * Success represents a successful payment
+     * Network represents an error in reaching the relevant service.
+     * Other represents an error in processing the transacion. This will usually also contain a reason for failure, as provided by the web service.
+     * Returning an empty list will represent the API not being reachable after 3 attempts (Subject for improvement)
+     * 
+     * NOTE: As per simulator restrictions, only VISA and ABSA payments are supported
+     * ===================================
+     */
     public class SwitchHandler
     {
         private string _apiUrl { get; set; }
@@ -22,6 +37,7 @@ namespace PaymentSwitchHandler
         {
             //Console.WriteLine("PayeBoi");
             List<TransactionProcessResult> output = new List<TransactionProcessResult>();
+            //Attempt to reach the APi using a basic call. After 3 attempts, return an empty object, representing the api being unreachable
             for (int i = 0; i < 3; i++)
             {
                 if (await TestApi())
@@ -33,6 +49,7 @@ namespace PaymentSwitchHandler
                     return output;
                 }
             }
+            //Reverting each transaction to its relevant payment method
             foreach (var transaction in transactionsIn)
             {
                 switch (transaction.Company.PaymentType)
@@ -50,6 +67,8 @@ namespace PaymentSwitchHandler
             }
             return output;
         }
+
+        //Processing ABSA transactions in accordance with the API specifications
         private async Task<TransactionProcessResult> ProcessAbsa(Transaction t)
         {
             string paymentURL = _apiUrl + "/api/ABSA/ProccessPayment";
@@ -96,6 +115,8 @@ namespace PaymentSwitchHandler
 
             return new TransactionProcessResult() { TransactionId = t.Id, Code = StatusCode.Success };
         }
+
+        //Processing VISA transactions in accordance with the API specifications
         private async Task<TransactionProcessResult> ProcessVisa(Transaction t)
         {
             string paymentURL = _apiUrl + "/api/VISA/ProccessPayment";
@@ -145,6 +166,8 @@ namespace PaymentSwitchHandler
 
             return new TransactionProcessResult() { TransactionId = t.Id, Code = StatusCode.Success };
         }
+
+        //calling a simple get method in order to test if the service is reachable
         private async Task<bool> TestApi()
         {
             using (HttpClient client = new HttpClient())
@@ -154,16 +177,22 @@ namespace PaymentSwitchHandler
             }
         }
     }
+
+    //the format of response expected from processing an ABSA transaction
     class PaymentResponse
     {
         public int SuccessCode { get; set; }
         public string Message { get; set; }
     }
+
+    //the format of response expected from processing a VISA transaction
     class VisaPaymentResponse
     {
         public int PaymentResultCode { get; set; }
         public string PaymentResultDescription { get; set; }
     }
+
+    //The format of a payment request sent to the ABSA payment service
     class ABSARequest
     {
         public string OriginationAccount { get; set; }
@@ -172,6 +201,8 @@ namespace PaymentSwitchHandler
         public string ClientID { get; set; }
         public string AmountToPay { get; set; }
     }
+
+    //The format of a payment request sent to the VISA payment service
     class VisaRequest
     {
         public string DestinationCardNumber { get; set; }

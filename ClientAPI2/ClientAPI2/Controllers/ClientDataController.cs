@@ -14,13 +14,7 @@ namespace ClientAPI2.Controllers
     [Route("api/ClientData")]
     public class ClientDataController : Controller
     {
-        [HttpGet]
-        public string CheckStatus()
-        {
-
-            return "You are connectec to Us";
-
-        }
+    
 
         [HttpGet("SyncAllEmployees")]
 

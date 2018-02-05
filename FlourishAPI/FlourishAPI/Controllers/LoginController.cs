@@ -16,19 +16,7 @@ namespace FlourishAPI.Controllers
     [Route("api/[controller]")]
     public class LoginController : Controller
     {
-        // GET: api/login
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "You are", "Connected" };
-        }
-
-        // GET api/login/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "Authenticate";
-        }
+       
 
         // POST api/login
         [HttpPost]
