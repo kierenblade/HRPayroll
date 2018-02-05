@@ -34,7 +34,7 @@ namespace FlourishAPI.Models
             weeklyEmployees = await GetEmployeesPaidToday(PayFrequency.Weekly);
             monthlyEmployees = await GetEmployeesPaidToday(PayFrequency.Monthly);
 
-            //Generate weekly transactions
+            //Generate weekly/monthly transactions
             await GenerateTransactionFromEmployeeList(weeklyEmployees, true);
             await GenerateTransactionFromEmployeeList(monthlyEmployees, true);
 
