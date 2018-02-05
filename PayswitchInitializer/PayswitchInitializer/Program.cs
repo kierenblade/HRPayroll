@@ -14,7 +14,6 @@ namespace PayswitchInitializer
     {
         static List<Employee> employees;
         static List<Company> companies;
-        static List<Bank> banks;
 
 
         static List<BankAccDetails> bankAcc = new List<BankAccDetails>();
@@ -35,18 +34,14 @@ namespace PayswitchInitializer
                 companies = JsonConvert.DeserializeObject<List<Company>>(json);
             }
 
-            using (StreamReader r = new StreamReader("banksOut.json"))
-            {
-                string json = r.ReadToEnd();
-                banks = JsonConvert.DeserializeObject<List<Bank>>(json);
-            }
             Console.WriteLine("Processing Employees");
             foreach (var item in employees)
             {
-               BankAccDetails acc = new BankAccDetails() {
+                BankAccDetails acc = new BankAccDetails() {
                     AccountBalance = new Random().Next(100000000, 999999999),
                     AccountNum = item.AccountNumber,
-                    AccStatus = AccountStatus.Active
+                    AccStatus = AccountStatus.Active,
+                    BankCode = (BankCode)item.Bank.BankId
                 };
 
                 CardDetail c = new CardDetail()
@@ -54,34 +49,11 @@ namespace PayswitchInitializer
                     AccountBalance = new Random().Next(100000000, 999999999),
                     CardNumber = item.CardNumber,
                     CardStatus = AccountStatus.Active,
-                    Currency = CurrencyEnum.ZAR
+                    Currency = CurrencyEnum.ZAR,
+                    BankCode = (BankCode)item.Bank.BankId,
+                    CardClass = CardClassification.None
                 };
 
-                switch (item.Bank.Name)
-                {
-                    case "ABSA":
-                        acc.BankCode = BankCode.ABSA;
-                        c.BankCode = BankCode.ABSA;
-                        break;
-                    case "FNB":
-                        acc.BankCode = BankCode.FNB;
-                        c.BankCode = BankCode.FNB;
-                        break;
-                    default:
-                        acc.BankCode = BankCode.None;
-                        c.BankCode = BankCode.None;
-                        break;
-                }
-
-                switch (item.PaymentType)
-                {
-                    case PaymentType.VISA:
-                        c.CardClass = CardClassification.Visa;
-                        break;
-                    default:
-                        c.CardClass = CardClassification.None;
-                        break;
-                }
                 bankAcc.Add(acc);
                 cards.Add(c);
             }
@@ -93,7 +65,8 @@ namespace PayswitchInitializer
                 {
                     AccountBalance = new Random().Next(100000000, 999999999),
                     AccountNum = item.AccountNumber,
-                    AccStatus = AccountStatus.Active
+                    AccStatus = AccountStatus.Active,
+                    BankCode = (BankCode)item.Bank.BankId
                 };
 
                 CardDetail c = new CardDetail()
@@ -101,26 +74,10 @@ namespace PayswitchInitializer
                     AccountBalance = new Random().Next(100000000, 999999999),
                     CardNumber = item.CardNumber,
                     CardStatus = AccountStatus.Active,
-                    Currency = CurrencyEnum.ZAR
+                    Currency = CurrencyEnum.ZAR,
+                    BankCode = (BankCode)item.Bank.BankId,
+                    CardClass = item.PaymentType == PaymentType.VISA ? CardClassification.Visa : CardClassification.None
                 };
-
-                switch (item.Bank.Name)
-                {
-                    case "ABSA":
-                        acc.BankCode = BankCode.ABSA;
-                        c.BankCode = BankCode.ABSA;
-                        break;
-                    case "FNB":
-                        acc.BankCode = BankCode.FNB;
-                        c.BankCode = BankCode.FNB;
-                        break;
-                    default:
-                        acc.BankCode = BankCode.None;
-                        c.BankCode = BankCode.None;
-                        break;
-                }
-
-                c.CardClass = CardClassification.None;
 
                 bankAcc.Add(acc);
                 cards.Add(c);
@@ -146,7 +103,7 @@ namespace PayswitchInitializer
 
         public static async Task<bool> insertBankAcc(BankAccDetails b)
         {
-            string url = "http://localhost:62337/Api/AddDBEntries/AddBankAccount";
+            string url = "http://172.18.12.224/Api/AddDBEntries/AddBankAccount";
             using (var client = new HttpClient())
             {
                 var request = JsonConvert.SerializeObject(b);
@@ -169,7 +126,7 @@ namespace PayswitchInitializer
 
         public static async Task<bool> insertCards(CardDetail c)
         {
-            string url = "http://localhost:62337/Api/AddDBEntries/AddCardAccount";
+            string url = "http://172.18.12.224/Api/AddDBEntries/AddCardAccount";
             using (var client = new HttpClient())
             {
                 var request = JsonConvert.SerializeObject(c);

@@ -9,17 +9,19 @@ using Newtonsoft.Json;
 using System.Threading;
 using FlourishAPI.Models;
 using FlourishAPI.Models.Classes;
+using FlourishAPI.Models.Scheduler;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 namespace FlourishAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class ClientController : Controller
     {
-        [HttpGet]
-        public void Get()
-        {
-            SyncAllEmployees();
-        }
+        //[HttpGet]
+        //public string Get()
+        //{
+        //    return "test";
+        //}
 
         [HttpPost]
         public async void Post()
@@ -27,89 +29,73 @@ namespace FlourishAPI.Controllers
             Console.WriteLine("POST");
         }
 
-        public async void SyncAllEmployees()
+        [HttpGet("SyncEmp")]
+        public async Task<bool> SyncEmployees()
         {
-            string url = "http://localhost:54497/api/values";
+            //Get list of employees from DB
+            Employee emp = new Employee();
+            emp.InsertDocument();
+            List<Employee> employeeList = emp.GetAllEmployees();
+            emp.Delete();
+            employeeList.Remove(emp);
+
+            return await EmployeeSync.SyncEmployeeDetailsFromClient(employeeList);
+        }
+
+        [HttpPost("RecieveEmployeeDetails")]
+        public async void RecieveEmployeeDetails([FromBody] List<Employee> employeeDetails)
+        {
+            await EmployeeSync.InsertUpdateEmployeeDetails(employeeDetails);
+        }
+
+        
+
+        [HttpGet("SyncEmployees4Today")]
+        public async  Task<IEnumerable<Employee>> SyncAllEmployees4Today()
+        {
+            string url = "http://172.18.12.209/api/ClientData/SyncAEmployees4Today";
             using (var client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync(url);
+                var response = await client.GetAsync(url);
+
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    var employeeResult = JsonConvert.DeserializeObject<List<Employee>>(result);
+                    List<Employee> rootresult = JsonConvert.DeserializeObject<List<Employee>>(result);
 
-                    Employee e = new Employee();
-                    e.InsertDocument();
-                    List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
-                    existingEmployees.Remove(e);
+                    //await EmployeeSync.InsertUpdateEmployeeDetails(rootresult);
 
-                    List<CRUDAble> crud = new List<CRUDAble>();
-                    //List<Employee> emp = new List<Employee>();
-                    //foreach (Employee item in existingEmployees)
-                    //{
-                    //    emp.Add(item);
-                    //}
-                    foreach (Employee employee in employeeResult)
-                    {
-                        Dictionary<string, object> filterList = new Dictionary<string, object>();
-                        filterList.Add("IdNumber", employee.IdNumber);
-                        if (e.SearchDocument(filterList).LongCount() > 0)
-                        {
-                            filterList.Clear();
-                            filterList.Add("HashCode", employee.HashCode);
-                            List<CRUDAble> preFilter = e.SearchDocument(filterList).ToList();
-                            preFilter.Remove(e);
-                            if (preFilter.Count < 1)
-                            {
-                                crud.Add(employee);
-                            }
-                        }
-                        else
-                        {
-                            employee.InsertDocument();
-                        }
-                    }
-                    crud.UpdateManyDocument();
-                    e.Delete();
-                    //=================Testing notifications===================
-                    new DesktopNotification() {Company = employeeResult[0].Company,CreationDate = DateTime.Now,Message = (crud.Count+ " records have been updated from the previous list") }.InsertDocument();
-                    //==================================================
-                    //  new Thread(UpdateAndCreateTransactions).Start();
-                    UpdateAndCreateTransactions();
+                    return  rootresult;
+                }
+                else
+                {
+                    return  new List<Employee>();
                 }
             }
         }
 
-
-        public void UpdateAndCreateTransactions()
+        [HttpGet("SyncAllEmployees")]
+        public async void SyncAllEmployees()
         {
-            Employee e = new Employee() { Company = new Company(), BusinessUnit = new BusinessUnit()};
-            Transaction t = new Transaction() { Employee = new Employee(), Company = new Company() };
-            e.InsertDocument();
-            t.InsertDocument();
-            List<CRUDAble> existingEmployees = e.SearchDocument(new Dictionary<string, object>());
-            existingEmployees.Remove(e);
-            List<Transaction> toUpdateTransactions = new List<Transaction>();
-
-            foreach (Employee item in existingEmployees)
+            string url = "http://172.18.12.209/api/ClientData/SyncAllEmployees";
+            using (var client = new HttpClient())
             {
-                Dictionary<string, object> filterList = new Dictionary<string, object>();
-                filterList.Add("Employee.HashCode", item.HashCode);
-                List<CRUDAble> result = t.SearchDocument(filterList);
-                result.Remove(t);
-                if (result.LongCount() > 0)
+                var response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    result.UpdateManyDocument();
-                }
-                else
-                {
-                    new Transaction() { Employee = item, Company = item.Company, Amount = item.Salary, DateCreated = DateTime.Now, Status = Status.Pending }.InsertDocument();
+                    string result = await response.Content.ReadAsStringAsync();
+                    var rootresult = JsonConvert.DeserializeObject<List<Employee>>(result);
+
+                    await EmployeeSync.InsertUpdateEmployeeDetails(rootresult);
                 }
             }
+        }
 
-            e.Delete();
-            t.Delete();
-            
+        [HttpGet("GenerateTransactionForToday")]
+        public async void GenerateTransactionsForToday()
+        {
+            await GenerateTransaction.GenerateTransactionsForToday();
         }
     }
 }

@@ -6,8 +6,6 @@ namespace FlourishAPI.Models.Classes
     #region Enums
     public enum PayFrequency { Weekly = 1, Monthly }
     public enum EmployeeStatus { Employed = 1, Ghost, Duplicate, Fired }
-
-    public enum PaymentType { ABSA = 1, VISA }
     #endregion
 
     public class Employee : CRUDAble{
@@ -51,9 +49,6 @@ namespace FlourishAPI.Models.Classes
 
         [BsonElement("PayDate")]
         public int PayDate { get; set; }
-
-        [BsonElement("PaymentType")]
-        public PaymentType PaymentType { get; set; }
 
         [BsonElement("EmployeeStatus")]
         public EmployeeStatus EmployeeStatus { get; set; }

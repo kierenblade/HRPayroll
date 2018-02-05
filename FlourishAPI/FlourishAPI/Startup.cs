@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlourishAPI.Models.Scheduler;
+using FluentScheduler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +18,7 @@ namespace FlourishAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            JobManager.Initialize(new ScheduledJobRegistry());
         }
 
         public IConfiguration Configuration { get; }

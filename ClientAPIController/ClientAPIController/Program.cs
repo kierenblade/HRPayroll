@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
+using HRPayroll.Classes.Models;
 
 namespace ClientAPIController
 {
@@ -25,7 +26,27 @@ namespace ClientAPIController
 
         public static async Task<string> GetPosts()
         {
-            //string URL = "https://jsonplaceholder.typicode.com/posts";
+            List<Employee> employees = new List<Employee>();
+            Employee employee = new Employee()
+            {
+                IdNumber = "1111111",
+                FirstName = "test",
+                LastName = "test",
+                AccountNumber = "12345",
+                Bank = new Bank() { BankId = 1, Name = "Standard" },
+                BusinessUnitName = "Sales",
+                Position = "pleb",
+                Salary = 123.2m,
+                PayFrequency = PayFrequency.Weekly,
+                PayDate = DateTime.Today,
+                PaymentType = new PaymentType { Name = "testType" },
+                EmployeeStatus = EmployeeStatus.Employed,
+                SyncDate = DateTime.Now
+            };
+
+            employees.Add(employee);
+
+            //string URL = "http://localhost:63796/api/client";
             //using (var client = new HttpClient())
             //{
             //    HttpResponseMessage response = await client.GetAsync(URL);
@@ -41,10 +62,11 @@ namespace ClientAPIController
             //    }
             //}
 
-            string url = "http://localhost:63796/api/login";
+
+            string url = "http://localhost:63796/api/client";
             using (var client = new HttpClient())
             {
-                var mycontent = JsonConvert.SerializeObject("JSON");
+                var mycontent = JsonConvert.SerializeObject(employees);
                 var buffer = System.Text.Encoding.UTF8.GetBytes(mycontent);
                 var bytecontent = new ByteArrayContent(buffer);
                 bytecontent.Headers.ContentType = new MediaTypeHeaderValue("application/json");

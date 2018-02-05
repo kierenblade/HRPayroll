@@ -1,10 +1,11 @@
-using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace HRPayroll.Classes.Models
 {
-    public class Company: CRUDAble
-        {
+    public enum PaymentType { ABSA = 1, VISA }
+    public class Company : CRUDAble
+    {
 
         [BsonElement("CompanyId")]
         public int CompanyId { get; set; }
@@ -26,11 +27,13 @@ namespace HRPayroll.Classes.Models
 
         [BsonElement("BusinessUnits")]
         public List<BusinessUnit> BusinessUnits { get; set; }
+        [BsonElement("PaymentType")]
+        public PaymentType PaymentType { get; set; }
 
         #region Methods
         public override string createHash()
         {
-            return string.Format("{0}-{1}-{2}", CompanyId,Name,AccountNumber);
+            return string.Format("{0}-{1}-{2}", CompanyId, Name, AccountNumber);
         }
         #endregion
 

@@ -16,29 +16,13 @@ namespace FlourishAPI.Controllers
     [Route("api/[controller]")]
     public class LoginController : Controller
     {
-        // GET: api/login
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "You are", "Connected" };
-        }
-
-        // GET api/login/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "Authenticate";
-        }
+       
 
         // POST api/login
         [HttpPost]
       
-        public Boolean Post([FromBody]LoginDetailsDTO userDetails)
+        public SuccesfullLoginDTO Post([FromBody]LoginDetailsDTO userDetails)
         {
-
-
-           
-            //SignInManager signIn = new SignInManager(userDetails.Username, userDetails.Password);
 
           
             LoginDetails verifyingAccount = new LoginDetails() { Username = userDetails.Username, Hash = userDetails.Password };
@@ -48,18 +32,13 @@ namespace FlourishAPI.Controllers
             if (verifyingAccount != null)
             {
 
-                return true;
+                return new SuccesfullLoginDTO(verifyingAccount);
             }
             else
             {
-                return false;
+                return new SuccesfullLoginDTO();
             }
 
-            //SignInManager signIn = new SignInManager(details.Username, details.Password);
-
-            //success = signIn.ValidateUserDetails();
-
-            //return success;
         }
 
 
